@@ -18,12 +18,10 @@ link_file() {
 			return 0
 		else
 			mv "$2" "$2.backup"
-            #echo "$2" "$2.backup"
 			success "moved $2 to $2.backup"
 		fi
 	fi
 	ln -sf "$1" "$2"
-    #echo "-sf" "$1" "$2"
 	success "linked $1 to $2"
 }
 
