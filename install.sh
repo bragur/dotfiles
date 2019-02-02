@@ -1,6 +1,3 @@
-#==============
-# Install all the packages
-#==============
 cd "$(dirname "$0")/.."
 DOTFILES_ROOT=$(pwd -P)
 
@@ -31,6 +28,7 @@ link_file() {
 }
 
 get_brew() {
+    info "Checking for Brew"
     which -s brew
     if [[ $? != 0 ]] ; then
         # Install Homebrew
@@ -52,12 +50,10 @@ get_basics() {
     brew install coreutils
 }
 
-echo "Install all base packages (Y/n) => "; read answer
+echo "Are you sure you want to install Bragi's dotfiles? (y/n) => "; read answer
 if [[ $answer != "n" ]] && [[ $answer != "N" ]] ; then
-    info "Checking for Brew"
-    
     get_brew
     get_basics
     link_file $DOTFILES_ROOT/.dotfiles/.zshrc.symlink $HOME/.zshrc
-    success "Finished setting up simple dotfiles"
+    success "Finished setting up Bragi's humble dotfiles"
 fi
