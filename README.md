@@ -10,9 +10,9 @@ Install script hurrily put together from bits of [carloos0's amazing dotfiles](h
 
 # Installation
 
-To install please run `git clone git@github.com:bragur/dotfiles.git ~/.dotfiles` for SSH or `git clone https://www.github.com/bragur/dotfiles ~/.dotfiles` for https.
-then
-```
+To install please run
+```shell
+git clone git@github.com:bragur/dotfiles.git ~/.dotfiles
 cd ~/.dotfiles
 ./install.sh
 ```
