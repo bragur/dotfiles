@@ -33,13 +33,13 @@ zstyle ':completion:::::' completer _expand _complete _ignored _approximate # en
 # NOTIFICATIONS STYLE
 zstyle ':notify:*' error-title "Command failed (in #{time_elapsed} seconds)"
 zstyle ':notify:*' success-title "Command finished (in #{time_elapsed} seconds)"
-zstyle ':notify:*' error-icon "https://png.pngtree.com/svg/20170718/error_icon_509209.png"
+zstyle ':notify:*' error-icon "https://i.dlpng.com/static/png/1311036_preview_preview.png"
 zstyle ':notify:*' error-title "Oh noes..! Something went wrong 💥"
-zstyle ':notify:*' success-icon "https://cdn3.iconfinder.com/data/icons/flat-actions-icons-9/792/Tick_Mark_Dark-512.png"
+zstyle ':notify:*' success-icon "https://png.pngtree.com/svg/20170222/hedgehog_13618.png"
 zstyle ':notify:*' success-title "Success! 🚀"
 zstyle ':notify:*' error-sound "Glass"
 zstyle ':notify:*' success-sound "default"
-zstyle ':notify:*' command-complete-timeout 15
+zstyle ':notify:*' command-complete-timeout 10
 
 # ANTIBODY SETUP
 source <(antibody init)
