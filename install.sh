@@ -41,18 +41,60 @@ get_brew() {
     fi
 }
 
+install_zsh() {
+    brew list zsh || brew install zsh > /dev/null 2>&1
+    if ! grep -Fxq $(which zsh) /etc/shells
+        then
+            sudo sh -c "echo $(which zsh) >> /etc/shells"
+    fi
+}
+
+install_antibody() {
+    which -s antibody
+    if [[ $? != 0 ]] ; then
+        info "Installing Antibody for you"
+        brew install getantibody/tap/antibody > /dev/null 2>&1
+    fi
+}
+
+install_diff_so_fancy() {
+    echo "Do you want to setup diff-so-fancy for a nicer git diff experience? (y/n) "; read answer
+    if [[ $answer != "n" ]] && [[ $answer != "N" ]] ; then
+        brew install diff-so-fancy > /dev/null 2>&1
+        git config --global core.pager "diff-so-fancy | less --tabs=4 -RFX"
+        git config --global color.ui true
+        git config --global color.diff-highlight.oldNormal    "red bold"
+        git config --global color.diff-highlight.oldHighlight "red bold 52"
+        git config --global color.diff-highlight.newNormal    "green bold"
+        git config --global color.diff-highlight.newHighlight "green bold 22"
+        git config --global color.diff.meta       "yellow"
+        git config --global color.diff.frag       "magenta bold"
+        git config --global color.diff.commit     "yellow bold"
+        git config --global color.diff.old        "red bold"
+        git config --global color.diff.new        "green bold"
+        git config --global color.diff.whitespace "red reverse"
+    fi
+}
+
+install_extras() {
+    brew install terminal-notifier > /dev/null 2>&1
+    brew install coreutils > /dev/null 2>&1
+    install_diff_so_fancy
+}
+
 get_basics() {
     info "Installing Dependencies"
-    brew install getantibody/tap/antibody
-    brew install terminal-notifier
-    brew install coreutils
+    install_zsh
+    install_antibody
+    install_extras
 }
+
 
 change_shell() {
     chsh -s $(which zsh)
 }
 
-echo "Are you sure you want to install Bragi's dotfiles? (y/n) => "; read answer
+echo "Are you sure you want to install Bragi's dotfiles? (y/n)"; read answer
 if [[ $answer != "n" ]] && [[ $answer != "N" ]] ; then
     get_brew
     get_basics
