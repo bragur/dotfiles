@@ -16,3 +16,4 @@ git clone git@github.com:bragur/dotfiles.git ~/.dotfiles
 cd ~/.dotfiles
 ./install.sh
 ```
+
