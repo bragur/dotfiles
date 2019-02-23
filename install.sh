@@ -98,7 +98,7 @@ echo "Are you sure you want to install Bragi's dotfiles? (y/n)"; read answer
 if [[ $answer != "n" ]] && [[ $answer != "N" ]] ; then
     get_brew
     get_basics
-    link_file $DOTFILES_ROOT/.dotfiles/.zshrc.symlink $HOME/.zshrc
+    link_file $DOTFILES_ROOT/.dotfiles/zshrc.symlink $HOME/.zshrc
     change_shell
     success "Finished setting up Bragi's humble dotfiles. Please restart terminal."
 fi
