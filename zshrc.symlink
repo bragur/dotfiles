@@ -55,6 +55,8 @@ antibody bundle buonomo/yarn-completion
 antibody bundle unixorn/git-extra-commands
 antibody bundle mdumitru/git-aliases
 antibody bundle marzocchi/zsh-notify
+export NVM_LAZY_LOAD=true
+antibody bundle lukechilds/zsh-nvm
 
 # KEY BINDINGS
 bindkey '^[[A' history-substring-search-up
