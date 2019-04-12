@@ -20,7 +20,6 @@ setopt hist_reduce_blanks # remove superfluous blanks from history items
 setopt inc_append_history # save history entries as soon as they are entered
 setopt share_history # share history between different instances of the shell
 setopt auto_cd # cd by typing directory name if it's not a command
-setopt correct_all # autocorrect commands
 setopt auto_list # automatically list choices on ambiguous completion
 setopt auto_menu # automatically use menu completion
 setopt always_to_end # move cursor to end if word had one match
@@ -71,11 +70,25 @@ ZSH_THEME="spaceship"
 
 # SPACESHIPT PROMPT SETTINGS
 SPACESHIP_PROMPT_ADD_NEWLINE="true"
-SPACESHIP_CHAR_SYMBOL="❯"
-SPACESHIP_CHAR_SUFFIX=" "
+SPACESHIP_CHAR_SYMBOL="☛"
+SPACESHIP_CHAR_SUFFIX="  "
 SPACESHIP_PROMPT_DEFAULT_PREFIX="$USER"
 SPACESHIP_PROMPT_FIRST_PREFIX_SHOW="true"
 SPACESHIP_USER_SHOW="true"
+
+SPACESHIP_PROMPT_ORDER=(
+  time          # Time stamps section
+  user          # Username section
+  dir           # Current directory section
+  host          # Hostname section
+  git           # Git section (git_branch + git_status)
+  exec_time     # Execution time
+  line_sep      # Line break
+  vi_mode       # Vi-mode indicator
+  jobs          # Background jobs indicator
+  exit_code     # Exit code section
+  char          # Prompt character
+)
 
 # INITIALIZE SPACEPROMPT
 antibody bundle denysdovhan/spaceship-prompt
@@ -86,6 +99,9 @@ alias git_current_branch="git-current-branch"
 # COREUTILS: For easy directories grouping
 PATH="/usr/local/opt/coreutils/libexec/gnubin:$PATH"
 alias ls='ls --color -h --group-directories-first'
+
+# RUN AUTOJUMP
+[ -f /usr/local/etc/profile.d/autojump.sh ] && . /usr/local/etc/profile.d/autojump.sh
 
 # use .localrc for SUPER SECRET CRAP that you don't
 # want in your public, versioned repo.

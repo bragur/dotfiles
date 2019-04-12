@@ -73,13 +73,17 @@ install_diff_so_fancy() {
         git config --global color.diff.old        "red bold"
         git config --global color.diff.new        "green bold"
         git config --global color.diff.whitespace "red reverse"
+        success "Diff So Fancy setup complete"
     fi
 }
 
 install_extras() {
+    brew install autojump > /dev/null 2>&1
+    brew install tree > /dev/null 2>&1
     brew install terminal-notifier > /dev/null 2>&1
     brew install coreutils > /dev/null 2>&1
     install_diff_so_fancy
+    success "Finished setting up extras"
 }
 
 get_basics() {
