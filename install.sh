@@ -57,32 +57,16 @@ install_antibody() {
     fi
 }
 
-install_diff_so_fancy() {
-    echo "Do you want to setup diff-so-fancy for a nicer git diff experience? (y/n) "; read answer
-    if [[ $answer != "n" ]] && [[ $answer != "N" ]] ; then
-        brew install diff-so-fancy > /dev/null 2>&1
-        git config --global core.pager "diff-so-fancy | less --tabs=4 -RFX"
-        git config --global color.ui true
-        git config --global color.diff-highlight.oldNormal    "red bold"
-        git config --global color.diff-highlight.oldHighlight "red bold 52"
-        git config --global color.diff-highlight.newNormal    "green bold"
-        git config --global color.diff-highlight.newHighlight "green bold 22"
-        git config --global color.diff.meta       "yellow"
-        git config --global color.diff.frag       "magenta bold"
-        git config --global color.diff.commit     "yellow bold"
-        git config --global color.diff.old        "red bold"
-        git config --global color.diff.new        "green bold"
-        git config --global color.diff.whitespace "red reverse"
-        success "Diff So Fancy setup complete"
-    fi
-}
-
 install_extras() {
     brew install autojump > /dev/null 2>&1
     brew install tree > /dev/null 2>&1
     brew install terminal-notifier > /dev/null 2>&1
     brew install coreutils > /dev/null 2>&1
-    install_diff_so_fancy
+    brew install gpatch > /dev/null 2>&1
+    brew install opam > /dev/null 2>&1
+    brew install emacs-mac-spacemacs-icon
+    git clone https://github.com/syl20bnr/spacemacs ~/.emacs.d
+    opam init
     success "Finished setting up extras"
 }
 

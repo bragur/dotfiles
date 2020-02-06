@@ -82,6 +82,7 @@ SPACESHIP_PROMPT_ORDER=(
   dir           # Current directory section
   host          # Hostname section
   git           # Git section (git_branch + git_status)
+  aws           # AWS
   exec_time     # Execution time
   line_sep      # Line break
   vi_mode       # Vi-mode indicator
@@ -99,6 +100,9 @@ alias git_current_branch="git-current-branch"
 # COREUTILS: For easy directories grouping
 PATH="/usr/local/opt/coreutils/libexec/gnubin:$PATH"
 alias ls='ls --color -h --group-directories-first'
+
+# INITIALISE OPAM
+eval $(opam env)
 
 # RUN AUTOJUMP
 [ -f /usr/local/etc/profile.d/autojump.sh ] && . /usr/local/etc/profile.d/autojump.sh
