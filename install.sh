@@ -64,7 +64,12 @@ install_extras() {
     brew install coreutils > /dev/null 2>&1
     brew install gpatch > /dev/null 2>&1
     brew install opam > /dev/null 2>&1
-    brew install emacs-mac-spacemacs-icon
+    brew install emacs-mac-spacemacs-icon > /dev/null 2>&1
+    brew install kubernetes-cli > /dev/null 2>&1
+    brew install helm > /dev/null 2>&1
+    brew install kops > /dev/null 2>&1
+    brew install neovim > /dev/null 2>&1
+    brew install the_silver_searcher > /dev/null 2>&1
     git clone https://github.com/syl20bnr/spacemacs ~/.emacs.d
     opam init
     success "Finished setting up extras"
