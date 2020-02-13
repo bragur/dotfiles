@@ -64,7 +64,9 @@ install_extras() {
     brew install coreutils > /dev/null 2>&1
     brew install gpatch > /dev/null 2>&1
     brew install opam > /dev/null 2>&1
+    brew tap railwaycat/emacsmacport > /dev/null 2>&1
     brew install emacs-mac-spacemacs-icon > /dev/null 2>&1
+    brew untap railwaycat/emacsmacport > /dev/null 2>&1
     brew install kubernetes-cli > /dev/null 2>&1
     brew install helm > /dev/null 2>&1
     brew install kops > /dev/null 2>&1
@@ -75,13 +77,19 @@ install_extras() {
     success "Finished setting up extras"
 }
 
+install_reason_basics() {
+    opam create switch 4.06.1
+    echo "y" | opam switch 4.06.1
+    echo "y" | opam install merlin reason
+}
+
 get_basics() {
     info "Installing Dependencies"
     install_zsh
     install_antibody
     install_extras
+    install_reason_basics
 }
-
 
 change_shell() {
     chsh -s $(which zsh)
@@ -92,6 +100,7 @@ if [[ $answer != "n" ]] && [[ $answer != "N" ]] ; then
     get_brew
     get_basics
     link_file $DOTFILES_ROOT/.dotfiles/zshrc.symlink $HOME/.zshrc
+    cp $DOTFILES_ROOT/.dotfiles/config/localrc.bootstrap $HOME/.localrc
     change_shell
-    success "Finished setting up Bragi's humble dotfiles. Please restart terminal."
+    success "Finished setting up Bragi's humble dotfiles. Please config .localrc and restart terminal."
 fi

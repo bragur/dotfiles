@@ -94,9 +94,6 @@ SPACESHIP_PROMPT_ORDER=(
 # INITIALIZE SPACEPROMPT
 antibody bundle denysdovhan/spaceship-prompt
 
-# GIT SCRIPT ALIASES
-alias git_current_branch="git-current-branch"
-
 # COREUTILS: For easy directories grouping
 PATH="/usr/local/opt/coreutils/libexec/gnubin:$PATH"
 alias ls='ls --color -h --group-directories-first'
@@ -107,7 +104,25 @@ eval $(opam env)
 # RUN AUTOJUMP
 [ -f /usr/local/etc/profile.d/autojump.sh ] && . /usr/local/etc/profile.d/autojump.sh
 
+# ANDROID_HOME
+export ANDROID_HOME=$HOME/Library/Android/sdk
+export PATH=$PATH:$ANDROID_HOME/tools
+export PATH=$PATH:$ANDROID_HOME/platform-tools
+export PATH=$ANDROID_HOME/emulator:$ANDROID_HOME/tools:$PATH
+
+# KUBERNETES AUTOCOMPLETION
+source <(kubectl completion zsh)
+
+export PATH="/usr/local/sbin:$PATH"
+export PATH="/usr/local/opt/ruby/bin:$PATH"
+
+export PATH=node_modules/.bin:$PATH
+
 # use .localrc for SUPER SECRET CRAP that you don't
 # want in your public, versioned repo.
-# shellcheck disable=SC1090
+
+# SOURCE EXTRA SETUP
 [ -f ~/.localrc ] && . ~/.localrc
+[ -f ~/.dotfiles/config/.commandsrc ] && . ~/.dotfiles/config/.commandsrc
+[ -f ~/.dotfiles/config/.aliases ] && . ~/.dotfiles/config/.aliases
+[ -f ~/.dotfiles/config/.sothebysrc ] && . ~/.dotfiles/config/.sothebysrc

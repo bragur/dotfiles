@@ -1,0 +1,142 @@
+# THIS RC IS A CONVENIENCY LIBRARY OF COMMANDS TO EASEN LIFE
+
+# SOTHEBYS CONFIG
+export MONOREPO=/Users/bragi/dev/sothebys/ws-monorepo
+
+# EXPORT AUTH0 VARIABLES
+live_auth0_dev() {
+    export AUTH0_USERNAME=$ADMIN_ACCOUNT
+    export AUTH0_PASSWORD=$ADMIN_ACCOUNT_PASSWD
+    export AUTH0_SECRET=$AUTH0_SECRET_DEV
+    export AUTH0_BOT_PASS=$AUTH0_BOT_PASS_DEV
+    export BRIGHTSPOT_AUTH=$BRIGHTSPOT_AUTH
+    export LIVESCRIPT_ENV="dev"
+}
+
+live_auth0_staging() {
+    export AUTH0_USERNAME=$ADMIN_ACCOUNT
+    export AUTH0_PASSWORD=$ADMIN_ACCOUNT_PASSWD
+    export AUTH0_SECRET=$AUTH0_SECRET_STAGING
+    export AUTH0_BOT_PASS=$AUTH0_BOT_PASS_STAGING
+    export BRIGHTSPOT_AUTH=$BRIGHTSPOT_AUTH
+    export LIVESCRIPT_ENV="staging"
+}
+
+# AWS
+
+aws_vikingprod() {
+    export AWS_PROFILE=viking_prod
+    export AWS_REGION=eu-west-1
+    export AWS_DEFAULT_REGION=$AWS_REGION
+}
+
+aws_vikingdev() {
+    export AWS_PROFILE=viking_dev
+    export AWS_REGION=eu-west-1
+    export AWS_DEFAULT_REGION=$AWS_REGION
+}
+
+aws_none() {
+    unset AWS_PROFILE AWS_REGION AWS_DEFAULT_REGION
+}
+
+# K8S
+
+k8s_staging() {
+  aws_vikingdev #Enable the AWS dev credentials
+  kops export kubecfg k8s.staging.sothelabs.com --state s3://kops-state.staging.sothelabs.com
+  kubectl config set-context --namespace staging k8s.staging.sothelabs.com
+}
+
+# SHORTCUT COMMANDS
+
+mono() {
+  pushd $MONOREPO
+}
+
+y() {
+  pushd ${MONOREPO}/src/yarn
+}
+
+# PANTS SHORTCUT COMMANDS
+
+pants_test_changeset() {
+  mono
+  ./pants test --changed-parent=origin/master --changed-include-dependees=transitive
+  popd
+}
+
+pants_compile_changeset() {
+  mono
+  ./pants compile --changed-parent=origin/master --changed-include-dependees=transitive
+  popd
+}
+
+pants_affected_services() {
+    mono
+    ./pants list --changed-parent=origin/master  dependees --transitive | \
+      grep "deployment/services/" | \
+      cut -d":" -f1 | \
+      sed '/helm/d' | \
+      sort | \
+      uniq
+    popd
+}
+
+# AUCTION HELPERS
+
+new_auction() {
+  #!/bin/bash
+  POSITIONAL=()
+  while [[ $# -gt 0 ]]
+  do
+  key="$1"
+
+  case $key in
+      -n|--number-of-lots)
+      NUMBEROFLOTS="$2"
+      shift # past argument
+      ;;
+      -l|--live)
+      AUCTIONTYPE=live
+      AUCTIONSCRIPT=create-randomized-live-auction
+      shift # past argument
+      ;;
+      -t|--timed)
+      AUCTIONTYPE=timed
+      AUCTIONSCRIPT=create-randomized-timed-auction
+      shift # past argument
+      ;;
+      -a|--absentee)
+      AUCTIONTYPE=absentee
+      AUCTIONSCRIPT="create-randomized-live-auction -ba=AbsenteeBids"
+      shift # past argument
+      ;;
+      *)    # unknown option
+      POSITIONAL+=("$1") # save it in an array for later
+      shift # past argument
+      ;;
+  esac
+  done
+  set -- "${POSITIONAL[@]}" # restore positional parameters
+
+  if [ -z "$AUCTIONTYPE" ]
+  then
+    AUCTIONTYPE=live
+    AUCTIONSCRIPT=create-randomized-live-auction
+  fi
+
+  re='^[0-9]+$'
+  if ! [[ $NUMBEROFLOTS =~ $re ]] ; then
+     NUMBEROFLOTS=3
+  fi
+
+  echo "$(tput setaf 6)$(tput bold)Creating ${AUCTIONTYPE} auction with ${NUMBEROFLOTS} lots.\n$(tput sgr 0)"
+
+  y
+  live_auth0_staging
+  ./infrastructure/live-auction-cli/y $AUCTIONSCRIPT -l $NUMBEROFLOTS
+  popd
+
+  unset NUMBEROFLOTS AUCTIONTYPE AUCTIONSCRIPT
+}

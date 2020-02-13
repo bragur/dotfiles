@@ -1,0 +1,9 @@
+# REACT NATIVE ALIASES
+alias rni="react-native run-ios"
+alias rna="react-native run-android"
+
+# LIST ALIAS
+alias ll="ls -la"
+
+# GIT SCRIPT ALIASES
+alias git_current_branch="git-current-branch"
