@@ -92,6 +92,7 @@
   (ivy-mode 1))
 (setq ivy-re-builders-alist
       '((ivy-switch-buffer . ivy--regex-plus)
+	(counsel-ag . ivy--regex-plus)
         (t . ivy--regex-fuzzy)))
 (setq ivy-initial-inputs-alist nil)
 
@@ -132,6 +133,8 @@
 (use-package counsel-projectile
   :config
   (counsel-projectile-mode 1))
+
+(setq projectile-completion-system 'ivy)
 
 ;; NeoTree
 (use-package neotree)
@@ -225,6 +228,8 @@
   :config
   (add-to-list 'auto-mode-alist '("Dockerfile\\'" . dockerfile-mode)))
 
+(use-package docker)
+
 ;; Rust and cargo
 (use-package rust-mode)
 
@@ -274,6 +279,10 @@ current window."
 
   (add-hook 'git-commit-setup-hook 'my-git-commit-insert-branch)
 
+;; iedit
+(use-package iedit)
+(use-package evil-iedit-state)
+
 ;; Alt keybinding
 (when (eq system-type 'darwin)
   (setq-default mac-option-modifier 'none))
@@ -303,7 +312,7 @@ current window."
   ;; Buffers
   "b" '(:ignore t :wk "Buffers")
   "bd" '(evil-delete-buffer :which-key "Delete buffer")
-  "bb" '(switch-to-buffer :which-key "Switch to buffer")
+  "bb" '(ivy-switch-buffer :which-key "Switch to buffer")
   "qq" '(evil-quit-all :which-key "Quit")
   ;; Magit
   "g" '(:ignore t :wk "Git")
@@ -311,15 +320,23 @@ current window."
   ;; Misc
   "cl" '(evil-commentary-line :which-key "Comment line")
   "au" '(undo-tree-visualize :which-key "Undo tree")
-  "fed" '((lambda () (interactive) (find-file "~/code/arnarthor/dotfiles/emacs/init.el")) :which-key "Open emacs config")
-  "fer" '((lambda () (interactive) (load-file "~/code/arnarthor/dotfiles/emacs/init.el")) :which-key "Reload config")
+  "fed" '((lambda () (interactive) (find-file "~/.dotfiles/emacs/init.el")) :which-key "Open emacs config")
+  "fer" '((lambda () (interactive) (load-file "~/.dotfiles/emacs/init.el")) :which-key "Reload config")
   ;; Projectile
   "p" '(:keymap projectile-command-map :wk "Projectile")
+  ;; Search
+  "s" '(:ignore t :wk "Search")
+  "sa" '(:ignore t :wk "Search projectile")
+  "sap" '(counsel-ag :wk "Search in project")
+  "sas" '(swiper :wk "Swiper")
+  "se" '(evil-iedit-state/iedit-mode :wk "Edit buffer")
+  "sc" '(iedit-quit :wk "Clear search buffer")
   ;; Windows
   "w" '(:ignore t :wk "Windows")
   "wd" '(delete-window :wk "Delete current window")
   "wv" '(split-window-right :wk "Split window right")
   "wh" '(split-window-below :wk "Split window below")
+  "wS" '(window-swap-states :wk "Swap windows")
   "w=" '(maximize-window :wk "Maximize window")
   "w-" '(minimize-window :wk "Minimize window")
   "wb" '(balance-windows :wk "Balance windows")
@@ -342,16 +359,6 @@ current window."
   "eN" '(merlin-error-prev :wk "Previous error")
 )
 
-;; Javascript keybindings
-(general-define-key
- :states '(normal visual insert emacs)
- :prefix ","
- :major-modes '(js2-mode)
- :non-normal-prefix "M-,"
- "gg" '(xref-find-definitions-other-window :wk "Find definition")
- "gr" '(xref-find-references :wk "Find references")
-)
-
 ;; Docker keybindings
 (general-define-key
   :states '(normal visual insert emacs)
@@ -361,4 +368,14 @@ current window."
   "c" '(:ignore t :wk "Compile")
   "cb" '(dockerfile-build-buffer :wk "Build buffer")
   "cB" '(dockerfile-build-no-cache-buffer :wk "Build buffer without cache")
+)
+
+;; Javascript keybindings
+(general-define-key
+ :states '(normal visual insert emacs)
+ :prefix ","
+ :major-modes '(js2-mode)
+ :non-normal-prefix "M-,"
+ "gg" '(xref-find-definitions-other-window :wk "Find definition")
+ "gr" '(xref-find-references :wk "Find references")
 )
