@@ -65,7 +65,7 @@ install_extras() {
     brew install gpatch > /dev/null 2>&1
     brew install opam > /dev/null 2>&1
     brew tap railwaycat/emacsmacport > /dev/null 2>&1
-    brew install emacs-mac-spacemacs-icon > /dev/null 2>&1
+    brew install emacs-mac > /dev/null 2>&1
     brew untap railwaycat/emacsmacport > /dev/null 2>&1
     brew install kubernetes-cli > /dev/null 2>&1
     brew install helm > /dev/null 2>&1
@@ -95,12 +95,23 @@ change_shell() {
     chsh -s $(which zsh)
 }
 
+link_shell_rcs() {
+    link_file $DOTFILES_ROOT/.dotfiles/zshrc.symlink $HOME/.zshrc
+    cp $DOTFILES_ROOT/.dotfiles/config/localrc.bootstrap $HOME/.localrc
+}
+
+link_emacs() {
+    rm -rf $HOME/.emacs.d
+    mkdir $HOME/.emacs.d
+    link_file $DOTFILES_ROOT/.dotfiles/emacs/init.el $HOME/.emacs.d/init.el
+}
+
 echo "Are you sure you want to install Bragi's dotfiles? (y/n)"; read answer
 if [[ $answer != "n" ]] && [[ $answer != "N" ]] ; then
     get_brew
     get_basics
-    link_file $DOTFILES_ROOT/.dotfiles/zshrc.symlink $HOME/.zshrc
-    cp $DOTFILES_ROOT/.dotfiles/config/localrc.bootstrap $HOME/.localrc
+    link_shell_rcs
+    link_emacs
     change_shell
     success "Finished setting up Bragi's humble dotfiles. Please config .localrc and restart terminal."
 fi
