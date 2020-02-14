@@ -297,7 +297,7 @@ current window."
   ;; Buffers
   "b" '(:ignore t :wk "Buffers")
   "bd" '(evil-delete-buffer :which-key "Delete buffer")
-  "bb" '(buffer-menu :which-key "Buffer menu")
+  "bb" '(switch-to-buffer :which-key "Switch to buffer")
   "qq" '(evil-quit-all :which-key "Quit")
   ;; Magit
   "g" '(:ignore t :wk "Git")
