@@ -7,3 +7,6 @@ alias ll="ls -la"
 
 # GIT SCRIPT ALIASES
 alias git_current_branch="git-current-branch"
+
+# NVIM
+alias vim="nvim"

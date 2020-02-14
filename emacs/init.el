@@ -87,6 +87,9 @@
 (use-package all-the-icons
   :ensure t)
 
+(set-face-attribute 'default nil
+		    :family "JetBrains Mono" :height 140)
+
 ;; Ivy
 (use-package ivy
   :ensure t
@@ -208,12 +211,17 @@
   :ensure t
   :config
   (add-to-list 'auto-mode-alist '("\\.js\\'" . js2-mode))
-  (add-hook 'js2-mode-hook #'js2-imenu-extras-mode))
+  (add-hook 'js2-mode-hook #'js2-imenu-extras-mode)
+  )
+(use-package prettier-js
+  :init
+  (add-hook 'js2-mode-hook 'prettier-js-mode))
 (use-package xref-js2
   :ensure t
   :config
   (add-hook 'js2-mode-hook (lambda ()
 			     (add-hook 'xref-backend-functions #'xref-js2-xref-backend nil t))))
+  (setq-default js2-basic-offset 2)
 
 ;; undo tree
 (use-package undo-tree
@@ -267,6 +275,17 @@ current window."
          ;; `other-buffer' honors `buffer-predicate' so no need to filter
          (other-buffer current-buffer t)))))
 
+;; Git prepending
+  (defun my-extract-branch-tag (branch-name)
+    (let ((TICKET-PATTERN "\\(?:[[:alpha:]]+-\\)?\\([[:alpha:]]+-[[:digit:]]+\\)-.*"))
+      (when (string-match-p TICKET-PATTERN branch-name)
+        (s-upcase (replace-regexp-in-string TICKET-PATTERN "\\1 " branch-name)))))
+
+  (defun my-git-commit-insert-branch ()
+    (insert (my-extract-branch-tag (magit-get-current-branch))))
+
+  (add-hook 'git-commit-setup-hook 'my-git-commit-insert-branch)
+
 ;; Alt keybinding
 (when (eq system-type 'darwin)
   (setq-default mac-option-modifier 'none))
@@ -314,6 +333,9 @@ current window."
   "wd" '(delete-window :wk "Delete current window")
   "wv" '(split-window-right :wk "Split window right")
   "wh" '(split-window-below :wk "Split window below")
+  "w=" '(maximize-window :wk "Maximize window")
+  "w-" '(minimize-window :wk "Minimize window")
+  "wb" '(balance-windows :wk "Balance windows")
 ))
 
 ;; Reason keybindings
