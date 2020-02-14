@@ -23,7 +23,7 @@
 
 ;; Splash Screen
 (setq inhibit-startup-screen t)
-(setq initial-scratch-message ";; Happy Hacking")
+(setq initial-scratch-message ";; Go nuts")
 
 ;; Show matching parens
 (setq show-paren-delay 0)
@@ -77,13 +77,15 @@
 
 ;; Themes
 (use-package doom-themes
+  :ensure t
   :config
   (setq doom-themes-enable-bold t
 	doom-themes-enable-italic t)
   (load-theme 'doom-one t)
   (doom-themes-visual-bell-config)
   (doom-themes-neotree-config))
-(use-package all-the-icons)
+(use-package all-the-icons
+  :ensure t)
 
 ;; Ivy
 (use-package ivy
