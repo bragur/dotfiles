@@ -208,19 +208,22 @@
 (setq merlin-completion-with-doc t)
 
 ;; JavaScript
-(use-package js2-mode
+(use-package rjsx-mode
   :config
-  (add-to-list 'auto-mode-alist '("\\.js\\'" . js2-mode))
-  (add-hook 'js2-mode-hook #'js2-imenu-extras-mode)
+  (add-to-list 'auto-mode-alist '("\\.js\\'" . rjsx-mode))
+  ;; (add-hook 'js2-mode-hook #'js2-imenu-extras-mode)
   )
 (use-package prettier-js
   :init
-  (add-hook 'js2-mode-hook 'prettier-js-mode))
+  (add-hook 'rjsx-mode-hook 'prettier-js-mode))
 (use-package xref-js2
   :config
-  (add-hook 'js2-mode-hook (lambda ()
+  (add-hook 'rjsx-mode-hook (lambda ()
 			     (add-hook 'xref-backend-functions #'xref-js2-xref-backend nil t))))
-  (setq-default js2-basic-offset 2)
+  (setq-default rjsx-basic-offset 2)
+
+;; Json
+(use-package json-mode)
 
 ;; undo tree
 (use-package undo-tree
@@ -317,12 +320,15 @@ current window."
   "b" '(:ignore t :wk "Buffers")
   "bd" '(evil-delete-buffer :which-key "Delete buffer")
   "bb" '(ivy-switch-buffer :which-key "Switch to buffer")
-  "qq" '(evil-quit-all :which-key "Quit")
+  "q" '(:ignore t :wk "Quit")
+  "qq" '(evil-quit-all :which-key "Quit all")
   ;; Magit
-  "g" '(:ignore t :wk "Git")
-  "gs" '(magit :which-key "Git status")
+  "g" '(:ignore t :wk "Magit")
+  "gs" '(magit :which-key "Magit status")
   ;; Misc
+  "c" '(:ignore t :wk "Manipulate")
   "cl" '(evil-commentary-line :which-key "Comment line")
+  "a" '(:ignore t :wk "Other stuff")
   "au" '(undo-tree-visualize :which-key "Undo tree")
   "fed" '((lambda () (interactive) (find-file "~/.dotfiles/emacs/init.el")) :which-key "Open emacs config")
   "fer" '((lambda () (interactive) (load-file "~/.dotfiles/emacs/init.el")) :which-key "Reload config")
@@ -378,7 +384,7 @@ current window."
 (general-define-key
  :states '(normal visual insert emacs)
  :prefix ","
- :major-modes '(js2-mode)
+ :major-modes '(rjsx-mode)
  :non-normal-prefix "M-,"
  "gg" '(xref-find-definitions-other-window :wk "Find definition")
  "gr" '(xref-find-references :wk "Find references")
