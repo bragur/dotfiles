@@ -84,6 +84,10 @@
 (set-face-attribute 'default nil
 		    :family "JetBrains Mono" :height 140)
 
+(use-package rainbow-mode
+  :config
+  (add-hook 'prog-mode-hook #'rainbow-mode))
+
 ;; Ivy
 (use-package flx)
 (use-package counsel)
