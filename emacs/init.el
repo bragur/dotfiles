@@ -59,46 +59,38 @@
 
 ;; Vim mode
 (use-package evil
-  :ensure t
   :config
   (evil-mode 1))
 (use-package evil-commentary
-  :ensure t
   :config
   (evil-commentary-mode))
 (use-package evil-surround
-  :ensure t
   :config
   (global-evil-surround-mode 1))
 (use-package evil-leader
-  :ensure t
   :config
   (global-evil-leader-mode))
 
 ;; Themes
 (use-package doom-themes
-  :ensure t
   :config
   (setq doom-themes-enable-bold t
 	doom-themes-enable-italic t)
   (load-theme 'doom-one t)
   (doom-themes-visual-bell-config)
   (doom-themes-neotree-config))
-(use-package all-the-icons
-  :ensure t)
+(use-package all-the-icons)
 
 (set-face-attribute 'default nil
 		    :family "JetBrains Mono" :height 140)
 
 ;; Ivy
 (use-package ivy
-  :ensure t
   :config
   (ivy-mode 1))
 
 ;; Company
 (use-package company
-  :ensure t
   :config
   (progn
     (add-hook 'after-init-hook 'global-company-mode)))
@@ -114,7 +106,6 @@
 
 ;; Which key
 (use-package which-key
-  :ensure t
   :init
   (setq which-key-separator " ")
   (setq which-key-prefix-prefix "+")
@@ -122,24 +113,22 @@
   (which-key-mode))
 
 ;; vterm
-(use-package vterm :ensure t)
+(use-package vterm)
 
 ;; magit
-(use-package magit :ensure t)
-(use-package evil-magit :ensure t)
+(use-package magit)
+(use-package evil-magit)
 
 ;; Projectile
 (use-package projectile
-  :ensure t
   :config
   (projectile-mode 1))
 (use-package counsel-projectile
-  :ensure t
   :config
   (counsel-projectile-mode 1))
 
 ;; NeoTree
-(use-package neotree :ensure t)
+(use-package neotree)
 (setq neo-smart-open t)
 (setq projectile-switch-project-action 'neotree-projectile-action)
 
@@ -191,16 +180,15 @@
 (when refmt-bin
   (setq refmt-command refmt-bin)))
 
-(use-package merlin :ensure t)
+(use-package merlin)
 
 (use-package reason-mode
-  :ensure t
   :config
   (add-hook 'reason-mode-hook (lambda ()
                               (add-hook 'before-save-hook 'refmt-before-save)
                               (merlin-mode))))
 
-(use-package utop :ensure t)
+(use-package utop)
 
 (setq utop-command "opam config exec -- rtop -emacs")
 (add-hook 'reason-mode-hook #'utop-minor-mode) 
@@ -208,7 +196,6 @@
 
 ;; JavaScript
 (use-package js2-mode
-  :ensure t
   :config
   (add-to-list 'auto-mode-alist '("\\.js\\'" . js2-mode))
   (add-hook 'js2-mode-hook #'js2-imenu-extras-mode)
@@ -217,7 +204,6 @@
   :init
   (add-hook 'js2-mode-hook 'prettier-js-mode))
 (use-package xref-js2
-  :ensure t
   :config
   (add-hook 'js2-mode-hook (lambda ()
 			     (add-hook 'xref-backend-functions #'xref-js2-xref-backend nil t))))
@@ -225,18 +211,16 @@
 
 ;; undo tree
 (use-package undo-tree
-  :ensure t
   :config
   (global-undo-tree-mode 1))
 
 ;; dockerfile
 (use-package dockerfile-mode
-  :ensure t
   :config
   (add-to-list 'auto-mode-alist '("Dockerfile\\'" . dockerfile-mode)))
 
 ;; Rust and cargo
-(use-package rust-mode :ensure t)
+(use-package rust-mode)
 
 (use-package lsp-mode
   :init (setq lsp-keymap-prefix "C-l")
@@ -246,13 +230,11 @@
   :commands lsp)
 
 (use-package cargo
-  :ensure t
   :config
   (add-hook 'rust-mode-hook 'cargo-minor-mode))
 
 ;; window management
 (use-package winum
-  :ensure t
   :config
   (winum-mode 1))
 
@@ -292,7 +274,6 @@ current window."
 
 ;; Custom keybinding
 (use-package general
-  :ensure t
   :config (general-define-key
   :states '(normal visual insert emacs)
   :prefix "SPC"
