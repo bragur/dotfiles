@@ -371,6 +371,15 @@ current window."
   "wb" '(balance-windows :wk "Balance windows")
 ))
 
+;; Org keybindings
+(general-define-key
+ :states '(normal visual insert emacs)
+ :prefix ","
+ :major-modes '(org-mode)
+ :non-normal-prefix "C-c"
+ "," '(org-ctrl-c-ctrl-c :wk "Ctrl-c-Ctrl-c")
+ )
+
 ;; Reason keybindings
 (general-define-key
   :states '(normal visual insert emacs)
