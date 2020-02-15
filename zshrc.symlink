@@ -54,8 +54,6 @@ antibody bundle buonomo/yarn-completion
 antibody bundle unixorn/git-extra-commands
 antibody bundle mdumitru/git-aliases
 antibody bundle marzocchi/zsh-notify
-export NVM_LAZY_LOAD=true
-antibody bundle lukechilds/zsh-nvm
 
 # KEY BINDINGS
 bindkey '^[[A' history-substring-search-up
@@ -96,7 +94,9 @@ antibody bundle denysdovhan/spaceship-prompt
 
 # COREUTILS: For easy directories grouping
 PATH="/usr/local/opt/coreutils/libexec/gnubin:$PATH"
-alias ls='ls --color -h --group-directories-first'
+
+# INITIALISE FNM
+eval "`fnm env --multi`"
 
 # INITIALISE OPAM
 eval $(opam env)

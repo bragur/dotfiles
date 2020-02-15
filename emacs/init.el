@@ -99,6 +99,14 @@
   :config
   (add-hook 'prog-mode-hook #'rainbow-mode))
 
+;; Org
+(use-package org-bullets
+  :config
+  (add-hook 'org-mode-hook (lambda () (org-bullets-mode 1))))
+(use-package evil-org
+  :config
+  (add-hook 'org-mode-hook (lambda () (evil-org-mode))))
+
 ;; Ivy
 (use-package flx)
 (use-package counsel)
@@ -302,8 +310,8 @@ current window."
 (use-package evil-iedit-state)
 
 ;; Alt keybinding
-(when (eq system-type 'darwin)
-  (setq-default mac-option-modifier 'none))
+;; (when (eq system-type 'darwin)
+;;   (setq-default mac-option-modifier 'none))
 
 ;; Custom keybinding
 (use-package general

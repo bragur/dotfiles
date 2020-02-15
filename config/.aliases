@@ -3,6 +3,7 @@ alias rni="react-native run-ios"
 alias rna="react-native run-android"
 
 # LIST ALIAS
+alias ls="ls --color -h --group-directories-first"
 alias ll="ls -la"
 
 # GIT SCRIPT ALIASES

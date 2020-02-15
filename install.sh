@@ -58,6 +58,7 @@ install_antibody() {
 }
 
 install_extras() {
+    brew install Schniz/tap/fnm > /dev/null 2>&1
     brew install autojump > /dev/null 2>&1
     brew install tree > /dev/null 2>&1
     brew install terminal-notifier > /dev/null 2>&1
