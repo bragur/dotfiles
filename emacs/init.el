@@ -81,6 +81,17 @@
   (doom-themes-neotree-config))
 (use-package all-the-icons)
 
+;; Doom modeline
+(use-package doom-modeline
+  :hook (after-init . doom-modeline-mode)
+  :config
+    (setq doom-modeline-icon (display-graphic-p)))
+
+(use-package mode-icons
+  :init
+  (mode-icons-mode))
+
+
 (set-face-attribute 'default nil
 		    :family "JetBrains Mono" :height 140)
 
