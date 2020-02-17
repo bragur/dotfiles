@@ -111,14 +111,6 @@
   :config
   (add-hook 'prog-mode-hook #'rainbow-mode))
 
-;; Org
-(use-package org-bullets
-  :config
-  (add-hook 'org-mode-hook (lambda () (org-bullets-mode 1))))
-(use-package evil-org
-  :config
-  (add-hook 'org-mode-hook (lambda () (evil-org-mode))))
-
 ;; Ivy
 (use-package flx)
 (use-package counsel)
@@ -344,9 +336,24 @@ current window."
 (use-package iedit)
 (use-package evil-iedit-state)
 
-;; Alt keybinding
-;; (when (eq system-type 'darwin)
-;;   (setq-default mac-option-modifier 'none))
+;; Org
+(define-key global-map "\C-cl" 'org-store-link)
+(define-key global-map "\C-ca" 'org-agenda)
+(setq org-log-done t)
+(use-package org-bullets
+  :config
+  (add-hook 'org-mode-hook (lambda () (org-bullets-mode 1))))
+(use-package evil-org
+  :after org
+  :config
+  (add-hook 'org-mode-hook evil-org-mode)
+  (add-hook 'evil-org-mode-hook (lambda ()
+				  (evil-org-set-key-theme)))
+  (require 'evil-org-agenda)
+  (evil-org-agenda-set-keys))
+
+(use-package htmlize)
+
 
 ;; Custom keybinding
 (use-package general
