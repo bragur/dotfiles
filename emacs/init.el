@@ -274,6 +274,11 @@
   :config
   (add-hook 'rust-mode-hook 'cargo-minor-mode))
 
+ ;; yaml
+ (use-package yaml-mode
+   :config
+   (add-to-list 'auto-mode-alist '("\\.yml\\'" . yaml-mode)))
+
 ;; window management
 (use-package winum
   :config
