@@ -71,12 +71,18 @@
   :config
   (global-evil-leader-mode))
 
+(defun scroll-to-center-advice (&rest args)
+  (evil-scroll-line-to-center (line-number-at-pos)))
+
+;; all functions that should center after called
+(advice-add #'evil-goto-line :after #'scroll-to-center-advice)
+
 ;; Themes
 (use-package doom-themes
   :config
   (setq doom-themes-enable-bold t
 	doom-themes-enable-italic t)
-  (load-theme 'doom-one t)
+  (load-theme 'doom-palenight t)
   (doom-themes-visual-bell-config)
   (doom-themes-neotree-config))
 (use-package all-the-icons)
@@ -275,6 +281,29 @@
   :config
   (winum-mode 1))
 
+(defun split-2-windows-horizontally-evenly ()
+  (interactive)
+  (command-execute 'delete-other-windows)
+  (command-execute 'split-window-horizontally)
+  (command-execute 'balance-windows))
+
+(defun split-3-windows-horizontally-evenly ()
+  (interactive)
+  (command-execute 'delete-other-windows)
+  (command-execute 'split-window-horizontally)
+  (command-execute 'split-window-horizontally)
+  (command-execute 'balance-windows))
+
+(defun split-4-windows-evenly ()
+  (interactive)
+  (command-execute 'delete-other-windows)
+  (command-execute 'split-window-horizontally)
+  (command-execute 'winum-select-window-1)
+  (command-execute 'split-window-vertically)
+  (command-execute 'winum-select-window-3)
+  (command-execute 'split-window-vertically)
+  (command-execute 'balance-windows))
+
 ;; Taken from spacemacs code
 (defun alternate-buffer (&optional window)
   "Switch back and forth between current and last buffer in the
@@ -337,7 +366,7 @@ current window."
   "ff" '(find-file :which-key "Find file")
   ;; Buffers
   "b" '(:ignore t :wk "Buffers")
-  "bd" '(evil-delete-buffer :which-key "Delete buffer")
+  "bd" '(kill-this-buffer :which-key "Delete buffer")
   "bb" '(ivy-switch-buffer :which-key "Switch to buffer")
   "q" '(:ignore t :wk "Quit")
   "qq" '(evil-quit-all :which-key "Quit all")
@@ -362,6 +391,10 @@ current window."
   "sc" '(iedit-quit :wk "Clear search buffer")
   ;; Windows
   "w" '(:ignore t :wk "Windows")
+  "w1" '(delete-other-windows :wk "1 window")
+  "w2" '(split-2-windows-horizontally-evenly :wk "2 windows")
+  "w3" '(split-3-windows-horizontally-evenly :wk "3 windows")
+  "w4" '(split-4-windows-evenly :wk "3 windows")
   "wd" '(delete-window :wk "Delete current window")
   "wv" '(split-window-right :wk "Split window right")
   "wh" '(split-window-below :wk "Split window below")
