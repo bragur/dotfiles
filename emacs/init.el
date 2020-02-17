@@ -132,6 +132,14 @@
 (setq company-dabbrev-downcase 0)
 (setq company-idle-delay 0)
 
+(use-package company-tern)
+(add-to-list 'company-backends 'company-tern)
+(add-hook 'rjsx-mode-hook (lambda ()
+			   (tern-mode)
+			   (company-mode)))
+
+;; Disable completion keybindings, as we use xref-js2 instead
+(define-key tern-mode-keymap (kbd "M-.") nil)
 (define-key company-active-map (kbd "TAB") 'company-complete-common-or-cycle)
 (define-key company-active-map (kbd "<tab>") 'company-complete-common-or-cycle)
 (define-key company-active-map (kbd "S-TAB") 'company-select-previous)
@@ -275,9 +283,9 @@
   (add-hook 'rust-mode-hook 'cargo-minor-mode))
 
  ;; yaml
- (use-package yaml-mode
-   :config
-   (add-to-list 'auto-mode-alist '("\\.yml\\'" . yaml-mode)))
+(use-package yaml-mode
+  :config
+  (add-to-list 'auto-mode-alist '("\\.yml\\'" . yaml-mode)))
 
 ;; window management
 (use-package winum
@@ -381,6 +389,7 @@ current window."
   ;; Files
   "f" '(:ignore t :wk "Files")
   "fs" '(save-buffer :which-key "Save")
+  "fS" '(save-some-buffers :which-key "Save all buffers")
   "ff" '(find-file :which-key "Find file")
   ;; Buffers
   "b" '(:ignore t :wk "Buffers")
@@ -404,7 +413,7 @@ current window."
   "s" '(:ignore t :wk "Search")
   "sa" '(:ignore t :wk "Search projectile")
   "sap" '(counsel-ag :wk "Search in project")
-  "sas" '(swiper :wk "Swiper")
+  "sf" '(swiper :wk "Swiper")
   "se" '(evil-iedit-state/iedit-mode :wk "Edit buffer")
   "sc" '(iedit-quit :wk "Clear search buffer")
   ;; Windows
@@ -426,7 +435,7 @@ current window."
 (general-define-key
  :states '(normal visual insert emacs)
  :prefix ","
- :major-modes '(org-mode)
+ :major-modes '(org-mode evil-org-mode)
  :non-normal-prefix "C-c"
  "," '(org-ctrl-c-ctrl-c :wk "Ctrl-c-Ctrl-c")
  )
@@ -457,6 +466,7 @@ current window."
   "c" '(:ignore t :wk "Compile")
   "cb" '(dockerfile-build-buffer :wk "Build buffer")
   "cB" '(dockerfile-build-no-cache-buffer :wk "Build buffer without cache")
+  "ls" '(docker-images :wk "List images")
 )
 
 ;; Javascript keybindings
