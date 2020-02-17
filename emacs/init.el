@@ -24,6 +24,8 @@
 (setq scroll-conservatively 10000)
 (setq scroll-preserve-screen-position 1)
 (electric-pair-mode 1)
+(defalias 'yes-or-no-p 'y-or-n-p)
+(add-hook 'before-save-hook 'delete-trailing-whitespace)
 
 ;; Splash Screen
 (setq inhibit-startup-screen t)
