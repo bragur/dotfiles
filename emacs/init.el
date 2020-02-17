@@ -100,16 +100,13 @@
     (setq doom-modeline-icon (display-graphic-p)))
 
 (use-package mode-icons
+  :after doom-modeline
   :init
   (mode-icons-mode))
 
 
 (set-face-attribute 'default nil
 		    :family "JetBrains Mono" :height 140)
-
-(use-package rainbow-mode
-  :config
-  (add-hook 'prog-mode-hook #'rainbow-mode))
 
 ;; Ivy
 (use-package flx)
@@ -235,14 +232,13 @@
 (use-package utop)
 
 (setq utop-command "opam config exec -- rtop -emacs")
-(add-hook 'reason-mode-hook #'utop-minor-mode) 
+(add-hook 'reason-mode-hook #'utop-minor-mode)
 (setq merlin-completion-with-doc t)
 
 ;; JavaScript
 (use-package rjsx-mode
   :config
   (add-to-list 'auto-mode-alist '("\\.js\\'" . rjsx-mode))
-  ;; (add-hook 'js2-mode-hook #'js2-imenu-extras-mode)
   )
 (use-package prettier-js
   :init
@@ -252,9 +248,6 @@
   (add-hook 'rjsx-mode-hook (lambda ()
 			     (add-hook 'xref-backend-functions #'xref-js2-xref-backend nil t))))
   (setq-default rjsx-basic-offset 2)
-
-;; Json
-(use-package json-mode)
 
 ;; undo tree
 (use-package undo-tree
@@ -268,19 +261,12 @@
 
 (use-package docker)
 
-;; Rust and cargo
-(use-package rust-mode)
-
 (use-package lsp-mode
   :init (setq lsp-keymap-prefix "C-l")
   :hook (
          (rust-mode . lsp)
          (lsp-mode . lsp-enable-which-key-integration))
   :commands lsp)
-
-(use-package cargo
-  :config
-  (add-hook 'rust-mode-hook 'cargo-minor-mode))
 
  ;; yaml
 (use-package yaml-mode
