@@ -1,3 +1,4 @@
+;; Straight.el
 (defvar bootstrap-version)
 (let ((bootstrap-file
        (expand-file-name "straight/repos/straight.el/bootstrap.el" user-emacs-directory))
@@ -12,6 +13,9 @@
   (load bootstrap-file nil 'nomessage))
 
 (straight-use-package 'use-package)
+
+;;; Config
+
 (setq straight-use-package-by-default 1)
 (setq backup-directory-alist '(("" . "~/.emacs.d/backup")))
 (setq auto-save-default nil)
