@@ -58,6 +58,10 @@ y() {
   pushd ${MONOREPO}/src/yarn
 }
 
+s() {
+  pushd ${MONOREPO}/src/solum
+}
+
 # PANTS SHORTCUT COMMANDS
 
 pants_test_changeset() {
@@ -112,6 +116,12 @@ new_auction() {
       AUCTIONSCRIPT="create-randomized-live-auction -ba=AbsenteeBids"
       shift # past argument
       ;;
+      -s|--sessions)
+      MULTIPLESESSIONS=true
+      AUCTIONTYPE=multiple_sessions
+      AUCTIONSCRIPT="create-live-auction --sessions ${2}"
+      shift # past argument
+      ;;
       *)    # unknown option
       POSITIONAL+=("$1") # save it in an array for later
       shift # past argument
@@ -131,12 +141,35 @@ new_auction() {
      NUMBEROFLOTS=3
   fi
 
+  if [[ -z "$MULTIPLESESSIONS" ]]
+  then
+     LOTSCONFIG="-l ${NUMBEROFLOTS}"
+  else
+     LOTSCONFIG=""
+  fi
+
   echo "$(tput setaf 6)$(tput bold)Creating ${AUCTIONTYPE} auction with ${NUMBEROFLOTS} lots.\n$(tput sgr 0)"
 
   y
   live_auth0_staging
-  ./infrastructure/live-auction-cli/y $AUCTIONSCRIPT -l $NUMBEROFLOTS
+  ./infrastructure/live-auction-cli/y $AUCTIONSCRIPT $LOTSCONFIG
   popd
 
-  unset NUMBEROFLOTS AUCTIONTYPE AUCTIONSCRIPT
+  unset NUMBEROFLOTS NUMBEROFSESSIONS AUCTIONTYPE AUCTIONSCRIPT LOTSCONFIG
+}
+
+clear_branches() {
+  kubectl get deployments --template '{{range .items}}{{.metadata.name}}{{"\n"}}{{end}}' -lbranchName | while read a;
+  do
+  kubectl delete deployment $a
+  kubectl delete service $a
+  done
+}
+
+test_clear_branches() {
+  kubectl get deployments --template '{{range .items}}{{.metadata.name}}{{"\n"}}{{end}}' -lbranchName | while read a;
+  do
+  echo delete deployment $a
+  echo delete service $a
+  done
 }

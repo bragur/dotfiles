@@ -1,15 +1,8 @@
 cd "$(dirname "$0")/.."
 DOTFILES_ROOT=$(pwd -P)
 
-success() {
-	# shellcheck disable=SC2059
-	printf "\r\033[2K  [\033[00;32mOK\033[0m] $1\n"
-}
-
-info() {
-	# shellcheck disable=SC2059
-	printf "\r  [\033[00;34m..\033[0m] $1\n"
-}
+. ./print.sh --source-only
+. ./install_nvim.sh --source-only
 
 link_file() {
 	if [ -e "$2" ]; then
@@ -73,7 +66,6 @@ install_extras() {
     brew install kops > /dev/null 2>&1
     brew install neovim > /dev/null 2>&1
     brew install the_silver_searcher > /dev/null 2>&1
-    git clone https://github.com/syl20bnr/spacemacs ~/.emacs.d
     opam init
     success "Finished setting up extras"
 }
@@ -107,12 +99,13 @@ link_emacs() {
     link_file $DOTFILES_ROOT/.dotfiles/emacs/init.el $HOME/.emacs.d/init.el
 }
 
-echo "Are you sure you want to install Bragi's dotfiles? (y/n)"; read answer
+echo "Are you sure you want to install Bragi's very opinionated dotfiles? (y/n)"; read answer
 if [[ $answer != "n" ]] && [[ $answer != "N" ]] ; then
     get_brew
     get_basics
     link_shell_rcs
     link_emacs
+    link_neovim
     change_shell
     success "Finished setting up Bragi's humble dotfiles. Please config .localrc and restart terminal."
 fi

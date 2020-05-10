@@ -53,7 +53,7 @@ antibody bundle zsh-users/zsh-completions
 antibody bundle buonomo/yarn-completion
 antibody bundle unixorn/git-extra-commands
 antibody bundle mdumitru/git-aliases
-antibody bundle marzocchi/zsh-notify
+# antibody bundle marzocchi/zsh-notify
 
 # KEY BINDINGS
 bindkey '^[[A' history-substring-search-up

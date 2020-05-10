@@ -1,0 +1,14 @@
+{
+  "eslint.packageManager": "yarn",
+  "prettier.eslintIntegration": true,
+  "suggest.autoTrigger": "trigger",
+  "suggest.noselect": false,
+  "pairs.enableCharacters": ["(", "[", "{", "<", "'", "\""],
+  "languageserver": {
+    "ocaml": {
+      "command": "ocaml-language-server",
+      "args": ["--stdio"],
+      "filetypes": ["ocaml", "reason"]
+    }
+  }
+}

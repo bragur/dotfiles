@@ -27,9 +27,8 @@
 (defalias 'yes-or-no-p 'y-or-n-p)
 (add-hook 'before-save-hook 'delete-trailing-whitespace)
 
-;; Splash Screen
+;; Inibit Startup screen
 (setq inhibit-startup-screen t)
-(setq initial-scratch-message ";; Go nuts")
 
 ;; Show matching parens
 (setq show-paren-delay 0)
@@ -46,7 +45,7 @@
 ;; PATH
 (let ((path (shell-command-to-string ". ~/.zshrc; echo -n $PATH")))
   (setenv "PATH" path)
-  (setq exec-path 
+  (setq exec-path
         (append
          (split-string-and-unquote path ":")
          exec-path)))
@@ -60,7 +59,7 @@
 ;; Fancy titlebar for MacOS
 (add-to-list 'default-frame-alist '(ns-transparent-titlebar . t))
 (add-to-list 'default-frame-alist '(ns-appearance . dark))
-(setq ns-use-proxy-icon  nil)
+(setq ns-use-proxy-icon nil)
 (setq frame-title-format nil)
 
 ;; Vim mode
@@ -95,7 +94,7 @@
 
 ;; Doom modeline
 (use-package doom-modeline
-  :hook (after-init . doom-modeline-mode)
+  :init (doom-modeline-mode 1)
   :config
     (setq doom-modeline-icon (display-graphic-p)))
 
@@ -125,6 +124,9 @@
   :config
   (progn
     (add-hook 'after-init-hook 'global-company-mode)))
+(use-package company-lsp
+  :config
+  (push 'company-lsp company-backends))
 
 (setq company-dabbrev-downcase 0)
 (setq company-idle-delay 0)
@@ -155,7 +157,9 @@
 (use-package vterm)
 
 ;; magit
-(use-package magit)
+(use-package magit
+  :config
+  (setq magit-git-executable "/usr/local/bin/git"))
 (use-package evil-magit)
 
 ;; Projectile
@@ -193,6 +197,12 @@
 (evil-define-key 'normal neotree-mode-map (kbd "g") 'neotree-refresh)
 (evil-define-key 'normal neotree-mode-map (kbd "H") 'neotree-hidden-file-toggle)
 
+;; Lua
+(use-package lua-mode
+  :config
+  (autoload 'lua-mode "lua-mode" "Lua Editing mode." t)
+  (add-to-list 'auto-mode-alist '("\\.lua$" . lua-mode))
+  (add-to-list 'interpreter-mode-alist '("lua" . lua-mode)))
 
 ;; Reason setup
 (defun shell-cmd (cmd)
@@ -242,12 +252,19 @@
   )
 (use-package prettier-js
   :init
-  (add-hook 'rjsx-mode-hook 'prettier-js-mode))
+  :hook (('rjsx-mode-hook 'prettier-js-mode)
+	 ('typescript-mode-hook 'prettier-js-mode)))
 (use-package xref-js2
   :config
   (add-hook 'rjsx-mode-hook (lambda ()
 			     (add-hook 'xref-backend-functions #'xref-js2-xref-backend nil t))))
   (setq-default rjsx-basic-offset 2)
+
+;; Typescript
+(use-package flycheck
+  :init (global-flycheck-mode))
+
+(use-package typescript-mode)
 
 ;; undo tree
 (use-package undo-tree
@@ -262,16 +279,29 @@
 (use-package docker)
 
 (use-package lsp-mode
-  :init (setq lsp-keymap-prefix "C-l")
-  :hook (
-         (rust-mode . lsp)
-         (lsp-mode . lsp-enable-which-key-integration))
-  :commands lsp)
+  :commands lsp
+  :init
+  (setq lsp-keymap-prefix "C-l")
+  :hook
+  (lsp-mode . lsp-enable-which-key-integration)
+)
 
  ;; yaml
 (use-package yaml-mode
   :config
   (add-to-list 'auto-mode-alist '("\\.yml\\'" . yaml-mode)))
+
+;; Dashboard
+(use-package dashboard
+  :custom
+  (dashboard-set-footer nil)
+  (dashboard-startup-banner 'logo)
+  :config
+  (dashboard-setup-startup-hook))
+(setq initial-buffer-choice (lambda () (get-buffer "*dashboard*")))
+(setq dashboard-items '((projects . 5)
+			(recents  . 5)
+                        (agenda . 5)))
 
 ;; window management
 (use-package winum
@@ -340,8 +370,8 @@ current window."
 (define-key global-map "\C-ca" 'org-agenda)
 (setq org-log-done t)
 (use-package org-bullets
-  :config
-  (add-hook 'org-mode-hook (lambda () (org-bullets-mode 1))))
+  :hook
+  (org-mode . org-bullets-mode))
 (use-package evil-org
   :after org
   :config
@@ -456,11 +486,11 @@ current window."
 )
 
 ;; Javascript keybindings
-(general-define-key
- :states '(normal visual insert emacs)
- :prefix ","
- :major-modes '(rjsx-mode)
- :non-normal-prefix "M-,"
- "gg" '(xref-find-definitions-other-window :wk "Find definition")
- "gr" '(xref-find-references :wk "Find references")
-)
+;; (general-define-key
+;;  :states '(normal visual insert emacs)
+;;  :prefix ","
+;;  :major-modes '(rjsx-mode)
+;;  :non-normal-prefix "M-,"
+;;  "gg" '(xref-find-definitions-other-window :wk "Find definition")
+;;  "gr" '(xref-find-references :wk "Find references")
+;; )

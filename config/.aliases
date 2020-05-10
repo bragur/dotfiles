@@ -1,6 +1,6 @@
 # REACT NATIVE ALIASES
-alias rni="react-native run-ios"
-alias rna="react-native run-android"
+alias rni="npx react-native run-ios"
+alias rna="npx react-native run-android"
 
 # LIST ALIAS
 alias ls="ls --color -h --group-directories-first"
