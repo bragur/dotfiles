@@ -35,7 +35,7 @@ set wrap
 
 set termguicolors
 let ayucolor="mirage"
-colorscheme night-owl
+colorscheme ayu
 
 autocmd VimResized * wincmd =
 
