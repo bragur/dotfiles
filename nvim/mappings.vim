@@ -39,9 +39,6 @@ function! GoToTestFile()
   execute ":edit " . file."_test.re"
 endfunction
 
-" Terminal Use Escape to exit
-:tnoremap <Esc> <C-\><C-n>:q!<cr>
-
 " Buffer management
 nnoremap <leader>bd :BD<cr>
 nnoremap <leader>bf :bfirst<cr>
@@ -74,6 +71,10 @@ nnoremap <leader>wd <C-w>c<cr>
 nnoremap <leader>wo <C-w>o<cr>
 nnoremap <leader>wn :new<cr>
 nnoremap <leader>we <C-w>=<cr>
+nnoremap <leader>wtt :tabnew<cr>
+nnoremap <leader>wtc :tabclose<cr>
+nnoremap <leader>wtn :tabnext<cr>
+nnoremap <leader>wtp :tabprevious<cr>
 
 let g:which_key_map.w = {
   \ 'name' : 'Window' ,
@@ -83,6 +84,13 @@ let g:which_key_map.w = {
   \ 'o' : 'delete-others' ,
   \ 'n' : 'new-empty' ,
   \ 'e' : 'equal-windows' ,
+  \ 't' : {
+      \ 'name' : 'Tabs' ,
+      \ 't' : 'new-tab' ,
+      \ 'n' : 'next-tab' ,
+      \ 'p' : 'previous-tab' ,
+      \ 'c' : 'close-tab' ,
+      \}
   \}
 
 " File
@@ -112,7 +120,7 @@ let g:which_key_map.q = {
   \}
 
 " Project
-nnoremap <leader>pf :Files<cr>
+nnoremap <leader>pf :FloatermNew fzf<cr>
 
 let g:which_key_map.p = {
   \ 'name' : 'Project' ,
@@ -150,16 +158,16 @@ let g:which_key_map.s = {
       \ 'n' : 'reset-search' ,
       \}
 
-" Tabs
-nnoremap <leader>tt :tabnew<cr>
-nnoremap <leader>tc :tabclose<cr>
-nnoremap <leader>tn :tabnext<cr>
-nnoremap <leader>tp :tabprevious<cr>
+" Terminal
+nnoremap <leader>tt :FloatermNew --wintype=floating<cr>
+nnoremap <leader>tq :FloatermKill<cr>
+nnoremap <leader>ts :FloatermShow<cr>
+tnoremap <localleader>tq <C-\><C-n> \|:FloatermKill<cr>
+tnoremap <localleader>th <C-\><C-n> \|:FloatermHide<cr>
+
 
 let g:which_key_map.t = {
-      \ 'name' : 'Tabs' ,
-      \ 't' : 'new-tab' ,
-      \ 'n' : 'next-tab' ,
-      \ 'p' : 'previous-tab' ,
-      \ 'c' : 'close-tab' ,
+      \ 'name' : 'Terminal' ,
+      \ 't' : 'new-float-term' ,
+      \ 'q' : 'kill-float-term' ,
       \}

@@ -3,6 +3,7 @@ let g:coc_global_extensions = [
   \ 'coc-pairs',
   \ 'coc-eslint', 
   \ 'coc-reason', 
+  \ 'coc-tsserver' ,
   \ ]
 
 nmap <localleader>rr :CocRestart<cr>
