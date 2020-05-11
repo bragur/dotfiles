@@ -80,10 +80,6 @@ let g:neoterm_default_mod='belowright'
 let g:neoterm_autoscroll=1
 let g:neoterm_autoinsert=1
 
-"" Configure Indentline
-let g:indentLine_setConceal = 0
-let g:indentLine_concealcursor = ""
-
 "" Configure NERDTree
 let g:NERDTreeQuitOnOpen = 1
 let NERDTreeShowHidden=1
