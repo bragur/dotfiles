@@ -75,6 +75,10 @@ nnoremap <leader>wtt :tabnew<cr>
 nnoremap <leader>wtc :tabclose<cr>
 nnoremap <leader>wtn :tabnext<cr>
 nnoremap <leader>wtp :tabprevious<cr>
+nnoremap <leader>w1 <C-w>o<cr>
+nnoremap <leader>w2 <C-w>o \|:vsp \|:1wincmd w<cr>
+nnoremap <leader>w3 <C-w>o \|:vsp \|:vsp \|:1wincmd w<cr>
+nnoremap <leader>w4 <C-w>o \|:vsp \|:sp \|:1wincmd w \|:sp \|:1wincmd w<cr>
 
 let g:which_key_map.w = {
   \ 'name' : 'Window' ,
@@ -84,6 +88,10 @@ let g:which_key_map.w = {
   \ 'o' : 'delete-others' ,
   \ 'n' : 'new-empty' ,
   \ 'e' : 'equal-windows' ,
+  \ '1' : 'one-window-layout' ,
+  \ '2' : 'two-window-layout' ,
+  \ '3' : 'three-window-layout' ,
+  \ '4' : 'four-window-layout' ,
   \ 't' : {
       \ 'name' : 'Tabs' ,
       \ 't' : 'new-tab' ,
