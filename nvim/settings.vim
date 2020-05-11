@@ -37,6 +37,7 @@ set termguicolors
 let ayucolor="mirage"
 colorscheme ayu
 
+"" Equilize windows on resize
 autocmd VimResized * wincmd =
 
 set nocompatible
@@ -79,7 +80,20 @@ let g:neoterm_default_mod='belowright'
 let g:neoterm_autoscroll=1
 let g:neoterm_autoinsert=1
 
+"" Configure Indentline
 let g:indentLine_setConceal = 0
 let g:indentLine_concealcursor = ""
 
+"" Configure NERDTree
 let g:NERDTreeQuitOnOpen = 1
+let NERDTreeShowHidden=1
+
+"" Configure Airline
+let g:airline#extensions#tabline#enabled = 1
+let g:airline_theme='deus'
+let g:airline#extensions#tabline#enabled = 1
+let g:airline#extensions#tabline#buffer_nr_show = 1
+let g:airline#extensions#tabline#formatter = 'default'
+let g:airline_powerline_fonts = 0
+let g:airline_left_sep = ''
+let g:airline_right_sep = ''

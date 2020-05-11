@@ -126,3 +126,5 @@ export PATH=node_modules/.bin:$PATH
 [ -f ~/.dotfiles/config/.commandsrc ] && . ~/.dotfiles/config/.commandsrc
 [ -f ~/.dotfiles/config/.aliases ] && . ~/.dotfiles/config/.aliases
 [ -f ~/.dotfiles/config/.sothebysrc ] && . ~/.dotfiles/config/.sothebysrc
+
+[ -f ~/.fzf.zsh ] && source ~/.fzf.zsh

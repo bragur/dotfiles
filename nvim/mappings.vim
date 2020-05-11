@@ -16,17 +16,9 @@ let g:which_key_map_local = {}
 " Root
 nnoremap <leader><Tab> :NERDTreeToggle<cr>
 
-" Remap keys for gotos
-nmap <localleader>gg <Plug>(coc-definition)
-nmap <localleader>gt <Plug>(coc-type-definition)
-nmap <localleader>gn <Plug>(coc-rename)
-nmap <localleader>gf <Plug>(coc-fix-current)
-nmap <localleader>gi <Plug>(coc-implementation)
-nmap <localleader>rr :CocRestart<cr>
-
 " Remap for compiler
-nmap <localleader>cb :T yarn build<cr>
-nmap <localleader>cc :T yarn build-clean<cr>
+nmap <localleader>cb :FloatermNew --height=0.3 --width=0.3 --wintype=floating --name=build --position=topright --autoclose=1 yarn build<cr>
+nmap <localleader>cc :FloatermNew --height=0.3 --width=0.3 --wintype=floating --name=build-clean --position=topright --autoclose=1 yarn build-clean<cr>
 
 " Remap for testing
 nmap <localleader>tt :T yarn test<cr>
@@ -95,12 +87,15 @@ let g:which_key_map.w = {
 
 " File
 nnoremap <leader>fs :w<cr>
+nnoremap <leader>fn :NERDTreeFind<cr>
 nnoremap <leader>fed :vsplit $MYVIMRC<cr>
 nnoremap <leader>fer :source $MYVIMRC<cr>
 nnoremap <leader>feR :source $MYVIMRC \| :PlugInstall<cr>
 
 let g:which_key_map.f = {
   \ 'name' : 'File' ,
+  \ 's' : 'save-file' ,
+  \ 'n' : 'open-file-dir' ,
   \ 'e' : {
     \ 'name' : 'Settings' ,
     \ 'd' : 'init-open' ,
@@ -149,6 +144,11 @@ let g:which_key_map.g = {
 
 " Search
 nnoremap <leader>sn :noh<cr>
+
+let g:which_key_map.s = {
+      \ 'name' : 'Search' ,
+      \ 'n' : 'reset-search' ,
+      \}
 
 " Tabs
 nnoremap <leader>tt :tabnew<cr>
