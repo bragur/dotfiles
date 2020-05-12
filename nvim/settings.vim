@@ -38,7 +38,7 @@ set termguicolors
 let ayucolor="mirage"
 colorscheme ayu
 
-"" Equilize windows on resize
+"" Equalize windows on resize
 autocmd VimResized * wincmd =
 
 set nocompatible
