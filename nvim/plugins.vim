@@ -4,7 +4,6 @@ call plug#begin('~/.vim/plugged')
 
   "" Theme extensions
   Plug 'scrooloose/nerdtree' " NERDtree for file exploring
-  " Plug 'miyakogi/conoline.vim' " Highlight current line
   Plug 'qpkorr/vim-bufkill' " Sane buffer killing
   Plug 'vim-airline/vim-airline' " Airline statusbar
   Plug 'vim-airline/vim-airline-themes' " Themes for Airline statusbar
@@ -32,6 +31,7 @@ call plug#begin('~/.vim/plugged')
   Plug 'maxmellon/vim-jsx-pretty'
   Plug 'jparise/vim-graphql'
 
+  Plug 'mhinz/vim-startify'
 call plug#end()
 
 let g:rainbow_active = 1 "set to 0 if you want to enable it later via :RainbowToggle
