@@ -24,7 +24,7 @@ let g:which_key_map.b.p = 'prev-buffer'
 """"""""""""""""""""""""""""""""""""""""""""""
 " WINDOW
 """"""""""""""""""""""""""""""""""""""""""""""
-let g:which_key_map.w = { 'name' : '+window' }
+let g:which_key_map.w = { 'name' : '+Window' }
 let g:which_key_map.w.0 = 'equal-windows'
 let g:which_key_map.w.1 = 'one-window-layout'
 let g:which_key_map.w.2 = 'two-window-layout'
@@ -64,7 +64,7 @@ let g:which_key_map.q.q = 'quit-vi'
 """"""""""""""""""""""""""""""""""""""""""""""
 " PROJECT
 """"""""""""""""""""""""""""""""""""""""""""""
-let g:which_key_map.p = { 'name' : '+project' }
+let g:which_key_map.p = { 'name' : '+Project' }
 let g:which_key_map.p.f = 'find-file'
 
 """"""""""""""""""""""""""""""""""""""""""""""
