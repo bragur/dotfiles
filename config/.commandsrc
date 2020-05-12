@@ -10,3 +10,8 @@ em() {
 bs_search() {
     grep -r -i --include \*.js --exclude-dir=node_modules $1 .
 }
+
+v() {
+  j $1
+  nvim .
+}

@@ -19,6 +19,7 @@ set nolist
 set notimeout
 set number
 set numberwidth=4
+set pyxversion=3
 set scrolloff=5
 set shiftwidth=2
 set showmatch

@@ -4,14 +4,13 @@ call plug#begin('~/.vim/plugged')
 
   "" Theme extensions
   Plug 'scrooloose/nerdtree' " NERDtree for file exploring
-  Plug 'miyakogi/conoline.vim' " Highlight current line
+  " Plug 'miyakogi/conoline.vim' " Highlight current line
   Plug 'qpkorr/vim-bufkill' " Sane buffer killing
   Plug 'vim-airline/vim-airline' " Airline statusbar
   Plug 'vim-airline/vim-airline-themes' " Themes for Airline statusbar
   Plug 'luochen1990/rainbow' " Rainbow brackets
   Plug 'tpope/vim-fugitive' " Git
   Plug 'airblade/vim-gitgutter' " Gitgutter
-  Plug 'jiangmiao/auto-pairs' " Auto pairs for brackets etc
   Plug 'vim-scripts/ReplaceWithRegister' " Replace motion with register
   Plug 'tpope/vim-commentary' " Comment out lines
   Plug 'tpope/vim-abolish' " Easy text relacement
