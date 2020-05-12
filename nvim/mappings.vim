@@ -1,28 +1,25 @@
-nnoremap <Tab> :bnext<CR>
-nnoremap <S-Tab> :bprevious<CR>
-
-" Leader keys
+""""""""""""""""""""""""""""""""""""""""""""""
+" LEADER KEYS SETUP
+""""""""""""""""""""""""""""""""""""""""""""""
 let mapleader = " "
 let maplocalleader = ","
 
-" Which key
-nnoremap <silent><leader><space> :<c-u>WhichKey '<Space>'<CR>
-nnoremap <silent> <localleader>, :WhichKey ','<CR>
-call which_key#register('<Space>', "g:which_key_map")
-call which_key#register(',', "g:which_key_map_local")
-let g:which_key_map =  {}
-let g:which_key_map_local = {}
-
-" Root
+""""""""""""""""""""""""""""""""""""""""""""""
+" ROOT
+""""""""""""""""""""""""""""""""""""""""""""""
+nnoremap <Tab> :bnext<CR>
+nnoremap <S-Tab> :bprevious<CR>
 nnoremap <leader><Tab> :NERDTreeToggle<cr>
 
-" Remap for compiler
-nmap <localleader>cb :FloatermNew --height=0.3 --width=0.3 --wintype=floating --name=build --position=topright --autoclose=1 yarn build<cr>
-nmap <localleader>cc :FloatermNew --height=0.3 --width=0.3 --wintype=floating --name=build-clean --position=topright --autoclose=1 yarn build-clean<cr>
+""""""""""""""""""""""""""""""""""""""""""""""
+" COMPILER REMAPS
+""""""""""""""""""""""""""""""""""""""""""""""
+nnoremap <localleader>cb :FloatermNew --height=0.3 --width=0.3 --wintype=floating --name=build --position=topright --autoclose=1 yarn build<cr>
+nnoremap <localleader>cc :FloatermNew --height=0.3 --width=0.3 --wintype=floating --name=build-clean --position=topright --autoclose=1 yarn build-clean<cr>
+nnoremap <localleader>tf :<C-u>call RunTestFile()<cr>
+nnoremap <localleader>tg :<C-u>call GoToTestFile()<cr>
+nnoremap <localleader>tt :T yarn test<cr>
 
-" Remap for testing
-nmap <localleader>tt :T yarn test<cr>
-nmap <localleader>tf :<C-u>call RunTestFile()<cr>
 function! RunTestFile()
   let file=expand("%:r")
   let extention=expand("%:e")
@@ -33,149 +30,99 @@ function! RunTestFile()
     execute ":T yarn test " . file."_test.bs.js"
   endif
 endfunction
-nmap <localleader>tg :<C-u>call GoToTestFile()<cr>
+
 function! GoToTestFile()
   let file=expand("%:r")
   execute ":edit " . file."_test.re"
 endfunction
 
-" Buffer management
-nnoremap <leader>bd :BD<cr>
+""""""""""""""""""""""""""""""""""""""""""""""
+" BUFFER
+""""""""""""""""""""""""""""""""""""""""""""""
+nnoremap <leader>bb :Buffers<cr>
+nnoremap <leader>bd :bd<cr>
+nnoremap <leader>be :new<cr>
 nnoremap <leader>bf :bfirst<cr>
 nnoremap <leader>bl :blast<cr>
 nnoremap <leader>bn :bn<cr>
+nnoremap <leader>bo :NERDTreeClose<bar>:%bd<bar>e#<bar>bd#<cr>
 nnoremap <leader>bp :bp<cr>
-nnoremap <leader>bb :Buffers<CR>
-nnoremap <leader>bx :bd<cr>
 
-let g:which_key_map.b = {
-  \ 'name' : 'Buffer' ,
-  \ 'd' : 'first-buffer' ,
-  \ 'l' : 'last-buffer' ,
-  \ 'n' : 'next-buffer' ,
-  \ 'p' : 'prev-buffer' ,
-  \ 'b' : 'show-all' ,
-  \ 'x' : 'delete-buffer' ,
-  \}
-
-" Window management
+""""""""""""""""""""""""""""""""""""""""""""""
+" WINDOW
+""""""""""""""""""""""""""""""""""""""""""""""
 let i = 1
 while i <= 9
-    execute 'nnoremap <Leader>' . i . ' :' . i . 'wincmd w<CR>'
+    execute 'nnoremap <leader>' . i . ' :' . i . 'wincmd w<CR>'
     let i = i + 1
 endwhile
+nnoremap <silent> <C-S-Left> :vertical resize -1<cr>
+nnoremap <silent> <C-S-Right> :vertical resize +1<cr>
+nnoremap <silent> <C-S-Down> :resize -1<cr>
+nnoremap <silent> <C-S-Up> :resize +1<cr>
 
-nnoremap <leader>wv :vsp<cr>
-nnoremap <leader>wh :sp<cr>
+nnoremap <leader>w0 <C-w>=<cr>
+nnoremap <leader>w1 <C-w>o<cr>
+nnoremap <leader>w2 <C-w>o<bar>:vsp<bar>:1wincmd w<cr>
+nnoremap <leader>w3 <C-w>o<bar>:vsp<bar>:vsp<bar>:1wincmd w<cr>
+nnoremap <leader>w4 <C-w>o<bar>:vsp<bar>:sp<bar>:1wincmd w<bar>:sp<bar>:1wincmd w<cr>
 nnoremap <leader>wd <C-w>c<cr>
+nnoremap <leader>we :resize +1<cr>
+nnoremap <leader>wh :vertical resize -1<cr>
+nnoremap <leader>wi :vertical resize +1<cr>
+nnoremap <leader>wn :resize -1<cr>
 nnoremap <leader>wo <C-w>o<cr>
-nnoremap <leader>wn :new<cr>
-nnoremap <leader>we <C-w>=<cr>
-nnoremap <leader>wtt :tabnew<cr>
+nnoremap <leader>wsh :sp<cr>
+nnoremap <leader>wsv :vsp<cr>
 nnoremap <leader>wtc :tabclose<cr>
 nnoremap <leader>wtn :tabnext<cr>
 nnoremap <leader>wtp :tabprevious<cr>
-nnoremap <leader>w1 <C-w>o<cr>
-nnoremap <leader>w2 <C-w>o \|:vsp \|:1wincmd w<cr>
-nnoremap <leader>w3 <C-w>o \|:vsp \|:vsp \|:1wincmd w<cr>
-nnoremap <leader>w4 <C-w>o \|:vsp \|:sp \|:1wincmd w \|:sp \|:1wincmd w<cr>
+nnoremap <leader>wtt :tabnew<cr>
 
-let g:which_key_map.w = {
-  \ 'name' : 'Window' ,
-  \ 'v' : 'vsplit' ,
-  \ 'h' : 'hsplit' ,
-  \ 'd' : 'delete-window' ,
-  \ 'o' : 'delete-others' ,
-  \ 'n' : 'new-empty' ,
-  \ 'e' : 'equal-windows' ,
-  \ '1' : 'one-window-layout' ,
-  \ '2' : 'two-window-layout' ,
-  \ '3' : 'three-window-layout' ,
-  \ '4' : 'four-window-layout' ,
-  \ 't' : {
-      \ 'name' : 'Tabs' ,
-      \ 't' : 'new-tab' ,
-      \ 'n' : 'next-tab' ,
-      \ 'p' : 'previous-tab' ,
-      \ 'c' : 'close-tab' ,
-      \}
-  \}
-
-" File
-nnoremap <leader>fs :w<cr>
-nnoremap <leader>fn :NERDTreeFind<cr>
+""""""""""""""""""""""""""""""""""""""""""""""
+" FILE
+""""""""""""""""""""""""""""""""""""""""""""""
+nnoremap <leader>feR :source $MYVIMRC<bar> :PlugInstall<cr>
 nnoremap <leader>fed :vsplit $MYVIMRC<cr>
 nnoremap <leader>fer :source $MYVIMRC<cr>
-nnoremap <leader>feR :source $MYVIMRC \| :PlugInstall<cr>
+nnoremap <leader>fn :NERDTreeFind<cr>
+nnoremap <leader>fs :w<cr>
 
-let g:which_key_map.f = {
-  \ 'name' : 'File' ,
-  \ 's' : 'save-file' ,
-  \ 'n' : 'open-file-dir' ,
-  \ 'e' : {
-    \ 'name' : 'Settings' ,
-    \ 'd' : 'init-open' ,
-    \ 'r' : 'reload-init' ,
-    \} ,
-  \}
-
-" Quit
+""""""""""""""""""""""""""""""""""""""""""""""
+" QUIT
+""""""""""""""""""""""""""""""""""""""""""""""
 nnoremap <leader>qq :qa<cr>
 
-let g:which_key_map.q = {
-  \ 'name' : 'Quit' ,
-  \ 'q' : 'quit-vim'
-  \}
-
-" Project
+""""""""""""""""""""""""""""""""""""""""""""""
+" PROJECT
+""""""""""""""""""""""""""""""""""""""""""""""
 nnoremap <leader>pf :FloatermNew fzf<cr>
 
-let g:which_key_map.p = {
-  \ 'name' : 'Project' ,
-  \ 'f' : 'find-files'
-  \}
-
-" Comments
-nmap <leader>cl <Plug>CommentaryLine
+""""""""""""""""""""""""""""""""""""""""""""""
+" COMMENT
+""""""""""""""""""""""""""""""""""""""""""""""
+nnoremap <leader>cl <Plug>CommentaryLine
 vmap <leader>cl <Plug>Commentary
 
-let g:which_key_map.c = {
-      \ 'name' : 'Comment' ,
-      \ 'l' : 'comment-lines'
-  \}
-
-" Git
-nnoremap <leader>gs :Git<cr>
-nnoremap <leader>gl :Glog<cr>
+""""""""""""""""""""""""""""""""""""""""""""""
+" GIT
+""""""""""""""""""""""""""""""""""""""""""""""
 nnoremap <leader>gb :Gblame<cr>
 nnoremap <leader>gd :Gdiff<cr>
+nnoremap <leader>gl :Glog<cr>
+nnoremap <leader>gs :Git<cr>
 
-let g:which_key_map.g = {
-      \ 'name' : 'Git' ,
-      \ 's' : 'git-status' ,
-      \ 'l' : 'git-log' ,
-      \ 'b' : 'git-blame' ,
-      \ 'd' : 'git-diff' ,
-      \}
-
-" Search
+""""""""""""""""""""""""""""""""""""""""""""""
+" SEARCH
+""""""""""""""""""""""""""""""""""""""""""""""
 nnoremap <leader>sn :noh<cr>
 
-let g:which_key_map.s = {
-      \ 'name' : 'Search' ,
-      \ 'n' : 'reset-search' ,
-      \}
-
-" Terminal
+""""""""""""""""""""""""""""""""""""""""""""""
+" TERMINAL
+""""""""""""""""""""""""""""""""""""""""""""""
 nnoremap <leader>tt :FloatermNew --wintype=floating<cr>
 nnoremap <leader>tq :FloatermKill<cr>
+tnoremap <localleader>tq <C-\><C-n><bar>:FloatermKill<cr>
 nnoremap <leader>ts :FloatermShow<cr>
-tnoremap <localleader>tq <C-\><C-n> \|:FloatermKill<cr>
-tnoremap <localleader>th <C-\><C-n> \|:FloatermHide<cr>
+tnoremap <localleader>th <C-\><C-n><bar>:FloatermHide<cr>
 
-
-let g:which_key_map.t = {
-      \ 'name' : 'Terminal' ,
-      \ 't' : 'new-float-term' ,
-      \ 'q' : 'kill-float-term' ,
-      \}
