@@ -50,7 +50,8 @@ let g:which_key_map.w.t.t = 'new-tab'
 """"""""""""""""""""""""""""""""""""""""""""""
 let g:which_key_map.f = { 'name' : '+File' }
 let g:which_key_map.f.e = { 'name' : '+Settings' }
-let g:which_key_map.f.e.R = 'reload-init'
+let g:which_key_map.f.e.R = 'install-init'
+let g:which_key_map.f.e.r = 'reload-init'
 let g:which_key_map.f.e.d = 'init-open'
 let g:which_key_map.f.n = 'open-file-dir'
 let g:which_key_map.f.s = 'save-file'
