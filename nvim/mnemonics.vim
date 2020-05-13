@@ -67,6 +67,10 @@ let g:which_key_map.q.q = 'quit-vi'
 """"""""""""""""""""""""""""""""""""""""""""""
 let g:which_key_map.p = { 'name' : '+Project' }
 let g:which_key_map.p.f = 'find-file'
+let g:which_key_map.p.s = { 'name' : '+Sessions' }
+let g:which_key_map.p.s.d = 'startify'
+let g:which_key_map.p.s.s = 'save-session'
+let g:which_key_map.p.s.x = 'delete-session'
 
 """"""""""""""""""""""""""""""""""""""""""""""
 " COMMENT
@@ -81,7 +85,7 @@ let g:which_key_map.g = { 'name' : '+Git' }
 let g:which_key_map.g.b = 'git-blame'
 let g:which_key_map.g.d = 'git-diff'
 let g:which_key_map.g.l = 'git-log'
-let g:which_key_map.g.s = 'git-status'
+let g:which_key_map.g.s = 'lazygit'
 
 """"""""""""""""""""""""""""""""""""""""""""""
 " SEARCH

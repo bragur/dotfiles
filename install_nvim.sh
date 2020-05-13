@@ -1,4 +1,5 @@
 #!/bin/bash
+set -Eeuo pipefail
 
 if [ "${1}" != "--source-only" ]; then
 	. ./print.sh --source-only

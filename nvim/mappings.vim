@@ -96,7 +96,11 @@ nnoremap <leader>qq :qa<cr>
 """"""""""""""""""""""""""""""""""""""""""""""
 " PROJECT
 """"""""""""""""""""""""""""""""""""""""""""""
-nnoremap <leader>pf :FloatermNew fzf<cr>
+nnoremap <leader>pt :FloatermNew fzf<cr>
+nnoremap <leader>pf :FZF<cr>
+nnoremap <leader>psd :Startify<cr>
+nnoremap <leader>pss :SSave<cr>
+nnoremap <leader>psx :SDelete<cr>
 
 """"""""""""""""""""""""""""""""""""""""""""""
 " COMMENT
@@ -107,10 +111,65 @@ vmap <leader>cl <Plug>Commentary
 """"""""""""""""""""""""""""""""""""""""""""""
 " GIT
 """"""""""""""""""""""""""""""""""""""""""""""
+" Handles closing in cases where you would be the last window
+function! CloseWindowOnSuccess(code) abort
+  if a:code == 0
+    let current_window = winnr()
+    bdelete!
+    " Handles special case where window remains due startify
+    if winnr() == current_window
+      close
+    endif
+  endif
+endfunction
+
+function! Lazygit()
+  " Size variables
+  let height = float2nr(&lines * 0.6) " 40% of screen
+  let width = float2nr(&columns * 0.6) " 70% of screen
+  let vertical = float2nr(&lines * 0.1) " space to top: 10%
+  let horizontal = float2nr((&columns - width) / 2)
+
+  let opts = {
+        \ 'relative': 'editor',
+        \ 'row': vertical,
+        \ 'col': horizontal,
+        \ 'width': width,
+        \ 'height': height,
+        \ 'anchor': 'NW',
+        \ 'style': 'minimal'
+        \ }
+
+    let border_opts = {
+        \ 'relative': 'editor',
+        \ 'row': vertical - 1,
+        \ 'col': horizontal - 2,
+        \ 'width': width + 4,
+        \ 'height': height + 2,
+        \ 'style': 'minimal'
+        \ }
+
+  " Border variables
+  let top = "╭" . repeat("─", width + 2) . "╮"
+  let mid = "│" . repeat(" ", width + 2) . "│"
+  let bot = "╰" . repeat("─", width + 2) . "╯"
+  let lines = [top] + repeat([mid], height) + [bot]
+
+  " Buffers
+  let buf = nvim_create_buf(v:false, v:true)
+  let border_buffer = nvim_create_buf(v:false, v:true)
+
+  call nvim_buf_set_lines(border_buffer, 0, -1, v:true, lines)
+
+  call nvim_open_win(border_buffer, v:true, border_opts)
+  call nvim_open_win(buf, v:true, opts)
+  call termopen('lazygit', {'on_exit': {_,c -> CloseWindowOnSuccess(c)}})
+  startinsert
+endfunction
 nnoremap <leader>gb :Gblame<cr>
 nnoremap <leader>gd :Gdiff<cr>
 nnoremap <leader>gl :Glog<cr>
-nnoremap <leader>gs :Git<cr>
+nnoremap <leader>gs :call Lazygit()<cr>
 
 """"""""""""""""""""""""""""""""""""""""""""""
 " SEARCH

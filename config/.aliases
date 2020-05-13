@@ -10,5 +10,5 @@ alias ll="ls -la"
 alias git_current_branch="git-current-branch"
 
 # NVIM
-alias vi="nvim +:Startify"
-alias vim="nvim +:Startify"
+alias vi="nvim"
+alias vim="nvim"
