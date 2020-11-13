@@ -12,3 +12,6 @@ alias git_current_branch="git-current-branch"
 # NVIM
 alias vi="nvim"
 alias vim="nvim"
+
+# KUBERNETES
+alias k="kubectl"

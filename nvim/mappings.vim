@@ -14,19 +14,48 @@ nnoremap <leader><Tab> :NERDTreeToggle<cr>
 """"""""""""""""""""""""""""""""""""""""""""""
 " COMPILER REMAPS
 """"""""""""""""""""""""""""""""""""""""""""""
-nnoremap <localleader>cb :FloatermNew --height=0.3 --width=0.3 --wintype=floating --name=build --position=topright --autoclose=1 yarn build<cr>
-nnoremap <localleader>cc :FloatermNew --height=0.3 --width=0.3 --wintype=floating --name=build-clean --position=topright --autoclose=1 yarn build-clean<cr>
+" nnoremap <localleader>cb :FloatermNew --height=0.3 --width=0.3 --wintype=floating --name=build --position=topright --autoclose=1 yarn build<cr>
+" nnoremap <localleader>cc :FloatermNew --height=0.3 --width=0.3 --wintype=floating --name=build-clean --position=topright --autoclose=1 yarn build-clean<cr>
+function! MakeJumpWindow()
+  let window_count = winnr('$')
+  let current_window = winnr()
+  let next_window = winnr('1l')
+  let prev_window = winnr('1h')
+  let current_buffer = bufnr()
+  let current_position = getcurpos()
+  if next_window == current_window && window_count == 1
+    execute ":vsplit"
+  elseif next_window == current_window
+    execute ":" . prev_window . "wincmd w"
+    execute ":b " . current_buffer
+    setpos('.', current_position)
+  else
+    execute ":" . next_window . "wincmd w"
+    execute ":b " . current_buffer
+    setpos('.', current_position)
+  endif
+endfunction
+
+nnoremap <localleader>co :vert 40sp <bar> :set winfixheight <bar> :Tnew
+nnoremap <localleader>cb :T yarn build<cr>
+nnoremap <localleader>cc :T yarn clean<cr>
+nnoremap <localleader>cr :T yarn relay<cr>
 nnoremap <localleader>tf :<C-u>call RunTestFile()<cr>
 nnoremap <localleader>tg :<C-u>call GoToTestFile()<cr>
 nnoremap <localleader>tt :T yarn test<cr>
+" nnoremap <localleader>gg :call MakeJumpWindow() \| lua vim.lsp.buf.definition()<cr>
+nnoremap <localleader>gg <cmd>lua vim.lsp.buf.definition()<cr>
+nnoremap <localleader>ht <cmd>lua vim.lsp.buf.hover()<cr>
+nnoremap <localleader>gd <cmd>lua vim.lsp.buf.declaration()<cr>
+nnoremap <localleader>gr <cmd>lua vim.lsp.buf.references()<cr>
 
 function! RunTestFile()
   let file=expand("%:r")
-  let extention=expand("%:e")
+  let extension=expand("%:e")
   let ending=get(split(file, "_"), 1)
-  if !empty(ending) && ending == "test" && extention == "re"
+  if !empty(ending) && ending == "test" && extension == "re"
     execute ":T yarn test " . file.".bs.js"
-  elseif extention == "re"
+  elseif extension == "re"
     execute ":T yarn test " . file."_test.bs.js"
   endif
 endfunction
@@ -40,7 +69,7 @@ endfunction
 " BUFFER
 """"""""""""""""""""""""""""""""""""""""""""""
 nnoremap <leader>bb :Buffers<cr>
-nnoremap <leader>bd :bd<cr>
+nnoremap <leader>bd :BD<cr>
 nnoremap <leader>be :new<cr>
 nnoremap <leader>bf :bfirst<cr>
 nnoremap <leader>bl :blast<cr>
@@ -63,7 +92,8 @@ nnoremap <silent> <C-S-Up> :resize +1<cr>
 
 nnoremap <leader>w0 <C-w>=<cr>
 nnoremap <leader>w1 <C-w>o<cr>
-nnoremap <leader>w2 <C-w>o<bar>:vsp<bar>:1wincmd w<cr>
+" nnoremap <leader>w2 <C-w>o<bar>:vsp<bar>:1wincmd w<cr>
+nnoremap <leader>w2 <C-w>o<bar>:vsp<cr>
 nnoremap <leader>w3 <C-w>o<bar>:vsp<bar>:vsp<bar>:1wincmd w<cr>
 nnoremap <leader>w4 <C-w>o<bar>:vsp<bar>:sp<bar>:1wincmd w<bar>:sp<bar>:1wincmd w<cr>
 nnoremap <leader>wd <C-w>c<cr>
@@ -96,17 +126,19 @@ nnoremap <leader>qq :qa<cr>
 """"""""""""""""""""""""""""""""""""""""""""""
 " PROJECT
 """"""""""""""""""""""""""""""""""""""""""""""
-nnoremap <leader>pt :FloatermNew fzf<cr>
-nnoremap <leader>pf :FZF<cr>
+nnoremap <leader>pt :NERDTreeFind<cr>
+nnoremap <leader>pf :Files<cr>
 nnoremap <leader>psd :Startify<cr>
 nnoremap <leader>pss :SSave<cr>
 nnoremap <leader>psx :SDelete<cr>
+nnoremap <leader>pb :T yarn build<cr>
 
 """"""""""""""""""""""""""""""""""""""""""""""
 " COMMENT
 """"""""""""""""""""""""""""""""""""""""""""""
-nnoremap <leader>cl <Plug>CommentaryLine
+nnoremap <leader>cl <Plug>Commentary
 vmap <leader>cl <Plug>Commentary
+vnoremap <leader>cc "*y<cr>
 
 """"""""""""""""""""""""""""""""""""""""""""""
 " GIT
@@ -175,6 +207,8 @@ nnoremap <leader>gs :call Lazygit()<cr>
 " SEARCH
 """"""""""""""""""""""""""""""""""""""""""""""
 nnoremap <leader>sn :noh<cr>
+nnoremap <leader>sl :Rg<cr>
+nnoremap <leader>sw :Rg <c-r><c-w>
 
 """"""""""""""""""""""""""""""""""""""""""""""
 " TERMINAL
@@ -184,4 +218,8 @@ nnoremap <leader>tq :FloatermKill<cr>
 tnoremap <localleader>tq <C-\><C-n><bar>:FloatermKill<cr>
 nnoremap <leader>ts :FloatermShow<cr>
 tnoremap <localleader>th <C-\><C-n><bar>:FloatermHide<cr>
-
+if has("nvim")
+  au TermOpen * tnoremap <buffer> <Esc> <c-\><c-n>
+  au FileType fzf tunmap <buffer> <Esc>
+endif
+tnoremap <leader>bd :q<cr>

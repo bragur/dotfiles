@@ -1,43 +1,37 @@
 call plug#begin('~/.vim/plugged')
-  "" Theme
-  Plug 'ayu-theme/ayu-vim' " Ayu color theme
-
   "" Theme extensions
+  Plug 'morhetz/gruvbox'
   Plug 'scrooloose/nerdtree' " NERDtree for file exploring
   Plug 'qpkorr/vim-bufkill' " Sane buffer killing
   Plug 'vim-airline/vim-airline' " Airline statusbar
   Plug 'vim-airline/vim-airline-themes' " Themes for Airline statusbar
-  Plug 'luochen1990/rainbow' " Rainbow brackets
-  Plug 'tpope/vim-fugitive' " Git
   Plug 'airblade/vim-gitgutter' " Gitgutter
   Plug 'vim-scripts/ReplaceWithRegister' " Replace motion with register
   Plug 'tpope/vim-commentary' " Comment out lines
-  Plug 'tpope/vim-abolish' " Easy text relacement
+  Plug 'tpope/vim-abolish' " Easy text replacement
   Plug 'tpope/vim-surround' " Surround plugin
+  Plug 'tpope/vim-eunuch' " Sugar for shell commands
+  Plug 'tpope/vim-unimpaired' " Mnemonics
   Plug 'voldikss/vim-floaterm' " Floating terminal
   Plug 'liuchengxu/vim-which-key' " Which key menus for mnemonics
-  
+  Plug 'kassio/neoterm' " Same terminal
+  Plug 'jiangmiao/auto-pairs' " Auto pairs
+  Plug 'sheerun/vim-polyglot' " Multi language syntax highlighting
+  Plug 'ryanoasis/vim-devicons' " Icons
+  Plug 'pangloss/vim-javascript'
+  Plug 'mhinz/vim-startify'
+
   "" FZF
   Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
   Plug 'junegunn/fzf.vim' 
   
-  "" Coc
-  Plug 'neoclide/coc.nvim', {'branch': 'release'}
 
-  "" Extensions
-  Plug 'reasonml-editor/vim-reason-plus'
-  Plug 'pangloss/vim-javascript'
-  Plug 'leafgarland/typescript-vim'
-  Plug 'maxmellon/vim-jsx-pretty'
-  Plug 'jparise/vim-graphql'
-
-  Plug 'mhinz/vim-startify'
+  "" Language server
+  Plug 'neovim/nvim-lspconfig'
+  Plug 'nvim-lua/completion-nvim'
 call plug#end()
 
-let g:rainbow_active = 1 "set to 0 if you want to enable it later via :RainbowToggle
-
-let g:WorkspaceFolders = [
- \ '/home/bragur/ws-monorepo/src/mobile/projects/mobile-app',
- \ '/home/bragur/ws-monorepo/src/solum/bidclient',
- \ '/home/bragur/ws-monorepo/src/solum/dls',
- \ ]
+lua <<EOF
+require'nvim_lsp'.ocamllsp.setup{ on_attach=require'completion'.on_attach }
+require'nvim_lsp'.tsserver.setup{ on_attach=require'completion'.on_attach }
+EOF

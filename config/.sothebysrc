@@ -161,15 +161,16 @@ new_auction() {
 clear_branches() {
   kubectl get deployments --template '{{range .items}}{{.metadata.name}}{{"\n"}}{{end}}' -lbranchName | while read a;
   do
-  kubectl delete deployment $a
-  kubectl delete service $a
+  if [[ $1 == --dry ]]
+  then
+    echo delete deployment $a
+    echo delete service $a
+  else
+    kubectl delete deployment $a
+    kubectl delete service $a
+  fi
   done
 }
 
-test_clear_branches() {
-  kubectl get deployments --template '{{range .items}}{{.metadata.name}}{{"\n"}}{{end}}' -lbranchName | while read a;
-  do
-  echo delete deployment $a
-  echo delete service $a
-  done
-}
+export PATH="/Users/bragi/dev/test-tool-release/:$PATH"
+. $MONOREPO/tools/sh/k8

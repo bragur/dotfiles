@@ -91,6 +91,7 @@ let g:which_key_map.g.s = 'lazygit'
 " SEARCH
 """"""""""""""""""""""""""""""""""""""""""""""
 let g:which_key_map.s = { 'name' : '+Search' }
+let g:which_key_map.s.l = 'search-lines'
 let g:which_key_map.s.n = 'reset-search'
 
 """"""""""""""""""""""""""""""""""""""""""""""
