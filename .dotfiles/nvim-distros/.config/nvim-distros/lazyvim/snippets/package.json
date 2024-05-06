@@ -1,0 +1,16 @@
+{
+  "name": "rescript-snippets",
+  "engines": {
+    "vscode": "^1.11.0"
+  },
+  "contributes": {
+    "snippets": [
+      {
+        "language": [
+          "rescript"
+        ],
+        "path": "./rescript.json"
+      }
+    ]
+  }
+}

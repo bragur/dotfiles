@@ -1,0 +1,180 @@
+{
+  "Rescript Module": {
+    "prefix": "resm",
+    "body": "module ${1:ModuleName} = {\n\t$2\n}"
+  },
+  "Rescript Module With Type": {
+    "prefix": "resmwt",
+    "body": [
+      "module ${1:ModuleName} = {",
+      "  type t = $2",
+      "  let make = ($3) => {",
+      "    $4",
+      "  }",
+      "}"
+    ]
+  },
+  "Rescript-React component module": {
+    "prefix": "rcm",
+    "body": [
+      "module ${1:ModuleName} = {",
+      "  @react.component",
+      "  let make = ($2) => {",
+      "    $3",
+      "  }",
+      "}"
+    ],
+    "description": "Rescript React component module"
+  },
+  "File level Rescript-React component": {
+    "prefix": "flc",
+    "body": ["@react.component", "let make = ($1) => {", "  $2", "}"],
+    "description": "Rescript React component module"
+  },
+  "Rescript-React String": {
+    "prefix": "rrs",
+    "body": ["{${1:${TM_SELECTED_TEXT}}->React.string}"]
+  },
+  "Rescript-React String with Double Quotes": {
+    "prefix": "rrsdq",
+    "body": ["{\"${1:${TM_SELECTED_TEXT}}\"->React.string}"]
+  },
+  "Rescript-React String with backtick": {
+    "prefix": "rrsb",
+    "body": ["{`${1:${TM_SELECTED_TEXT}}`->React.string}"]
+  },
+  "Rescript-React UseState": {
+    "prefix": "rrus",
+    "body": [
+      "let (${1:state}, set${1/(.*)/${1:/pascalcase}/}) = React.useState(() => ${2:initialState})"
+    ]
+  },
+  "Rescript-React UseMemo0": {
+    "prefix": "rrum0",
+    "body": ["React.useMemo0(() => {", "  $1", "})"]
+  },
+  "Rescript-React UseMemo1": {
+    "prefix": "rrum1",
+    "body": ["React.useMemo1(() => {", "  $1", "}, [${2:dependency}])"]
+  },
+  "Rescript-React UseMemo2": {
+    "prefix": "rrum2",
+    "body": [
+      "React.useMemo2(() => {",
+      "  $1",
+      "}, (${2:dependency1},${3:dependency2}))"
+    ]
+  },
+  "Rescript-React UseMemo3": {
+    "prefix": "rrum3",
+    "body": [
+      "React.useMemo3(() => {",
+      "  $1",
+      "}, (${2:dependency1},${3:dependency2},${4:dependency3}))"
+    ]
+  },
+  "Rescript-React UseMemo4": {
+    "prefix": "rrum4",
+    "body": [
+      "React.useMemo4(() => {",
+      "  $1",
+      "}, (${2:dependency1},${3:dependency2},${4:dependency3},${5:dependency4}))"
+    ]
+  },
+  "Rescript-React UseMemo5": {
+    "prefix": "rrum5",
+    "body": [
+      "React.useMemo5(() => {",
+      "  $1",
+      "}, (${2:dependency1},${3:dependency2},${4:dependency3},${5:dependency4},${6:dependency5}))"
+    ]
+  },
+  "Rescript-React UseMemo6": {
+    "prefix": "rrum6",
+    "body": [
+      "React.useMemo6(() => {",
+      "  $1",
+      "}, (${2:dependency1},${3:dependency2},${4:dependency3},${5:dependency4},${6:dependency5},${7:dependency6}))"
+    ]
+  },
+  "Rescript-React UseMemo7": {
+    "prefix": "rrum7",
+    "body": [
+      "React.useMemo7(() => {",
+      "  $1",
+      "}, (${2:dependency1},${3:dependency2},${4:dependency3},${5:dependency4},${6:dependency5},${7:dependency6},${8:dependency7}))"
+    ]
+  },
+  "Rescript-React UseEffect0": {
+    "prefix": "rrue0",
+    "body": ["React.useEffect0(() => {", "  $1", "  None", "})"]
+  },
+  "Rescript-React UseEffect1": {
+    "prefix": "rrue1",
+    "body": [
+      "React.useEffect1(() => {",
+      "  $1",
+      "",
+      "  None",
+      "}, [${2:dependency}])"
+    ]
+  },
+  "Rescript-React UseEffect2": {
+    "prefix": "rrue2",
+    "body": [
+      "React.useEffect2(() => {",
+      "  $1",
+      "  None",
+      "}, (${2:dependency1},${3:dependency2}))"
+    ]
+  },
+  "Rescript-React UseEffect3": {
+    "prefix": "rrue3",
+    "body": [
+      "React.useEffect3(() => {",
+      "  $1",
+      "  None",
+      "}, (${2:dependency1},${3:dependency2},${4:dependency3}))"
+    ]
+  },
+  "Rescript-React UseEffect4": {
+    "prefix": "rrue4",
+    "body": [
+      "React.useEffect4(() => {",
+      "  $1",
+      "  None",
+      "}, (${2:dependency1},${3:dependency2},${4:dependency3},${5:dependency4}))"
+    ]
+  },
+  "Rescript-React UseEffect5": {
+    "prefix": "rrue5",
+    "body": [
+      "React.useEffect5(() => {",
+      "  $1",
+      "  None",
+      "}, (${2:dependency1},${3:dependency2},${4:dependency3},${5:dependency4},${6:dependency5}))"
+    ]
+  },
+  "Rescript-React UseEffect6": {
+    "prefix": "rrue6",
+    "body": [
+      "React.useEffect6(() => {",
+      "  $1",
+      "  None",
+      "}, (${2:dependency1},${3:dependency2},${4:dependency3},${5:dependency4},${6:dependency5},${7:dependency6}))"
+    ]
+  },
+  "Rescript-React UseEffect7": {
+    "prefix": "rrue7",
+    "body": [
+      "React.useEffect7(() => {",
+      "  $1",
+      "  None",
+      "}, (${2:dependency1},${3:dependency2},${4:dependency3},${5:dependency4},${6:dependency5},${7:dependency6},${8:dependency7}))"
+    ]
+  },
+  "Rescript-React UseRef": {
+    "prefix": "rrref",
+    "body": ["let ${1:ref} = React.useRef(${2:initialValue})"]
+  }
+}
