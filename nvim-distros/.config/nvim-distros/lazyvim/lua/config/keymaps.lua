@@ -35,8 +35,8 @@ map("x", "N", "'nN'[v:searchforward].'zz'", { noremap = true, expr = true, desc 
 map("o", "N", "'nN'[v:searchforward].'zz'", { noremap = true, expr = true, desc = "Prev Search Result" })
 
 -- Convenient new line without entering insert mode
-map("n", "<cr>", "o<esc>", { noremap = true, desc = "New line escaped" })
-map("n", "<S-cr>", "O<esc>", { noremap = true, desc = "New line above escaped" })
+-- map("n", "<cr>", "o<esc>", { noremap = true, desc = "New line escaped" })
+-- map("n", "<S-cr>", "O<esc>", { noremap = true, desc = "New line above escaped" })
 
 -- Window
 map("n", "<leader>ws", "<cmd>sp<cr>", { desc = "Vertical Split" })
@@ -54,14 +54,14 @@ end
 map("n", "´", lazyterm, { desc = "Terminal (Root Dir)" })
 
 -- Enhance file under cursor
-map("n", "gf", function()
-  local utils = require("utils")
-  local filename = vim.fn.expand("<cfile>")
-  filename = utils.expand_env_variables(filename)
-  if vim.fn.filereadable(filename) == 1 then
-    utils.run_in_alt_window()
-    vim.cmd("edit " .. filename)
-  else
-    print("File does not exist:", filename)
-  end
-end, { desc = "Go to file under cursor" })
+-- map("n", "gf", function()
+--   local utils = require("utils")
+--   local filename = vim.fn.expand("<cfile>")
+--   filename = utils.expand_env_variables(filename)
+--   if vim.fn.filereadable(filename) == 1 then
+--     utils.run_in_alt_window()
+--     vim.cmd("edit " .. filename)
+--   else
+--     print("File does not exist:", filename)
+--   end
+-- end, { desc = "Go to file under cursor" })
