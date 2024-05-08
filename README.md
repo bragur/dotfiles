@@ -4,7 +4,7 @@
 
 This repository contains dotfiles for various applications and services. The configuration files are ready to be symlinked via `stow` and may be used like the following code snippet, for example when initializing zsh’s config:
 
-```shell
+```console
 $ stow zsh
 ```
 
