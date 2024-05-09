@@ -15,7 +15,7 @@ This repository contains dotfiles for various applications and services which I 
 # For zsh
 $ stow zsh
 # zsh/.zshrc -> $HOME/.zshrc
-#zsh/.config/zsh/* -> $HOME/.config/zsh/*
+# zsh/.config/zsh/* -> $HOME/.config/zsh/*
 # etc...
 ```
 
