@@ -6,17 +6,16 @@ This repository contains dotfiles for various applications and services which I 
 
 ![Screenshot of Neovim with my config for harpoon showing running in a split tmuxifier layout running zsh with the Starship prompt](./screenshot.png)
 
-## Usage
-
-Feel free to use my config as you will, however they may be opinionated in various ways. Configs are highly user specific so in mine, for instance, Neovim is configured to accommodate mostly for writing code in ReScript and JS but there may be some nice reusable bits in between.
-
-Start by cloning this repository via `git clone git@github.com:bragur/dotfiles.git $HOME/.dotfiles`. To symlink the configuration for any of the tools which are in the repository use [`stow`](https://www.gnu.org/software/stow/), for instance to symlink the zsh configuration run `stow zsh` or `stow` followed by the folder name in the root of the repository. Symlinking is an easy way to keep all of your configs in one place and using stow makes the process of the symlinking itself easier. You can think of each directory in the root as a package and each package acts as if it were your home directory. So running stow on a _package_ will essentially look in that directory and symlink the contents of it to your home directory:
+> [!TIP]
+> Feel free to use my config as you will, however they may be opinionated in various ways. Configs are highly user specific so in mine, for instance, Neovim is configured to accommodate mostly for writing code in ReScript and JS but there may be some nice reusable bits in between.
+>
+> Start by cloning this repository via `git clone git@github.com:bragur/dotfiles.git $HOME/.dotfiles`. To symlink the configuration for any of the tools which are in the repository use [`stow`](https://www.gnu.org/software/stow/), for instance to symlink the zsh configuration run `stow zsh` or `stow` followed by the folder name in the root of the repository. Symlinking is an easy way to keep all of your configs in one place and using stow makes the process of the symlinking itself easier. You can think of each directory in the root as a package and each package acts as if it were your home directory. So running stow on a _package_ will essentially look in that directory and symlink the contents of it to your home directory:
 
 ```sh
 # For zsh
 $ stow zsh
-zsh/.zshrc -> $HOME/.zshrc
-zsh/.config/zsh/* -> $HOME/.config/zsh*
+# zsh/.zshrc -> $HOME/.zshrc
+#zsh/.config/zsh/_ -> $HOME/.config/zsh_
 # etc...
 ```
 
@@ -51,3 +50,7 @@ Complimenting tmux is tmuxifier where I have a set of layouts to easily be able 
 ### [Neovim](https://neovim.io/)
 
 I run a little configuration on top of [LazyVim](https://www.lazyvim.org/) adding seamless navigation between windows in Neovim and to tmux panes and back. I feel the built in terminals for Neovim are a little fiddly so I rely more on tmux for my workflow and it rocks for my purposes. You will find my specific config [here](https://github.com/bragur/dotfiles/tree/main/nvim-distros/.config/nvim-distros/lazyvim/lua). My [keymaps](https://github.com/bragur/dotfiles/tree/main/nvim-distros/.config/nvim-distros/lazyvim/lua/config/keymaps.lua) serve the use case of my Icelandic keyboard layout. Specifially any bindings to the option modifier key will be specific to that layout so they will should be reconfigured before usage or they will most likely be useless.
+
+```
+
+```
