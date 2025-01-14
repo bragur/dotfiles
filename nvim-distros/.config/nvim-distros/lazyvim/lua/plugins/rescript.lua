@@ -40,6 +40,7 @@ return {
         init_options = {
           extensionConfiguration = {
             askToStartBuild = false,
+            -- inlayHints = { enable = false },
           },
         },
         commands = {
@@ -58,12 +59,14 @@ return {
         },
       })
 
-      which_key.register({
-        ["<leader>r"] = {
-          name = "ReScript",
-          _ = { nil, desc = "which_key_ignore" },
-        },
-      })
+      which_key.add({ { "<leader>r", group = "ReScript" }, { "<leader>r_", hidden = true } })
+
+      -- which_key.register({
+      --   ["<leader>r"] = {
+      --     name = "ReScript",
+      --     _ = { nil, desc = "which_key_ignore" },
+      --   },
+      -- })
     end,
     keys = {
       {
@@ -90,6 +93,7 @@ return {
         desc = "Switch Impl/Interface",
         ft = "rescript",
       },
+      { "<leader>rr", "<cmd>LspStart<cr>", desc = "Start LSP", ft = "rescript" },
     },
   },
 }

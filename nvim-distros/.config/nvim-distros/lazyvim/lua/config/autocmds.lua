@@ -11,3 +11,6 @@ vim.api.nvim_create_autocmd("FocusGained", {
     end
   end,
 })
+
+-- Refresh the buffer when entering nvim again
+vim.cmd("autocmd VimEnter * checktime")

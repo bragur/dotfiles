@@ -18,6 +18,7 @@ end
 function M.keymapExists(mode, lhs)
   local keymaps = vim.api.nvim_get_keymap(mode)
   for _, keymap in ipairs(keymaps) do
+    ---@diagnostic disable-next-line: undefined-field
     if keymap.lhs == lhs then
       return true
     end
@@ -72,7 +73,7 @@ end
 function M.getWorkspaceRoot()
   local handle, err = io.popen("git rev-parse --show-toplevel 2> /dev/null")
   if not handle then
-    require("utils").notify("Error opening process: " .. tostring(err))
+    M.notify("Error opening process: " .. tostring(err))
     return nil
   end
 
@@ -90,7 +91,7 @@ end
 function M.getBranchName()
   local handle, err = io.popen("git rev-parse --abbrev-ref HEAD 2> /dev/null")
   if not handle then
-    require("utils").notify("Error opening process: " .. tostring(err))
+    M.notify("Error opening process: " .. tostring(err))
     return nil
   end
 

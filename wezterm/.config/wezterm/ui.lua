@@ -12,10 +12,18 @@ function M.apply_to_config(config)
 		saturation = 0.8,
 		brightness = 0.7,
 	}
-	config.scrollback_lines = 5000
+	config.scrollback_lines = 1000
 	config.default_cursor_style = "BlinkingBar"
 	config.cursor_blink_rate = 500
-	config.window_background_opacity = 0.95
+	config.window_background_opacity = 0.92
+	config.macos_window_background_blur = 3
+	config.window_decorations = "RESIZE"
+	config.window_padding = {
+		left = 8,
+		top = 16,
+		right = 8,
+		bottom = 8,
+	}
 end
 
 return M

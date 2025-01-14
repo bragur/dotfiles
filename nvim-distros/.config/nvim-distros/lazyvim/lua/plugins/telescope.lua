@@ -21,12 +21,12 @@ return {
   keys = {
     {
       "<leader>fa",
-      LazyVim.telescope("files", { hidden = true, no_ignore = true }),
+      LazyVim.pick("files", { hidden = true, no_ignore = true }),
       desc = "Find All Files (Root Dir)",
     },
     {
       "<leader>fA",
-      LazyVim.telescope("files", { cwd = false, hidden = true, no_ignore = true }),
+      LazyVim.pick("files", { cwd = false, hidden = true, no_ignore = true }),
       desc = "Find All Files (cwd)",
     },
   },
