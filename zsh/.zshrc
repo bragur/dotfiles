@@ -9,9 +9,9 @@ VI_MODE_CURSOR_INSERT=5                  # Use blinking cursor when in insert mo
 # --- User configuration ---
 [[ ! -f $ZSH_HOME/exports.zsh ]] || source $ZSH_HOME/exports.zsh
 [[ ! -f $ZSH_HOME/functions.zsh ]] || source $ZSH_HOME/functions.zsh
-[[ ! -f $ZSH_HOME/switch_nvim.zsh ]] || source $ZSH_HOME/switch_nvim.zsh
+# [[ ! -f $ZSH_HOME/switch_nvim.zsh ]] || source $ZSH_HOME/switch_nvim.zsh
 [[ ! -f $ZSH_HOME/options.zsh ]] || source $ZSH_HOME/options.zsh
-[[ ! -f $ZSH_HOME/mise.zsh ]] || source $ZSH_HOME/mise.zsh
+# [[ ! -f $ZSH_HOME/mise.zsh ]] || source $ZSH_HOME/mise.zsh
 [[ ! -f $ZSH_HOME/antidote.zsh ]] || source $ZSH_HOME/antidote.zsh
 [[ ! -f $ZSH_HOME/aliases.zsh ]] || source $ZSH_HOME/aliases.zsh
 
@@ -21,7 +21,7 @@ autoload -Uz compinit && compinit
 export PATH="$HOME/.tmuxifier/bin:$PATH"
 eval "$(tmuxifier init -)"
 eval "$(zoxide init --cmd cd zsh)"
-eval "$(~/.local/bin/mise activate zsh)"
+# eval "$(~/.local/bin/mise activate zsh)"
 eval "$(fzf --zsh)"
 
 if [ "$TERM_PROGRAM" != "Apple_Terminal" ]; then
