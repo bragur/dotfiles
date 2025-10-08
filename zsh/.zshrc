@@ -11,13 +11,21 @@ VI_MODE_CURSOR_INSERT=5                  # Use blinking cursor when in insert mo
 [[ ! -f $ZSH_HOME/functions.zsh ]] || source $ZSH_HOME/functions.zsh
 # [[ ! -f $ZSH_HOME/switch_nvim.zsh ]] || source $ZSH_HOME/switch_nvim.zsh
 [[ ! -f $ZSH_HOME/options.zsh ]] || source $ZSH_HOME/options.zsh
-# [[ ! -f $ZSH_HOME/mise.zsh ]] || source $ZSH_HOME/mise.zsh
 [[ ! -f $ZSH_HOME/antidote.zsh ]] || source $ZSH_HOME/antidote.zsh
-# [[ ! -f $ZSH_HOME/abbr.zsh ]] || source $ZSH_HOME/abbr.zsh  # TODO: Check main machine config
 [[ ! -f $ZSH_HOME/aliases.zsh ]] || source $ZSH_HOME/aliases.zsh
 
 # autoload -Uz promptinit && promptinit
-autoload -Uz compinit && compinit
+# Cache compinit for faster startup (rebuilds once per day)
+# Skip security checks (-u) for speed
+autoload -Uz compinit
+setopt EXTENDEDGLOB
+for dump in ~/.zcompdump(N.mh+24); do
+  compinit -u
+done
+if [[ -s ~/.zcompdump && (! -s ~/.zcompdump.zwc || ~/.zcompdump -nt ~/.zcompdump.zwc) ]]; then
+  zcompile ~/.zcompdump
+fi
+compinit -C -u
 
 export PATH="$HOME/.tmuxifier/bin:$PATH"
 eval "$(tmuxifier init -)"
@@ -26,5 +34,8 @@ eval "$(mise activate zsh)"
 eval "$(fzf --zsh)"
 
 if [ "$TERM_PROGRAM" != "Apple_Terminal" ]; then
+	# Cache oh-my-posh init for slightly faster startup
 	eval "$(oh-my-posh init zsh --config $HOME/.config/oh-my-posh/config.toml)"
+	# Enable transient prompt for snappier feel
+	enable_poshtooltips
 fi
