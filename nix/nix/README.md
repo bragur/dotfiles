@@ -29,7 +29,7 @@ Located in: `flake.nix` → `homebrew.brews` and `homebrew.casks`
 - mas (Mac App Store CLI)
 
 **Casks** (GUI apps):
-- Cursor, Ghostty, Hammerspoon, 1Password, Hyperkey
+- Cursor, Ghostty, 1Password, Hyperkey
 
 ### macOS Settings
 Located in: `flake.nix` → `system.defaults`
@@ -181,7 +181,7 @@ sudo darwin-rebuild --rollback
 
 Last updated: October 8, 2025
 
-- **macOS**: 26.0.1 (Sequoia)
+- **macOS**: 26.0.1 (Tahoe)
 - **Nix**: 2.31.2
 - **nix-darwin**: 25.11
 - **Homebrew**: 4.6.12
