@@ -47,6 +47,8 @@
             pkgs.vscode
             pkgs.mise
             pkgs.nixfmt-rfc-style
+            pkgs.ripgrep
+            pkgs.raycast
             # pkgs._1password-gui
             # pkgs.ghostty
           ];
@@ -59,7 +61,6 @@
             ];
             casks = [
               "cursor"
-              "hammerspoon"
               "ghostty"
               "1password"
               "hyperkey"
