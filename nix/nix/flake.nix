@@ -41,7 +41,7 @@
             pkgs.neovim
             pkgs.tmux
             pkgs.tmuxifier
-            pkgs.mkalias
+            pkgs.mkalias # See comment below
             pkgs.obsidian
             pkgs.slack
             pkgs.vscode
@@ -77,6 +77,12 @@
           #   pkgs.maple-mono-NF
           # ];
 
+          # Create macOS aliases for Nix-installed GUI apps in /Applications/Nix Apps/
+          # mkalias creates native macOS aliases (not symlinks) so that:
+          # - Spotlight can find them
+          # - Dock can pin them
+          # - LaunchServices recognizes them for file associations
+          # Without this, Nix apps in the store would be invisible to macOS
           system.activationScripts.applications.text =
             let
               env = pkgs.buildEnv {
@@ -101,13 +107,13 @@
           system.defaults = {
             dock.autohide = true;
             dock.persistent-apps = [
-              "/Applications/Arc.app"
+              "/Applications/Notion\ Calendar.app"
               "/System/Applications/Messages.app"
+              "/Applications/Arc.app"
+              "/Applications/Ghostty.app"
+              "/Applications/Cursor.app"
               "/System/Applications/Mail.app"
               "/System/Applications/Photos.app"
-              "${pkgs.obsidian}/Applications/Obsidian.app"
-              "/Applications/Cursor.app"
-              "/Applications/Ghostty.app"
             ];
             finder.FXPreferredViewStyle = "clmv";
             loginwindow.GuestEnabled = false;
