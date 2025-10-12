@@ -49,6 +49,11 @@
             pkgs.nixfmt-rfc-style
             pkgs.ripgrep
             pkgs.raycast
+            pkgs.gh
+            pkgs.gum
+            pkgs.sesh
+            pkgs.fd
+            pkgs.claude-code
             # pkgs._1password-gui
             # pkgs.ghostty
           ];
