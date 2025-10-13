@@ -54,8 +54,8 @@
             pkgs.sesh
             pkgs.fd
             pkgs.claude-code
-            # pkgs._1password-gui
-            # pkgs.ghostty
+            # 1Password and Ghostty are installed via Homebrew casks instead of Nix
+            # because they need better macOS integration (Touch ID, system keychain, etc.)
           ];
 
           homebrew = {
@@ -77,9 +77,8 @@
             onActivation.upgrade = true;
           };
 
-          #      fonts.packages =
-          #        [
-          #   pkgs.maple-mono-NF
+          # fonts.packages = [
+          #   pkgs.maple-mono.NF
           # ];
 
           # Create macOS aliases for Nix-installed GUI apps in /Applications/Nix Apps/
@@ -111,18 +110,27 @@
 
           system.defaults = {
             dock.autohide = true;
-            dock.persistent-apps = [
-              "/Applications/Notion\ Calendar.app"
-              "/System/Applications/Messages.app"
-              "/Applications/Arc.app"
-              "/Applications/Ghostty.app"
-              "/Applications/Cursor.app"
-              "/System/Applications/Mail.app"
-              "/System/Applications/Photos.app"
+            dock.mru-spaces = false;
+            dock.show-recents = false;
+            dock.minimize-to-application = true;
+            dock.persistent-apps = [];
+            dock.persistent-others = [
+              "/Users/bragur/Pictures/Screenshots"
+              "/Users/bragur/Downloads"
+              "/Applications"
             ];
             finder.FXPreferredViewStyle = "clmv";
+            finder.ShowPathbar = true;
+            finder.ShowStatusBar = true;
             loginwindow.GuestEnabled = false;
+            screencapture.location = "~/Pictures/Screenshots";
+            NSGlobalDomain.ApplePressAndHoldEnabled = false;
+            NSGlobalDomain.InitialKeyRepeat = 15;
             NSGlobalDomain.KeyRepeat = 2;
+            NSGlobalDomain.NSAutomaticCapitalizationEnabled = false;
+            NSGlobalDomain.NSAutomaticSpellingCorrectionEnabled = false;
+            screensaver.askForPassword = true;
+            screensaver.askForPasswordDelay = 60;
           };
           # Necessary for using flakes on this system.
           nix.settings.experimental-features = "nix-command flakes";

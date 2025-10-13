@@ -42,9 +42,13 @@ This gives you infrastructure-as-code for reproducibility while keeping configs 
 
    ```sh
    cd ~/dotfiles
-   stow zsh        # Symlinks zsh configs
+   stow zsh           # Symlinks zsh configs
    stow nvim-distros  # Symlinks neovim configs
-   stow zsh-abbr   # Symlinks zsh abbreviations
+   stow zsh-abbr      # Symlinks zsh abbreviations
+   stow mise          # Symlinks mise config
+   stow tmux          # Symlinks tmux config
+   stow oh-my-posh    # Symlinks oh-my-posh theme
+   stow ghostty       # Symlinks Ghostty terminal config
    ```
 
 5. **Restart shell**:
@@ -83,7 +87,9 @@ stow -D zsh       # Remove symlinks
 
 ### Theme
 
-I've been experimenting with [Catppuccin](https://github.com/catppuccin/catppuccin), the soothing pastel theme for the high-spirited. It tunes in nicely with [tmux](https://github.com/tmux/tmux/wiki) and [Neovim](https://neovim.io/).
+I've been experimenting with [Catppuccin](https://github.com/catppuccin/catppuccin), the soothing pastel theme for the high-spirited. It tunes in nicely with [tmux](https://github.com/tmux/tmux/wiki), [Ghostty](https://ghostty.org/), and [Neovim](https://neovim.io/).
+
+**Font**: [Maple Mono NF](https://github.com/ryanoasis/nerd-fonts/tree/master/patched-fonts/MapleMono) (Nerd Font variant) - installed via nix-darwin for proper icon support in tmux and other tools.
 
 ### System Management
 
@@ -109,6 +115,13 @@ Development tools (Node.js, Python, Yarn, etc.) are managed with mise, allowing 
 
 Running Ghostty as my terminal emulator. It's fast, GPU-accelerated, and handles large screens with multiple panes smoothly - something I struggled with in iTerm2 with my Neovim/tmux setup.
 
+Configured with:
+- **Font**: Maple Mono NF (Nerd Font)
+- **Theme**: Catppuccin Mocha
+- **Window padding**: 8px for comfortable spacing
+
+Configuration: `ghostty/.config/ghostty/config`
+
 ### [zsh](https://www.zsh.org/)
 
 #### [Antidote](https://getantidote.github.io/)
@@ -123,7 +136,14 @@ I run the Z shell with antidote for plugin management. Configured plugins includ
 
 #### [oh-my-posh](https://ohmyposh.dev/)
 
-Using oh-my-posh for the prompt, configured with a custom theme.
+Using oh-my-posh for the prompt with a custom Catppuccin-themed configuration. The theme shows:
+- Current directory (in blue)
+- Git status with branch, changes, and upstream info (in rounded pills)
+- Execution time for slow commands (>5s)
+- Node.js and Python versions when relevant
+- Root indicator
+
+Configuration: `oh-my-posh/.config/oh-my-posh/config.toml`
 
 #### [tmux](https://github.com/tmux/tmux/wiki)
 
@@ -137,6 +157,6 @@ Complimenting tmux is tmuxifier where I have a set of layouts to easily be able 
 
 ### [Neovim](https://neovim.io/)
 
-> This section is outdated for now, haven't used nvim in a while
+I run a configuration based on [LazyVim](https://www.lazyvim.org/) with seamless navigation between Neovim windows and tmux panes. The built-in terminals in Neovim didn't fit my workflow, so I rely on tmux instead.
 
-I run a little configuration on top of [LazyVim](https://www.lazyvim.org/) adding seamless navigation between windows in Neovim and to tmux panes and back. I feel the built in terminals for Neovim are a little fiddly so I rely more on tmux for my workflow and it rocks for my purposes. You will find my specific config [here](https://github.com/bragur/dotfiles/tree/main/nvim-distros/.config/nvim-distros/lazyvim/lua). My [keymaps](https://github.com/bragur/dotfiles/tree/main/nvim-distros/.config/nvim-distros/lazyvim/lua/config/keymaps.lua) serve the use case of my Icelandic keyboard layout. Specifially any bindings to the option modifier key will be specific to that layout so they will should be reconfigured before usage or they will most likely be useless.
+**Note**: My [keymaps](https://github.com/bragur/dotfiles/tree/main/nvim-distros/.config/nvim-distros/lazyvim/lua/config/keymaps.lua) are optimized for an Icelandic keyboard layout. Option key bindings will need to be reconfigured for other layouts.

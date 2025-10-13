@@ -140,6 +140,17 @@ To use the correct Homebrew:
 /opt/homebrew/bin/brew install package-name
 ```
 
+### ⚠️ Important: Homebrew Cleanup Behavior
+
+This configuration uses `onActivation.cleanup = "zap"`, which means:
+
+**Every time you run `darwin-rebuild switch`:**
+- ✅ Packages declared in `flake.nix` → `homebrew.brews` are **kept**
+- ✅ Casks declared in `flake.nix` → `homebrew.casks` are **kept**
+- ❌ Any manually installed packages (`brew install something`) are **REMOVED**
+
+This ensures your system stays clean and reproducible. If you want to keep a package permanently, add it to `flake.nix`.
+
 ## Troubleshooting
 
 ### "command not found" after rebuild
