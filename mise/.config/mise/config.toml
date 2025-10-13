@@ -1,0 +1,10 @@
+# mise global configuration
+# See: https://mise.jdx.dev/configuration.html
+
+[tools]
+node = "lts"  # Latest LTS version of Node.js
+python = "2"
+yarn = "1"
+
+[settings]
+experimental = true
