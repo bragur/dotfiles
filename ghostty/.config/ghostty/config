@@ -49,3 +49,4 @@ shell-integration-features = cursor,sudo,title
 
 # Misc
 confirm-close-surface = false
+keybind = shift+enter=text:\x1b\r

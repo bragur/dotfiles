@@ -53,6 +53,9 @@
             pkgs.gum
             pkgs.sesh
             pkgs.fd
+            pkgs.yq
+            pkgs.jq
+            pkgs.jqp
             pkgs.claude-code
             # 1Password and Ghostty are installed via Homebrew casks instead of Nix
             # because they need better macOS integration (Touch ID, system keychain, etc.)
@@ -77,9 +80,9 @@
             onActivation.upgrade = true;
           };
 
-          # fonts.packages = [
-          #   pkgs.maple-mono.NF
-          # ];
+          fonts.packages = [
+            pkgs.maple-mono.NF
+          ];
 
           # Create macOS aliases for Nix-installed GUI apps in /Applications/Nix Apps/
           # mkalias creates native macOS aliases (not symlinks) so that:
@@ -113,7 +116,7 @@
             dock.mru-spaces = false;
             dock.show-recents = false;
             dock.minimize-to-application = true;
-            dock.persistent-apps = [];
+            dock.persistent-apps = [ ];
             dock.persistent-others = [
               "/Users/bragur/Pictures/Screenshots"
               "/Users/bragur/Downloads"
