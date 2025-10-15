@@ -58,6 +58,7 @@
             pkgs.jqp
             pkgs.claude-code
             pkgs.carapace
+            pkgs.atuin
             # 1Password and Ghostty are installed via Homebrew casks instead of Nix
             # because they need better macOS integration (Touch ID, system keychain, etc.)
           ];

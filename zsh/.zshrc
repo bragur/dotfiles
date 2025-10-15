@@ -32,6 +32,7 @@ eval "$(tmuxifier init -)"
 eval "$(zoxide init --cmd cd zsh)"
 eval "$(mise activate zsh)"
 eval "$(fzf --zsh)"
+eval "$(atuin init zsh)"
 
 if [ "$TERM_PROGRAM" != "Apple_Terminal" ]; then
 	# Cache oh-my-posh init for slightly faster startup

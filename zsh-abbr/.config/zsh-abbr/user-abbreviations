@@ -1,3 +1,4 @@
+abbr -g "nixup"="sudo darwin-rebuild switch --flake \"\$HOME/dotfiles/nix/nix#air\""
 abbr "cm"="cmatrix -u 8 -b"
 abbr "dotf"="dotfiles"
 abbr "dotfiles pl"="dotfiles pull origin \"\$(git_current_branch)\""
