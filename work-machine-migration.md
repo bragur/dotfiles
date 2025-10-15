@@ -1,32 +1,13 @@
 # Work Machine Migration Guide
 
+> **Note**: This guide is for refreshing homebrew and dotfiles on an existing machine (not a full wipe). Your SSH keys, GPG keys, and existing configs will remain untouched since they're not in the dotfiles repo.
+
 ## Pre-Migration Backups
 
-### Critical Backups
-- [ ] **SSH keys**: Back up entire `~/.ssh/` directory (especially private keys without `.pub` extension)
-  - **IMPORTANT**: Store in a secure location (encrypted USB, password manager, etc.)
-  - Private keys: `id_rsa`, `id_ed25519`, etc.
-  - Public keys can be regenerated but easier to backup everything
-- [ ] **GPG keys** (if used for signing commits):
-  ```bash
-  # Export private keys (REQUIRED)
-  gpg --export-secret-keys -a > gpg-private-backup.asc
-  # Export public keys
-  gpg --export -a > gpg-public-backup.asc
-  # Export trust database
-  gpg --export-ownertrust > gpg-trust-backup.txt
-  ```
-  - **IMPORTANT**: Store private key backup in a secure location
-- [ ] **Shell history**: `.zsh_history`, `.bash_history`
-- [ ] **Git config**:
-  - Check `~/.gitconfig` for work email/credentials
-  - Check `git config --local` in important repos
-- [ ] **Environment secrets**: Any `.env` files, API keys, credentials
-- [ ] **Application data**: IDE settings, database dumps, etc.
-
-### Nice to Have
-- [ ] `brew leaves > ~/backup-brew-leaves.txt` - reference of installed packages
-- [ ] `brew services list > ~/backup-brew-services.txt` - running services
+### Optional Backups (for reference)
+- [ ] `brew leaves > ~/backup-brew-leaves.txt` - reference of currently installed packages
+- [ ] `brew services list > ~/backup-brew-services.txt` - currently running services
+- [ ] **Shell history** (optional): `.zsh_history`, `.bash_history` - in case something goes wrong
 - [ ] Custom scripts in `/usr/local/bin` not in dotfiles
 
 ## Homebrew Cleanup
@@ -76,11 +57,10 @@ Follow nix installation and setup instructions
 stow <package-name>
 ```
 
-### 4. Restore Work-Specific Configs
-- [ ] Restore SSH keys
-- [ ] Update git config with work email if needed
-- [ ] Restore any environment secrets
-- [ ] Configure work-specific settings
+### 4. Verify Everything Works
+- [ ] Test SSH connections to work services
+- [ ] Verify git commits use correct email
+- [ ] Check work-specific tools/services are running
 
 ## Notes
 - Since both machines use stow, transition should be smooth

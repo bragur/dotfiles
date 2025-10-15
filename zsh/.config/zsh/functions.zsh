@@ -55,3 +55,7 @@ cleanweb() {
 	clear
 	yarn watch
 }
+
+cx() {
+  cd "$1" && ls
+}

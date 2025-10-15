@@ -39,3 +39,7 @@ if [ "$TERM_PROGRAM" != "Apple_Terminal" ]; then
 	# Enable transient prompt for snappier feel
 	enable_poshtooltips
 fi
+
+export CARAPACE_BRIDGES='zsh'
+zstyle ':completion:*' format $'\e[2;37mCompleting %d\e[m'
+source <(carapace _carapace)
