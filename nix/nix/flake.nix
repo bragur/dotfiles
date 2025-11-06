@@ -56,7 +56,6 @@
             pkgs.yq
             pkgs.jq
             pkgs.jqp
-            pkgs.claude-code
             pkgs.carapace
             pkgs.atuin
             pkgs.cmatrix

@@ -5,6 +5,7 @@
 node = "lts"  # Latest LTS version of Node.js
 python = "2"
 yarn = "1"
+claude-code = "latest"
 
 [settings]
 experimental = true
