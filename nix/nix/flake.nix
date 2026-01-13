@@ -73,6 +73,7 @@
               "arc"
               "cursor"
               "ghostty"
+              "google-chrome"
               "1password"
               "hyperkey"
             ];
