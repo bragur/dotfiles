@@ -1,3 +1,5 @@
 .DS_Store
 lazyvim.bragur
 tmux/.config/tmux/*.log
+result
+result-*
