@@ -31,12 +31,14 @@ This gives you infrastructure-as-code for reproducibility while keeping configs 
    git clone git@github.com:bragur/dotfiles.git ~/dotfiles
    ```
 
-3. **Apply nix-darwin configuration** (currently on `air` branch for MacBook Air):
+3. **Bootstrap nix-darwin** (first-time setup on `air` branch for MacBook Air):
 
    ```sh
    cd ~/dotfiles/nix/nix
-   sudo darwin-rebuild switch --flake '.#air'
+   sudo nix run nix-darwin -- switch --flake '.#air'
    ```
+
+   **Why this command?** On a fresh machine, `darwin-rebuild` doesn't exist yet because it's provided by nix-darwin itself. The `nix run nix-darwin` command downloads nix-darwin, builds your configuration, and activates it. After this first bootstrap, `darwin-rebuild` will be available for all future updates.
 
 4. **Symlink configs with stow**:
 

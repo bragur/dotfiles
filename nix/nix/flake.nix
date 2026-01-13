@@ -70,6 +70,7 @@
               "mas"
             ];
             casks = [
+              "arc"
               "cursor"
               "ghostty"
               "1password"
@@ -165,7 +166,7 @@
             nix-homebrew = {
               enable = true;
               # Apple Silicon Only
-              enableRosetta = true;
+              enableRosetta = false;
               # User owning the Homebrew prefix
               user = "bragur";
             };

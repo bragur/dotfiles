@@ -151,6 +151,30 @@ This configuration uses `onActivation.cleanup = "zap"`, which means:
 
 This ensures your system stays clean and reproducible. If you want to keep a package permanently, add it to `flake.nix`.
 
+## Spotlight and GUI Applications
+
+### Nix-Installed Apps
+
+GUI applications installed via Nix (like Obsidian, Raycast, Slack, VSCode) appear in:
+- **Location**: `/Applications/Nix Apps/`
+- **Spotlight label**: Shows as "alias" (this is expected and correct)
+- **Functionality**: Fully functional - can launch, pin to Dock, set as default apps
+
+The apps are created using **mkalias**, which generates native macOS aliases (not symlinks). This ensures:
+- ✅ Spotlight indexing works
+- ✅ Dock pinning works
+- ✅ LaunchServices file associations work
+- ✅ Native macOS integration
+
+When you search "Raycast" in Spotlight, you'll see "Raycast alias" - this is correct and the app will launch normally.
+
+### Homebrew Cask Apps
+
+Apps installed via Homebrew casks (Arc, 1Password, Ghostty, Cursor, Hyperkey) install directly to:
+- **Location**: `/Applications/`
+- **Spotlight label**: Shows as regular applications
+- **Purpose**: Used for apps that need deep macOS integration (Touch ID, system keychain, etc.)
+
 ## Troubleshooting
 
 ### "command not found" after rebuild
@@ -237,9 +261,11 @@ This gives you:
 1. Install Nix: `sh <(curl -L https://nixos.org/nix/install)`
 2. Enable flakes: `mkdir -p ~/.config/nix && echo "experimental-features = nix-command flakes" >> ~/.config/nix/nix.conf`
 3. Clone dotfiles: `git clone <your-repo> ~/dotfiles`
-4. Apply config: `cd ~/dotfiles/nix/nix && sudo darwin-rebuild switch --flake '.#air'`
+4. Bootstrap nix-darwin: `cd ~/dotfiles/nix/nix && sudo nix run nix-darwin -- switch --flake '.#air'`
 5. Restart shell: `exec zsh`
 6. Install dev tools: `mise install`
 
 Done! 🎉
+
+**Note**: The first-time bootstrap uses `nix run nix-darwin` because `darwin-rebuild` doesn't exist yet. After this initial setup, use `darwin-rebuild switch --flake '.#air'` for all future updates.
 
