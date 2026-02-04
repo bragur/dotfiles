@@ -42,13 +42,10 @@
             pkgs.tmux
             pkgs.tmuxifier
             pkgs.mkalias # See comment below
-            pkgs.obsidian
-            pkgs.slack
-            pkgs.vscode
+            pkgs.typst
             pkgs.mise
             pkgs.nixfmt-rfc-style
             pkgs.ripgrep
-            pkgs.raycast
             pkgs.gh
             pkgs.gum
             pkgs.sesh
@@ -59,8 +56,8 @@
             pkgs.carapace
             pkgs.atuin
             pkgs.cmatrix
-            # 1Password and Ghostty are installed via Homebrew casks instead of Nix
-            # because they need better macOS integration (Touch ID, system keychain, etc.)
+            # GUI apps with auto-updaters are installed via Homebrew casks instead of Nix
+            # because Nix's immutable store prevents in-place updates
           ];
 
           homebrew = {
@@ -76,6 +73,10 @@
               "google-chrome"
               "1password"
               "hyperkey"
+              "obsidian"
+              "raycast"
+              "slack"
+              "visual-studio-code"
             ];
             masApps = {
             };
