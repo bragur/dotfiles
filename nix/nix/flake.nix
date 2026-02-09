@@ -54,6 +54,8 @@
             pkgs.jq
             pkgs.jqp
             pkgs.carapace
+            pkgs.antidote
+            pkgs.mas
             pkgs.atuin
             pkgs.cmatrix
             # GUI apps with auto-updaters are installed via Homebrew casks instead of Nix
@@ -63,8 +65,6 @@
           homebrew = {
             enable = true;
             brews = [
-              "antidote"
-              "mas"
             ];
             casks = [
               "arc"
@@ -76,6 +76,7 @@
               "obsidian"
               "raycast"
               "slack"
+              "tailscale"
               "visual-studio-code"
             ];
             masApps = {

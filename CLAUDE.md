@@ -69,6 +69,7 @@ Each root-level directory is a **stow package** that mirrors home directory stru
 ### Nix-Darwin
 - Flake location: `nix/nix/flake.nix`
 - Machine config: `air` (MacBook Air, aarch64-darwin)
+- **Package split**: CLI tools via nix (`environment.systemPackages`), GUI apps with auto-updaters via Homebrew casks
 - Homebrew: Managed with `onActivation.cleanup = "zap"` - manual `brew install` is temporary
 
 ## Agents
