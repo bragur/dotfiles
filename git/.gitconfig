@@ -11,5 +11,14 @@
 [push]
 	autoSetupRemote = true
 
+[merge]
+	conflictStyle = zdiff3
+
+[rerere]
+	enabled = true
+
+[diff]
+	algorithm = histogram
+
 [core]
 	editor = nvim
