@@ -37,7 +37,6 @@
             pkgs.zoxide
             pkgs.eza
             pkgs.bat
-            pkgs.autojump
             pkgs.neovim
             pkgs.tmux
             pkgs.tmuxifier

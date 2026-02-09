@@ -1,9 +1,7 @@
 # HISTORY
 HISTFILE=$HOME/.zsh_history
-HISTSIZE=5000
+HISTSIZE=50000
 SAVEHIST=$HISTSIZE
-
-autoload -Uz compinit && compinit
 
 # TERM OPTIONS
 export EDITOR=nvim

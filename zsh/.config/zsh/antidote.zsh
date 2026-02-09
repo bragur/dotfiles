@@ -1,6 +1,8 @@
-# Source Antidote
-# Use the correct brew path (works with both nix-managed and standalone homebrew)
-if [[ -f /opt/homebrew/opt/antidote/share/antidote/antidote.zsh ]]; then
+# Source Antidote plugin manager
+# Nix-darwin path (primary), Homebrew paths (fallback)
+if [[ -f /run/current-system/sw/share/antidote/antidote.zsh ]]; then
+  source /run/current-system/sw/share/antidote/antidote.zsh
+elif [[ -f /opt/homebrew/opt/antidote/share/antidote/antidote.zsh ]]; then
   source /opt/homebrew/opt/antidote/share/antidote/antidote.zsh
 elif [[ -f /usr/local/opt/antidote/share/antidote/antidote.zsh ]]; then
   source /usr/local/opt/antidote/share/antidote/antidote.zsh
