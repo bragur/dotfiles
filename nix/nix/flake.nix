@@ -57,6 +57,7 @@
             pkgs.mas
             pkgs.atuin
             pkgs.cmatrix
+            pkgs.rsync
             # GUI apps with auto-updaters are installed via Homebrew casks instead of Nix
             # because Nix's immutable store prevents in-place updates
           ];
