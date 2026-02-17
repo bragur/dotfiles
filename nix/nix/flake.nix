@@ -62,6 +62,8 @@
             # because Nix's immutable store prevents in-place updates
           ];
 
+          environment.pathsToLink = [ "/share/antidote" ];
+
           homebrew = {
             enable = true;
             brews = [
@@ -76,7 +78,7 @@
               "obsidian"
               "raycast"
               "slack"
-              "tailscale"
+              "tailscale-app"
               "visual-studio-code"
             ];
             masApps = {
