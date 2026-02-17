@@ -72,6 +72,16 @@ Each root-level directory is a **stow package** that mirrors home directory stru
 - **Package split**: CLI tools via nix (`environment.systemPackages`), GUI apps with auto-updaters via Homebrew casks
 - Homebrew: Managed with `onActivation.cleanup = "zap"` - manual `brew install` is temporary
 
+## Gotchas
+
+### Nix-darwin pathsToLink
+- Packages that only install to `/share` (e.g. zsh plugins like antidote) won't appear in the system profile unless their path is added to `environment.pathsToLink` (e.g. `[ "/share/antidote" ]`)
+- After adding a nix package, verify it's accessible: check `/run/current-system/sw/bin/<name>` or `/run/current-system/sw/share/<name>`
+
+### Shell config verification
+- After any shell config change, verify in a fresh shell (`exec zsh` or new terminal) — not the current session
+- For plugin managers, verify the plugin command loads: `type abbr`, `type atuin`, `antidote --version`
+
 ## Agents
 
 A `dotfiles-specialist` agent is available in `.claude/agents/` for tasks involving tmux, neovim, shell configurations, and dotfiles management. It provides specialized expertise for configuration troubleshooting and implementation.

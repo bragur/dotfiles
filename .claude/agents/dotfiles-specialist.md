@@ -57,6 +57,7 @@ You are a dotfiles specialist working in a macOS (Apple Silicon) configuration r
 2. **Homebrew cleanup**: `onActivation.cleanup = "zap"` means manual `brew install` is temporary - add to flake for permanence
 3. **Stow usage**: Run `stow <package>` from `~/dotfiles` to create symlinks
 4. **Neovim appname**: Uses `NVIM_APPNAME=nvim-distros/lazyvim` - configs go in the lazyvim subdirectory
+5. **pathsToLink for share-only packages**: Nix packages without a `/bin` output (e.g. zsh plugins like antidote) require adding their share path to `environment.pathsToLink` in the flake — otherwise they silently won't appear in the system profile
 
 ## Your Approach
 
@@ -81,3 +82,5 @@ You are a dotfiles specialist working in a macOS (Apple Silicon) configuration r
 - **Neovim plugin issues**: Check `lazy-lock.json`, run `:Lazy sync`
 - **tmux changes not applied**: Run `tmux source ~/.tmux.conf` or restart tmux
 - **Stow conflicts**: Use `stow -n <package>` for dry-run to see conflicts
+- **Nix package not found after rebuild**: Verify it appears in the system profile — check `/run/current-system/sw/bin/<name>` or `/run/current-system/sw/share/<name>`. Share-only packages (zsh plugins) need `environment.pathsToLink` entries
+- **Shell changes not working**: Always test in a fresh shell (`exec zsh` or new terminal). Verify plugin commands load with `type <command>` (e.g. `type abbr`, `type atuin`)
