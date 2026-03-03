@@ -70,6 +70,7 @@
             ];
             casks = [
               "arc"
+              "claude"
               "cursor"
               "ghostty"
               "google-chrome"
