@@ -210,7 +210,7 @@ man configuration.nix
 1. Install Nix: `sh <(curl -L https://nixos.org/nix/install)`
 2. Enable flakes: `mkdir -p ~/.config/nix && echo "experimental-features = nix-command flakes" >> ~/.config/nix/nix.conf`
 3. Clone dotfiles: `git clone https://github.com/bragur/dotfiles.git ~/dotfiles`
-4. Bootstrap nix-darwin: `cd ~/dotfiles/nix/nix && sudo nix run nix-darwin -- switch --flake '.#air'` (or `'.#main'`)
+4. Bootstrap nix-darwin: `cd ~/dotfiles/nix/nix && sudo nix --extra-experimental-features "nix-command flakes" run nix-darwin -- switch --flake '.#air'` (or `'.#main'`)
 5. Symlink configs: `cd ~/dotfiles && stow zsh git zsh-abbr mise tmux oh-my-posh ghostty atuin`
 6. Post-stow: `mkdir -p ~/Pictures/Screenshots && mise install`
 7. Restart shell: `exec zsh`

@@ -50,7 +50,7 @@ git clone https://github.com/bragur/dotfiles.git ~/dotfiles
 ### 4. Bootstrap nix-darwin
 ```bash
 cd ~/dotfiles/nix/nix
-sudo nix run nix-darwin -- switch --flake '.#air'   # or '.#main' for Mac Mini
+sudo nix --extra-experimental-features "nix-command flakes" run nix-darwin -- switch --flake '.#air'   # or '.#main' for Mac Mini
 ```
 
 ### 5. Symlink Configs with Stow

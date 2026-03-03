@@ -41,12 +41,12 @@ This gives you infrastructure-as-code for reproducibility while keeping configs 
 
    ```sh
    cd ~/dotfiles/nix/nix
-   sudo nix run nix-darwin -- switch --flake '.#air'   # MacBook Air
+   sudo nix --extra-experimental-features "nix-command flakes" run nix-darwin -- switch --flake '.#air'   # MacBook Air
    # or
-   sudo nix run nix-darwin -- switch --flake '.#main'  # Mac Mini
+   sudo nix --extra-experimental-features "nix-command flakes" run nix-darwin -- switch --flake '.#main'  # Mac Mini
    ```
 
-   `#air` and `#main` are **flake configuration names** (not git branches) — pick the one matching your machine. On a fresh machine, `darwin-rebuild` doesn't exist yet because it's provided by nix-darwin itself. After this first bootstrap, use `darwin-rebuild switch` for future updates.
+   `#air` and `#main` are **flake configuration names** (not git branches) — pick the one matching your machine. The `--extra-experimental-features` flag is needed because `sudo` runs as root, which doesn't see your user's `~/.config/nix/nix.conf`. After this first bootstrap, the flake enables flakes system-wide so this flag is no longer needed.
 
 5. **Symlink configs with stow**:
 
