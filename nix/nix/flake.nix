@@ -69,7 +69,6 @@
             brews = [
             ];
             casks = [
-              "arc"
               "claude"
               "cursor"
               "ghostty"
