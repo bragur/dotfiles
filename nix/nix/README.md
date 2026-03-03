@@ -210,10 +210,11 @@ man configuration.nix
 1. Install Nix: `sh <(curl -L https://nixos.org/nix/install)`
 2. Enable flakes: `mkdir -p ~/.config/nix && echo "experimental-features = nix-command flakes" >> ~/.config/nix/nix.conf`
 3. Clone dotfiles: `git clone https://github.com/bragur/dotfiles.git ~/dotfiles`
-4. Bootstrap nix-darwin: `cd ~/dotfiles/nix/nix && sudo nix --extra-experimental-features "nix-command flakes" run nix-darwin -- switch --flake '.#air'` (or `'.#main'`)
-5. Symlink configs: `cd ~/dotfiles && stow zsh git zsh-abbr mise tmux oh-my-posh ghostty atuin`
-6. Post-stow: `mkdir -p ~/Pictures/Screenshots && mise install`
-7. Restart shell: `exec zsh`
+4. Move shell configs: `sudo mv /etc/bashrc /etc/bashrc.before-nix-darwin && sudo mv /etc/zshrc /etc/zshrc.before-nix-darwin`
+5. Bootstrap nix-darwin: `cd ~/dotfiles/nix/nix && sudo nix --extra-experimental-features "nix-command flakes" run nix-darwin -- switch --flake '.#air'` (or `'.#main'`)
+6. Symlink configs: `cd ~/dotfiles && stow zsh git zsh-abbr mise tmux oh-my-posh ghostty atuin`
+7. Post-stow: `mkdir -p ~/Pictures/Screenshots && mise install`
+8. Restart shell: `exec zsh`
 
 **Note**: The first-time bootstrap uses `nix run nix-darwin` because `darwin-rebuild` doesn't exist yet. After this initial setup, use `darwin-rebuild switch` for all future updates.
 

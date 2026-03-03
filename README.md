@@ -37,7 +37,14 @@ This gives you infrastructure-as-code for reproducibility while keeping configs 
    git clone https://github.com/bragur/dotfiles.git ~/dotfiles
    ```
 
-4. **Bootstrap nix-darwin**:
+4. **Move macOS shell configs** (nix-darwin needs to manage these):
+
+   ```sh
+   sudo mv /etc/bashrc /etc/bashrc.before-nix-darwin
+   sudo mv /etc/zshrc /etc/zshrc.before-nix-darwin
+   ```
+
+5. **Bootstrap nix-darwin**:
 
    ```sh
    cd ~/dotfiles/nix/nix
@@ -48,7 +55,7 @@ This gives you infrastructure-as-code for reproducibility while keeping configs 
 
    `#air` and `#main` are **flake configuration names** (not git branches) — pick the one matching your machine. The `--extra-experimental-features` flag is needed because `sudo` runs as root, which doesn't see your user's `~/.config/nix/nix.conf`. After this first bootstrap, the flake enables flakes system-wide so this flag is no longer needed.
 
-5. **Symlink configs with stow**:
+6. **Symlink configs with stow**:
 
    ```sh
    cd ~/dotfiles
@@ -62,19 +69,19 @@ This gives you infrastructure-as-code for reproducibility while keeping configs 
    stow atuin         # Shell history
    ```
 
-6. **Post-stow setup**:
+7. **Post-stow setup**:
 
    ```sh
    mkdir -p ~/Pictures/Screenshots   # screencapture target directory
    mise install                       # install dev tools (Node.js, etc.)
    ```
 
-7. **Restart shell**:
+8. **Restart shell**:
    ```sh
    exec zsh
    ```
 
-8. **tmux first launch**: TPM auto-installs itself on first run. Once inside tmux, press `prefix + I` (Ctrl-a then Shift-i) to install plugins (catppuccin theme, battery, cpu, etc.).
+9. **tmux first launch**: TPM auto-installs itself on first run. Once inside tmux, press `prefix + I` (Ctrl-a then Shift-i) to install plugins (catppuccin theme, battery, cpu, etc.).
 
 ### Updating the System
 

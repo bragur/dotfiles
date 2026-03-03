@@ -47,29 +47,35 @@ mkdir -p ~/.config/nix && echo "experimental-features = nix-command flakes" >> ~
 git clone https://github.com/bragur/dotfiles.git ~/dotfiles
 ```
 
-### 4. Bootstrap nix-darwin
+### 4. Move macOS shell configs
+```bash
+sudo mv /etc/bashrc /etc/bashrc.before-nix-darwin
+sudo mv /etc/zshrc /etc/zshrc.before-nix-darwin
+```
+
+### 5. Bootstrap nix-darwin
 ```bash
 cd ~/dotfiles/nix/nix
 sudo nix --extra-experimental-features "nix-command flakes" run nix-darwin -- switch --flake '.#air'   # or '.#main' for Mac Mini
 ```
 
-### 5. Symlink Configs with Stow
+### 6. Symlink Configs with Stow
 ```bash
 cd ~/dotfiles
 stow zsh git zsh-abbr mise tmux oh-my-posh ghostty atuin
 ```
 
-### 6. Install Dev Tools
+### 7. Install Dev Tools
 ```bash
 mise install
 ```
 
-### 7. Restart Shell
+### 8. Restart Shell
 ```bash
 exec zsh
 ```
 
-### 8. Verify Everything Works
+### 9. Verify Everything Works
 - [ ] Test SSH connections to work services
 - [ ] Verify git commits use correct email
 - [ ] Check work-specific tools/services are running
