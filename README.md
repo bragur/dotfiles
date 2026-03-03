@@ -25,38 +25,56 @@ This gives you infrastructure-as-code for reproducibility while keeping configs 
    sh <(curl -L https://nixos.org/nix/install)
    ```
 
-2. **Clone dotfiles**:
+2. **Enable flakes**:
 
    ```sh
-   git clone git@github.com:bragur/dotfiles.git ~/dotfiles
+   mkdir -p ~/.config/nix && echo "experimental-features = nix-command flakes" >> ~/.config/nix/nix.conf
    ```
 
-3. **Bootstrap nix-darwin** (first-time setup on `air` branch for MacBook Air):
+3. **Clone dotfiles**:
+
+   ```sh
+   git clone https://github.com/bragur/dotfiles.git ~/dotfiles
+   ```
+
+4. **Bootstrap nix-darwin**:
 
    ```sh
    cd ~/dotfiles/nix/nix
-   sudo nix run nix-darwin -- switch --flake '.#air'
+   sudo nix run nix-darwin -- switch --flake '.#air'   # MacBook Air
+   # or
+   sudo nix run nix-darwin -- switch --flake '.#main'  # Mac Mini
    ```
 
-   **Why this command?** On a fresh machine, `darwin-rebuild` doesn't exist yet because it's provided by nix-darwin itself. The `nix run nix-darwin` command downloads nix-darwin, builds your configuration, and activates it. After this first bootstrap, `darwin-rebuild` will be available for all future updates.
+   `#air` and `#main` are **flake configuration names** (not git branches) — pick the one matching your machine. On a fresh machine, `darwin-rebuild` doesn't exist yet because it's provided by nix-darwin itself. After this first bootstrap, use `darwin-rebuild switch` for future updates.
 
-4. **Symlink configs with stow**:
+5. **Symlink configs with stow**:
 
    ```sh
    cd ~/dotfiles
-   stow zsh           # Symlinks zsh configs
-   stow nvim-distros  # Symlinks neovim configs
-   stow zsh-abbr      # Symlinks zsh abbreviations
-   stow mise          # Symlinks mise config
-   stow tmux          # Symlinks tmux config
-   stow oh-my-posh    # Symlinks oh-my-posh theme
-   stow ghostty       # Symlinks Ghostty terminal config
+   stow zsh           # Shell config + plugin list
+   stow git           # Git config
+   stow zsh-abbr      # Zsh abbreviations
+   stow mise          # mise dev tool config
+   stow tmux          # tmux config
+   stow oh-my-posh    # Prompt theme
+   stow ghostty       # Terminal config
+   stow atuin         # Shell history
    ```
 
-5. **Restart shell**:
+6. **Post-stow setup**:
+
+   ```sh
+   mkdir -p ~/Pictures/Screenshots   # screencapture target directory
+   mise install                       # install dev tools (Node.js, etc.)
+   ```
+
+7. **Restart shell**:
    ```sh
    exec zsh
    ```
+
+8. **tmux first launch**: TPM auto-installs itself on first run. Once inside tmux, press `prefix + I` (Ctrl-a then Shift-i) to install plugins (catppuccin theme, battery, cpu, etc.).
 
 ### Updating the System
 
@@ -64,7 +82,7 @@ This gives you infrastructure-as-code for reproducibility while keeping configs 
 # Update everything (Nix packages, Homebrew, system settings)
 cd ~/dotfiles/nix/nix
 nix flake update
-sudo darwin-rebuild switch --flake '.#air'
+sudo darwin-rebuild switch --flake '.#air'   # or '.#main' on Mac Mini
 
 # Update dev tools
 mise upgrade
@@ -79,7 +97,7 @@ Each directory in the root is a "package" that mirrors your home directory struc
 ```sh
 # Link specific configs
 stow zsh          # zsh/.zshrc -> ~/.zshrc
-stow nvim-distros # nvim-distros/.config/nvim -> ~/.config/nvim
+stow git          # git/.gitconfig -> ~/.gitconfig
 
 # Unlink configs
 stow -D zsh       # Remove symlinks
@@ -99,7 +117,7 @@ I've been experimenting with [Catppuccin](https://github.com/catppuccin/catppucc
 
 The system is managed declaratively using nix-darwin. This means packages, Homebrew apps, and macOS settings are all defined in `nix/nix/flake.nix`. To add a package or change settings, edit the flake and rebuild. See **[nix/nix/README.md](nix/nix/README.md)** for details.
 
-Currently configured for the `air` machine (MacBook Air). Eventually, I'd like to sync this setup with my work machine for identical configurations across devices.
+Currently configured for the `air` (MacBook Air) and `main` (Mac Mini M4 Pro) machines, sharing the same configuration module.
 
 **Homebrew Usage**: Homebrew is managed by nix-darwin with `onActivation.cleanup = "zap"`. This means:
 
@@ -130,11 +148,10 @@ Configuration: `ghostty/.config/ghostty/config`
 
 I run the Z shell with antidote for plugin management. Configured plugins include:
 
-- `zsh-abbr` - Command abbreviations (223 custom abbreviations)
+- `zsh-abbr` - Command abbreviations (223+ custom abbreviations)
 - `zsh-autosuggestions` - Fish-like autosuggestions
 - `fast-syntax-highlighting` - Syntax highlighting
-- `zsh-fzf-history-search` - Fuzzy history search
-- Various oh-my-zsh plugins (git, colored-man-pages, etc.)
+- oh-my-zsh plugins (colored-man-pages, globalias)
 
 #### [oh-my-posh](https://ohmyposh.dev/)
 

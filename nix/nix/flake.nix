@@ -178,5 +178,20 @@
           }
         ];
       };
+
+      # Mac Mini M4 Pro — same config as air for now
+      darwinConfigurations."main" = nix-darwin.lib.darwinSystem {
+        modules = [
+          configuration
+          nix-homebrew.darwinModules.nix-homebrew
+          {
+            nix-homebrew = {
+              enable = true;
+              enableRosetta = false;
+              user = "bragur";
+            };
+          }
+        ];
+      };
     };
 }

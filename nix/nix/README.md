@@ -12,24 +12,30 @@ This Nix flake manages:
 
 ## Current Configuration
 
+### Flake Configs
+
+Two machine configurations share the same module:
+- `#air` — MacBook Air
+- `#main` — Mac Mini M4 Pro
+
 ### System Packages (Nix-managed)
 Located in: `flake.nix` → `environment.systemPackages`
 
 These are installed system-wide and available in your PATH:
-- **Shell tools**: zsh, oh-my-posh, fzf, zoxide, eza, bat
-- **Dev tools**: neovim, tmux, tmuxifier, stow, mise, git
-- **Utilities**: autojump
-- **GUI apps**: obsidian, slack, vscode
+- **Shell**: zsh, oh-my-posh, antidote, carapace, atuin
+- **File tools**: fzf, zoxide, eza, bat, fd, ripgrep
+- **Dev tools**: neovim, tmux, tmuxifier, stow, mise, gh
+- **Data tools**: jq, jqp, yq, typst
+- **System**: mkalias, nixfmt-rfc-style, mas, rsync, sesh, gum, cmatrix
 
 ### Homebrew Packages
-Located in: `flake.nix` → `homebrew.brews` and `homebrew.casks`
+Located in: `flake.nix` → `homebrew.casks`
 
-**Brews** (CLI tools):
-- antidote (zsh plugin manager)
-- mas (Mac App Store CLI)
+**Brews**: (none — CLI tools are all via Nix)
 
 **Casks** (GUI apps):
-- Cursor, Ghostty, 1Password, Hyperkey
+- Arc, Cursor, Ghostty, Google Chrome, 1Password
+- Hyperkey, Obsidian, Raycast, Slack, Tailscale, VS Code
 
 ### macOS Settings
 Located in: `flake.nix` → `system.defaults`
@@ -73,7 +79,7 @@ cd ~/dotfiles/nix/nix
 nix flake update
 
 # Apply changes
-sudo darwin-rebuild switch --flake '.#air'
+sudo darwin-rebuild switch --flake '.#air'   # or '.#main'
 ```
 
 ### Changing System Settings
@@ -86,7 +92,7 @@ After editing `flake.nix`:
 
 ```bash
 cd ~/dotfiles/nix/nix
-sudo darwin-rebuild switch --flake '.#air'
+sudo darwin-rebuild switch --flake '.#air'   # or '.#main'
 ```
 
 ## Mise (Development Tools)
@@ -96,10 +102,6 @@ sudo darwin-rebuild switch --flake '.#air'
 ### Current Setup
 
 Global tools are configured in: `~/.config/mise/config.toml`
-
-Currently installed:
-- Node.js 22.20.0 (LTS) - includes npm 10.9.3
-- Yarn 4.10.3
 
 ### Using Mise
 
@@ -122,32 +124,18 @@ mise upgrade
 
 Mise automatically switches versions based on your directory!
 
-## Homebrew Paths
+## Homebrew
 
-Your system uses **two Homebrew installations**:
+Homebrew is installed and managed by nix-darwin at `/opt/homebrew`.
 
-1. **Nix-managed Homebrew** (recommended): `/opt/homebrew`
-   - Managed by nix-darwin
-   - Updated when you run `darwin-rebuild`
-   - Use: `/opt/homebrew/bin/brew`
-
-2. **Legacy Homebrew**: `/usr/local` (Intel path)
-   - Leftover from before Nix setup
-   - Can be removed once you're comfortable with the Nix setup
-
-To use the correct Homebrew:
-```bash
-/opt/homebrew/bin/brew install package-name
-```
-
-### ⚠️ Important: Homebrew Cleanup Behavior
+### Cleanup Behavior
 
 This configuration uses `onActivation.cleanup = "zap"`, which means:
 
 **Every time you run `darwin-rebuild switch`:**
-- ✅ Packages declared in `flake.nix` → `homebrew.brews` are **kept**
-- ✅ Casks declared in `flake.nix` → `homebrew.casks` are **kept**
-- ❌ Any manually installed packages (`brew install something`) are **REMOVED**
+- Packages declared in `flake.nix` → `homebrew.brews` are **kept**
+- Casks declared in `flake.nix` → `homebrew.casks` are **kept**
+- Any manually installed packages (`brew install something`) are **REMOVED**
 
 This ensures your system stays clean and reproducible. If you want to keep a package permanently, add it to `flake.nix`.
 
@@ -155,25 +143,20 @@ This ensures your system stays clean and reproducible. If you want to keep a pac
 
 ### Nix-Installed Apps
 
-GUI applications installed via Nix (like Obsidian, Raycast, Slack, VSCode) appear in:
+GUI applications installed via Nix appear in:
 - **Location**: `/Applications/Nix Apps/`
 - **Spotlight label**: Shows as "alias" (this is expected and correct)
-- **Functionality**: Fully functional - can launch, pin to Dock, set as default apps
 
 The apps are created using **mkalias**, which generates native macOS aliases (not symlinks). This ensures:
-- ✅ Spotlight indexing works
-- ✅ Dock pinning works
-- ✅ LaunchServices file associations work
-- ✅ Native macOS integration
-
-When you search "Raycast" in Spotlight, you'll see "Raycast alias" - this is correct and the app will launch normally.
+- Spotlight indexing works
+- Dock pinning works
+- LaunchServices file associations work
 
 ### Homebrew Cask Apps
 
-Apps installed via Homebrew casks (Arc, 1Password, Ghostty, Cursor, Hyperkey) install directly to:
+Apps installed via Homebrew casks install directly to:
 - **Location**: `/Applications/`
 - **Spotlight label**: Shows as regular applications
-- **Purpose**: Used for apps that need deep macOS integration (Touch ID, system keychain, etc.)
 
 ## Troubleshooting
 
@@ -182,15 +165,6 @@ Apps installed via Homebrew casks (Arc, 1Password, Ghostty, Cursor, Hyperkey) in
 Restart your shell or source your zshrc:
 ```bash
 exec zsh
-# or
-source ~/.zshrc
-```
-
-### Homebrew errors about Intel/ARM paths
-
-Make sure you're using `/opt/homebrew/bin/brew` on Apple Silicon:
-```bash
-which brew  # Should show /opt/homebrew/bin/brew
 ```
 
 ### mise tool not found
@@ -212,21 +186,11 @@ sudo darwin-rebuild --list-generations
 sudo darwin-rebuild --rollback
 ```
 
-## Version Information
-
-Last updated: October 8, 2025
-
-- **macOS**: 26.0.1 (Tahoe)
-- **Nix**: 2.31.2
-- **nix-darwin**: 25.11
-- **Homebrew**: 4.6.12
-- **mise**: 2025.9.10
-
 ## Useful Commands
 
 ```bash
 # Rebuild system
-sudo darwin-rebuild switch --flake ~/dotfiles/nix/nix/.#air
+sudo darwin-rebuild switch --flake ~/dotfiles/nix/nix/.#air   # or .#main
 
 # Update all packages
 cd ~/dotfiles/nix/nix && nix flake update && sudo darwin-rebuild switch --flake '.#air'
@@ -241,6 +205,18 @@ sudo nix-collect-garbage -d
 man configuration.nix
 ```
 
+## Migration to New Machine
+
+1. Install Nix: `sh <(curl -L https://nixos.org/nix/install)`
+2. Enable flakes: `mkdir -p ~/.config/nix && echo "experimental-features = nix-command flakes" >> ~/.config/nix/nix.conf`
+3. Clone dotfiles: `git clone https://github.com/bragur/dotfiles.git ~/dotfiles`
+4. Bootstrap nix-darwin: `cd ~/dotfiles/nix/nix && sudo nix run nix-darwin -- switch --flake '.#air'` (or `'.#main'`)
+5. Symlink configs: `cd ~/dotfiles && stow zsh git zsh-abbr mise tmux oh-my-posh ghostty atuin`
+6. Post-stow: `mkdir -p ~/Pictures/Screenshots && mise install`
+7. Restart shell: `exec zsh`
+
+**Note**: The first-time bootstrap uses `nix run nix-darwin` because `darwin-rebuild` doesn't exist yet. After this initial setup, use `darwin-rebuild switch` for all future updates.
+
 ## Philosophy
 
 This setup follows a **hybrid approach**:
@@ -248,24 +224,4 @@ This setup follows a **hybrid approach**:
 - **Nix-darwin**: Infrastructure as code - system packages, settings, Homebrew integration
 - **Homebrew**: GUI applications and tools that need macOS-specific integration
 - **mise**: Development tools (Node, Python, etc.) - flexible per-project versions
-- **stow**: Dotfiles - directly editable configs (nvim, zsh, tmux, etc.)
-
-This gives you:
-- ✅ Reproducible system configuration
-- ✅ Easy migration to new machines
-- ✅ Quick iteration on dev tool versions
-- ✅ Simple dotfile editing without rebuilds
-
-## Migration to New Machine
-
-1. Install Nix: `sh <(curl -L https://nixos.org/nix/install)`
-2. Enable flakes: `mkdir -p ~/.config/nix && echo "experimental-features = nix-command flakes" >> ~/.config/nix/nix.conf`
-3. Clone dotfiles: `git clone <your-repo> ~/dotfiles`
-4. Bootstrap nix-darwin: `cd ~/dotfiles/nix/nix && sudo nix run nix-darwin -- switch --flake '.#air'`
-5. Restart shell: `exec zsh`
-6. Install dev tools: `mise install`
-
-Done! 🎉
-
-**Note**: The first-time bootstrap uses `nix run nix-darwin` because `darwin-rebuild` doesn't exist yet. After this initial setup, use `darwin-rebuild switch --flake '.#air'` for all future updates.
-
+- **stow**: Dotfiles - directly editable configs (zsh, tmux, etc.)

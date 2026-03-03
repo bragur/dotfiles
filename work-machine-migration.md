@@ -12,52 +12,64 @@
 
 ## Homebrew Cleanup
 
-### 1. Check for Dual Installation
+### 1. Check for Existing Installation
 ```bash
-ls -la /usr/local/Homebrew
-ls -la /opt/homebrew
 which -a brew
+ls -la /opt/homebrew
 ```
 
-### 2. Remove ARM Homebrew (if exists)
+### 2. Remove Homebrew (if exists)
 ```bash
 /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/uninstall.sh)"
 ```
 
-### 3. Remove Intel Homebrew (if exists)
-```bash
-arch -x86_64 /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/uninstall.sh)"
-```
-
-### 4. Clean Up Remaining Files
+### 3. Clean Up Remaining Files
 ```bash
 sudo rm -rf /opt/homebrew
-sudo rm -rf /usr/local/Homebrew
-sudo rm -rf /usr/local/Caskroom
-sudo rm -rf /usr/local/Cellar
-# Check for any remaining homebrew-related dirs in /usr/local
+# Check for any remaining homebrew-related dirs
 ls /usr/local
 ```
 
 ## Dotfiles Migration
 
-### 1. Clone Dotfiles Repo
+### 1. Install Nix
 ```bash
-cd ~
-git clone <your-repo-url> dotfiles
-cd dotfiles
+sh <(curl -L https://nixos.org/nix/install)
 ```
 
-### 2. Setup Nix
-Follow nix installation and setup instructions
-
-### 3. Setup with Stow
+### 2. Enable Flakes
 ```bash
-# Review and apply stow configs
-stow <package-name>
+mkdir -p ~/.config/nix && echo "experimental-features = nix-command flakes" >> ~/.config/nix/nix.conf
 ```
 
-### 4. Verify Everything Works
+### 3. Clone Dotfiles Repo
+```bash
+git clone https://github.com/bragur/dotfiles.git ~/dotfiles
+```
+
+### 4. Bootstrap nix-darwin
+```bash
+cd ~/dotfiles/nix/nix
+sudo nix run nix-darwin -- switch --flake '.#air'   # or '.#main' for Mac Mini
+```
+
+### 5. Symlink Configs with Stow
+```bash
+cd ~/dotfiles
+stow zsh git zsh-abbr mise tmux oh-my-posh ghostty atuin
+```
+
+### 6. Install Dev Tools
+```bash
+mise install
+```
+
+### 7. Restart Shell
+```bash
+exec zsh
+```
+
+### 8. Verify Everything Works
 - [ ] Test SSH connections to work services
 - [ ] Verify git commits use correct email
 - [ ] Check work-specific tools/services are running
@@ -65,4 +77,4 @@ stow <package-name>
 ## Notes
 - Since both machines use stow, transition should be smooth
 - Nix flake will handle package management cleanly
-- No more dual homebrew architecture issues
+- Homebrew is managed by nix-darwin — manual `brew install` is temporary and will be removed on next rebuild
