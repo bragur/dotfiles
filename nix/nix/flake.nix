@@ -78,6 +78,7 @@
               "obsidian"
               "raycast"
               "slack"
+              "spotify"
               "tailscale-app"
               "visual-studio-code"
             ];
