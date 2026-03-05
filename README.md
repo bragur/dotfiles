@@ -74,6 +74,8 @@ This gives you infrastructure-as-code for reproducibility while keeping configs 
    ```sh
    mkdir -p ~/Pictures/Screenshots   # screencapture target directory
    mise install                       # install dev tools (Node.js, etc.)
+   atuin login                        # sync shell history across machines
+   atuin sync                         # pull existing history
    ```
 
 8. **Restart shell**:
