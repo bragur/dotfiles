@@ -147,6 +147,9 @@
           # Necessary for using flakes on this system.
           nix.settings.experimental-features = "nix-command flakes";
 
+          # Completion is handled by .zshrc (compinit -C -u) with caching
+          programs.zsh.enableCompletion = false;
+
           # Enable alternative shell support in nix-darwin.
           # programs.fish.enable = true;
 
