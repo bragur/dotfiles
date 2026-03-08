@@ -40,5 +40,4 @@ source <(carapace _carapace)
 
 export PATH="$HOME/.local/bin:$PATH"
 
-# zoxide must be last to ensure its cd override isn't clobbered
-eval "$(zoxide init --cmd cd zsh)"
+eval "$(zoxide init zsh)"
