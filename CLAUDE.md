@@ -71,6 +71,7 @@ Each root-level directory is a **stow package** that mirrors home directory stru
 - Machine config: `air` (MacBook Air, aarch64-darwin)
 - **Package split**: CLI tools via nix (`environment.systemPackages`), GUI apps with auto-updaters via Homebrew casks
 - Homebrew: Managed with `onActivation.cleanup = "zap"` - manual `brew install` is temporary
+- Keep entries in `systemPackages`, `casks`, `brews`, and `taps` alphabetically sorted
 
 ## Gotchas
 
@@ -84,7 +85,20 @@ Each root-level directory is a **stow package** that mirrors home directory stru
 
 ## Agents
 
-A `dotfiles-specialist` agent is available in `.claude/agents/` for tasks involving tmux, neovim, shell configurations, and dotfiles management. It provides specialized expertise for configuration troubleshooting and implementation.
+Agents are in `.claude/agents/`:
+- `dotfiles-specialist` - Tmux, neovim, shell config, and dotfiles tasks
+- `nix-reviewer` - Reviews flake.nix changes for pitfalls before rebuilding
+
+## Skills
+
+- `/nix-rebuild` - Validate, dry-run preview, and rebuild nix-darwin with rollback support
+- `/add-package` - Add packages to nix (CLI) or Homebrew casks (GUI) with rebuild
+
+## Hooks
+
+Configured in `.claude/settings.json`:
+- **PreToolUse**: Blocks edits to `flake.lock` and `.zcompdump` (generated files)
+- **PostToolUse**: Auto-runs `nix flake check` after editing `flake.nix`
 
 ## Important Notes
 

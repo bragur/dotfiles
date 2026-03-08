@@ -66,7 +66,11 @@
 
           homebrew = {
             enable = true;
+            taps = [
+              "schpet/tap"
+            ];
             brews = [
+              "schpet/tap/linear"
             ];
             casks = [
               "claude"
