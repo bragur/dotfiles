@@ -75,6 +75,7 @@
             casks = [
               "claude"
               "cursor"
+              "figma"
               "ghostty"
               "google-chrome"
               "1password"
