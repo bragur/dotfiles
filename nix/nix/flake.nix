@@ -60,6 +60,10 @@
             pkgs.rsync
             # GUI apps with auto-updaters are installed via Homebrew casks instead of Nix
             # because Nix's immutable store prevents in-place updates
+
+            # Work
+            pkgs.openssl
+            pkgs.pkg-config
           ];
 
           environment.pathsToLink = [ "/share/antidote" ];
@@ -86,6 +90,9 @@
               "spotify"
               "tailscale-app"
               "visual-studio-code"
+
+              # Work
+              "docker"
             ];
             masApps = {
             };
