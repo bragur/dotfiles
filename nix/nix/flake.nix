@@ -64,6 +64,7 @@
             # Work
             pkgs.openssl
             pkgs.pkg-config
+            pkgs.shellcheck # Bottega
           ];
 
           environment.pathsToLink = [ "/share/antidote" ];
