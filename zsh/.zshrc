@@ -41,3 +41,5 @@ source <(carapace _carapace)
 export PATH="$HOME/.local/bin:$PATH"
 
 eval "$(zoxide init zsh)"
+
+[[ ! -f ~/.zshrc.local ]] || source ~/.zshrc.local

@@ -79,6 +79,7 @@
             casks = [
               "claude"
               "cursor"
+              "dbeaver-community"
               "figma"
               "ghostty"
               "google-chrome"
