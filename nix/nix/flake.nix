@@ -78,6 +78,7 @@
               "schpet/tap/linear"
             ];
             casks = [
+              "cleanshot"
               "claude"
               "cursor"
               "dbeaver-community"
