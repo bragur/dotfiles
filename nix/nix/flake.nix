@@ -96,7 +96,7 @@
               "visual-studio-code"
 
               # Work
-              "docker"
+              "docker-desktop"
             ];
             masApps = {
             };
@@ -136,17 +136,39 @@
                         done
               	'';
 
+          # Configure dock folder stacks with sort order (arrangement: 1=Name, 2=Date Added)
+          # nix-darwin's persistent-others only accepts paths (no sort options),
+          # so we write the full tile-data via defaults write and omit persistent-others
+          # from system.defaults to avoid conflicts
+          system.activationScripts.dockFolders.text =
+            let
+              mkFolder = path: arrangement:
+                "'<dict><key>tile-data</key><dict>"
+                + "<key>arrangement</key><integer>${toString arrangement}</integer>"
+                + "<key>file-data</key><dict>"
+                + "<key>_CFURLString</key><string>file://${path}/</string>"
+                + "<key>_CFURLStringType</key><integer>15</integer>"
+                + "</dict>"
+                + "<key>file-type</key><integer>2</integer>"
+                + "</dict><key>tile-type</key><string>directory-tile</string></dict>'";
+            in
+            ''
+              echo "Configuring dock folders..." >&2
+              sudo -u bragur defaults write com.apple.dock persistent-others -array \
+                ${mkFolder "/Users/bragur/Pictures/Screenshots" 2} \
+                ${mkFolder "/Users/bragur/Downloads" 2} \
+                ${mkFolder "/Applications" 1}
+              killall Dock 2>/dev/null || true
+            '';
+
           system.defaults = {
             dock.autohide = true;
             dock.mru-spaces = false;
             dock.show-recents = false;
-            dock.minimize-to-application = true;
+            dock.minimize-to-application = false;
             dock.persistent-apps = [ ];
-            dock.persistent-others = [
-              "/Users/bragur/Pictures/Screenshots"
-              "/Users/bragur/Downloads"
-              "/Applications"
-            ];
+            # persistent-others is handled by activationScripts.dockFolders
+            # (supports sort order, which the dock module doesn't)
             finder.FXPreferredViewStyle = "clmv";
             finder.ShowPathbar = true;
             finder.ShowStatusBar = true;
