@@ -19,11 +19,13 @@ This gives you infrastructure-as-code for reproducibility while keeping configs 
 
 ### Initial Setup
 
-1. **Install Nix**:
+1. **Install Nix** (system-wide — only do this once per machine, not per user):
 
    ```sh
    sh <(curl -L https://nixos.org/nix/install)
    ```
+
+   > **Warning**: Nix is a global multi-user install. Do NOT re-run the installer for additional macOS users — it can encrypt the Nix Store volume and break the existing installation. Instead, add users to the `nixbld` group.
 
 2. **Enable flakes**:
 
@@ -188,3 +190,66 @@ Complimenting tmux is tmuxifier where I have a set of layouts to easily be able 
 I run a configuration based on [LazyVim](https://www.lazyvim.org/) with seamless navigation between Neovim windows and tmux panes. The built-in terminals in Neovim didn't fit my workflow, so I rely on tmux instead.
 
 **Note**: My [keymaps](https://github.com/bragur/dotfiles/tree/main/nvim-distros/.config/nvim-distros/lazyvim/lua/config/keymaps.lua) are optimized for an Icelandic keyboard layout. Option key bindings will need to be reconfigured for other layouts.
+
+## Troubleshooting
+
+### Nix Store volume not mounted after reboot
+
+If after a reboot you see `command not found` for nix, stow, and other tools, the Nix Store APFS volume may have mounted at `/Volumes/Nix Store` instead of `/nix`:
+
+```sh
+mount | grep -i nix    # Check where it mounted
+```
+
+Fix by remounting:
+
+```sh
+# Find the disk identifier
+diskutil list | grep -i nix
+
+# Remount at /nix (replace disk3s7 with your identifier)
+sudo diskutil mount -mountPoint /nix disk3s7
+```
+
+Then rebuild to fix it permanently:
+
+```sh
+sudo darwin-rebuild switch --flake ~/dotfiles/nix/nix/.#air
+```
+
+### Nix daemon not starting (SSL cert errors)
+
+If the nix daemon can't download from the cache due to SSL errors, the cert path in the LaunchDaemon may be wrong:
+
+```sh
+# Check the current config
+sudo cat /Library/LaunchDaemons/org.nixos.nix-daemon.plist | grep -A1 SSL
+
+# If missing or pointing to a nonexistent path, add/fix it
+sudo /usr/libexec/PlistBuddy -c "Add :EnvironmentVariables dict" /Library/LaunchDaemons/org.nixos.nix-daemon.plist 2>/dev/null
+sudo /usr/libexec/PlistBuddy -c "Add :EnvironmentVariables:NIX_SSL_CERT_FILE string /etc/ssl/cert.pem" /Library/LaunchDaemons/org.nixos.nix-daemon.plist
+
+# Restart the daemon
+sudo launchctl bootout system/org.nixos.nix-daemon
+sudo launchctl bootstrap system /Library/LaunchDaemons/org.nixos.nix-daemon.plist
+```
+
+### Nuclear option: full nix reinstall
+
+If the Nix Store volume is encrypted/locked and unrecoverable:
+
+```sh
+# 1. Delete the broken volume
+sudo diskutil apfs deleteVolume disk3s7   # use your disk identifier
+
+# 2. Reinstall nix
+sh <(curl -L https://nixos.org/nix/install)
+
+# 3. Restart terminal, then bootstrap nix-darwin
+cd ~/dotfiles/nix/nix
+sudo nix --extra-experimental-features "nix-command flakes" run nix-darwin -- switch --flake '.#air'
+
+# 4. Re-stow configs
+cd ~/dotfiles
+stow zsh git zsh-abbr mise tmux oh-my-posh ghostty atuin
+```
