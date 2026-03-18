@@ -88,6 +88,7 @@
               "google-chrome"
               "1password"
               "hyperkey"
+              "monitorcontrol"
               "obsidian"
               "raycast"
               "slack"
