@@ -1,0 +1,359 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>tmux cheat sheet</title>
+  <style>
+    /* Catppuccin Mocha palette */
+    :root {
+      --base:    #1e1e2e;
+      --mantle:  #181825;
+      --crust:   #11111b;
+      --surface0:#313244;
+      --surface1:#45475a;
+      --surface2:#585b70;
+      --overlay0:#6c7086;
+      --overlay1:#7f849c;
+      --text:    #cdd6f4;
+      --subtext1:#bac2de;
+      --subtext0:#a6adc8;
+      --lavender:#b4befe;
+      --blue:    #89b4fa;
+      --sapphire:#74c7ec;
+      --sky:     #89dceb;
+      --teal:    #94e2d5;
+      --green:   #a6e3a1;
+      --yellow:  #f9e2af;
+      --peach:   #fab387;
+      --mauve:   #cba6f7;
+      --red:     #f38ba8;
+      --maroon:  #eba0ac;
+      --pink:    #f5c2e7;
+      --flamingo:#f2cdcd;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      background: var(--base);
+      color: var(--text);
+      font-family: 'JetBrains Mono', 'Cascadia Code', 'Fira Code', ui-monospace, monospace;
+      font-size: 13px;
+      line-height: 1.5;
+      padding: 32px 40px;
+    }
+
+    header {
+      margin-bottom: 32px;
+      border-bottom: 1px solid var(--surface1);
+      padding-bottom: 16px;
+      display: flex;
+      align-items: baseline;
+      gap: 16px;
+    }
+
+    header h1 {
+      font-size: 22px;
+      font-weight: 700;
+      color: var(--mauve);
+      letter-spacing: 0.5px;
+    }
+
+    header .subtitle {
+      color: var(--subtext0);
+      font-size: 12px;
+    }
+
+    .prefix-badge {
+      margin-left: auto;
+      background: var(--surface0);
+      border: 1px solid var(--mauve);
+      border-radius: 6px;
+      padding: 4px 12px;
+      font-size: 12px;
+      color: var(--mauve);
+    }
+    .prefix-badge span {
+      color: var(--lavender);
+      font-weight: 700;
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
+      gap: 20px;
+    }
+
+    .card {
+      background: var(--mantle);
+      border: 1px solid var(--surface0);
+      border-radius: 10px;
+      overflow: hidden;
+    }
+
+    .card-header {
+      padding: 10px 16px;
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 1.2px;
+      text-transform: uppercase;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .card-header .dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      flex-shrink: 0;
+    }
+
+    .sessions .card-header   { background: color-mix(in srgb, var(--mauve) 12%, var(--mantle)); color: var(--mauve); }
+    .sessions .dot           { background: var(--mauve); }
+    .windows .card-header    { background: color-mix(in srgb, var(--blue) 12%, var(--mantle));  color: var(--blue); }
+    .windows .dot            { background: var(--blue); }
+    .panes .card-header      { background: color-mix(in srgb, var(--teal) 12%, var(--mantle));  color: var(--teal); }
+    .panes .dot              { background: var(--teal); }
+    .navigation .card-header { background: color-mix(in srgb, var(--green) 12%, var(--mantle)); color: var(--green); }
+    .navigation .dot         { background: var(--green); }
+    .resize .card-header     { background: color-mix(in srgb, var(--peach) 12%, var(--mantle)); color: var(--peach); }
+    .resize .dot             { background: var(--peach); }
+    .layouts .card-header    { background: color-mix(in srgb, var(--sapphire) 12%, var(--mantle)); color: var(--sapphire); }
+    .layouts .dot            { background: var(--sapphire); }
+    .copy .card-header       { background: color-mix(in srgb, var(--yellow) 12%, var(--mantle)); color: var(--yellow); }
+    .copy .dot               { background: var(--yellow); }
+    .misc .card-header       { background: color-mix(in srgb, var(--flamingo) 12%, var(--mantle)); color: var(--flamingo); }
+    .misc .dot               { background: var(--flamingo); }
+    .plugins .card-header    { background: color-mix(in srgb, var(--pink) 12%, var(--mantle));  color: var(--pink); }
+    .plugins .dot            { background: var(--pink); }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+
+    tr:not(:last-child) td {
+      border-bottom: 1px solid var(--surface0);
+    }
+
+    td {
+      padding: 7px 16px;
+      vertical-align: top;
+    }
+
+    td:first-child {
+      width: 52%;
+      white-space: nowrap;
+    }
+
+    td:last-child {
+      color: var(--subtext1);
+      font-size: 12px;
+      padding-left: 8px;
+    }
+
+    kbd {
+      display: inline-block;
+      background: var(--surface0);
+      border: 1px solid var(--surface1);
+      border-bottom-width: 2px;
+      border-radius: 4px;
+      padding: 1px 6px;
+      font-family: inherit;
+      font-size: 12px;
+      color: var(--lavender);
+      white-space: nowrap;
+    }
+
+    .note {
+      background: color-mix(in srgb, var(--yellow) 8%, var(--mantle));
+      border-left: 3px solid var(--yellow);
+      color: var(--subtext1);
+      font-size: 11px;
+      padding: 8px 16px;
+    }
+
+    .note strong { color: var(--yellow); }
+
+    .tag {
+      display: inline-block;
+      font-size: 10px;
+      border-radius: 4px;
+      padding: 1px 5px;
+      margin-left: 4px;
+      vertical-align: middle;
+      font-weight: 600;
+      letter-spacing: 0.3px;
+    }
+
+    .tag-nopfx {
+      background: color-mix(in srgb, var(--green) 15%, transparent);
+      color: var(--green);
+      border: 1px solid color-mix(in srgb, var(--green) 40%, transparent);
+    }
+
+    .tag-vim {
+      background: color-mix(in srgb, var(--teal) 15%, transparent);
+      color: var(--teal);
+      border: 1px solid color-mix(in srgb, var(--teal) 40%, transparent);
+    }
+
+    footer {
+      margin-top: 28px;
+      padding-top: 16px;
+      border-top: 1px solid var(--surface0);
+      color: var(--overlay1);
+      font-size: 11px;
+      display: flex;
+      gap: 24px;
+      flex-wrap: wrap;
+    }
+
+    footer span { color: var(--subtext0); }
+  </style>
+</head>
+<body>
+
+<header>
+  <h1>tmux</h1>
+  <div class="subtitle">personal cheat sheet</div>
+  <div class="prefix-badge">prefix = <span>C-a</span></div>
+</header>
+
+<div class="grid">
+
+  <!-- Sessions -->
+  <div class="card sessions">
+    <div class="card-header"><div class="dot"></div>Sessions</div>
+    <table>
+      <tr><td><kbd>prefix</kbd> <kbd>o</kbd></td><td>SessionX — fuzzy session picker</td></tr>
+      <tr><td><kbd>prefix</kbd> <kbd>T</kbd></td><td>Sesh — fzf full picker (all / tmux / configs / zoxide / find / kill)</td></tr>
+      <tr><td><kbd>prefix</kbd> <kbd>K</kbd></td><td>Sesh — compact gum picker</td></tr>
+      <tr><td><kbd>prefix</kbd> <kbd>j</kbd></td><td>Popup scratch terminal</td></tr>
+      <tr><td><kbd>prefix</kbd> <kbd>d</kbd></td><td>Detach from session</td></tr>
+      <tr><td><kbd>prefix</kbd> <kbd>$</kbd></td><td>Rename current session</td></tr>
+      <tr><td><kbd>prefix</kbd> <kbd>s</kbd></td><td>List sessions (tree view)</td></tr>
+    </table>
+    <div class="note">
+      <strong>Sesh fzf bindings:</strong> ctrl-a all · ctrl-t tmux · ctrl-g configs · ctrl-x zoxide · ctrl-f find · ctrl-d kill
+    </div>
+  </div>
+
+  <!-- Windows -->
+  <div class="card windows">
+    <div class="card-header"><div class="dot"></div>Windows</div>
+    <table>
+      <tr><td><kbd>prefix</kbd> <kbd>c</kbd></td><td>New window</td></tr>
+      <tr><td><kbd>prefix</kbd> <kbd>+</kbd></td><td>Jump to last window</td></tr>
+      <tr><td><kbd>prefix</kbd> <kbd>,</kbd></td><td>Rename current pane title</td></tr>
+      <tr><td><kbd>prefix</kbd> <kbd>1</kbd> – <kbd>9</kbd></td><td>Switch to window N (1-indexed)</td></tr>
+      <tr><td><kbd>prefix</kbd> <kbd>n</kbd> / <kbd>p</kbd></td><td>Next / previous window</td></tr>
+      <tr><td><kbd>prefix</kbd> <kbd>&amp;</kbd></td><td>Kill window</td></tr>
+    </table>
+  </div>
+
+  <!-- Panes -->
+  <div class="card panes">
+    <div class="card-header"><div class="dot"></div>Panes</div>
+    <table>
+      <tr><td><kbd>prefix</kbd> <kbd>s</kbd></td><td>Split — side by side (horizontal)</td></tr>
+      <tr><td><kbd>prefix</kbd> <kbd>h</kbd></td><td>Split — stacked (vertical)</td></tr>
+      <tr><td><kbd>prefix</kbd> <kbd>x</kbd></td><td>Kill pane (no confirmation)</td></tr>
+      <tr><td><kbd>prefix</kbd> <kbd>b</kbd></td><td>Break pane into new window</td></tr>
+      <tr><td><kbd>prefix</kbd> <kbd>m</kbd></td><td>Merge pane from another window</td></tr>
+      <tr><td><kbd>prefix</kbd> <kbd>q</kbd></td><td>Show pane numbers (3 s)</td></tr>
+      <tr><td><kbd>prefix</kbd> <kbd>z</kbd></td><td>Zoom / unzoom pane</td></tr>
+    </table>
+  </div>
+
+  <!-- Navigation -->
+  <div class="card navigation">
+    <div class="card-header"><div class="dot"></div>Pane Navigation <span class="tag tag-nopfx">no prefix</span> <span class="tag tag-vim">nvim-aware</span></div>
+    <table>
+      <tr><td><kbd>C-h</kbd> / <kbd>C-l</kbd></td><td>Move left / right</td></tr>
+      <tr><td><kbd>C-j</kbd> / <kbd>C-k</kbd></td><td>Move down / up</td></tr>
+      <tr><td><kbd>C-\</kbd></td><td>Last pane</td></tr>
+      <tr><td><kbd>C-_</kbd></td><td>Jump to pane 1 &amp; toggle zoom</td></tr>
+    </table>
+    <div class="note">
+      <strong>Smart Splits:</strong> these pass through to Neovim when focused on a Neovim pane — no extra binding needed.
+    </div>
+  </div>
+
+  <!-- Resize -->
+  <div class="card resize">
+    <div class="card-header"><div class="dot"></div>Pane Resize <span class="tag tag-nopfx">no prefix</span></div>
+    <table>
+      <tr><td><kbd>M-←</kbd> / <kbd>M-→</kbd></td><td>Resize left / right by 2</td></tr>
+      <tr><td><kbd>M-↑</kbd> / <kbd>M-↓</kbd></td><td>Resize up / down by 1</td></tr>
+      <tr><td><kbd>M-S-←</kbd> / <kbd>M-S-→</kbd></td><td>Resize left / right by 20</td></tr>
+      <tr><td><kbd>M-S-↑</kbd> / <kbd>M-S-↓</kbd></td><td>Resize up / down by 10</td></tr>
+    </table>
+  </div>
+
+  <!-- Layouts -->
+  <div class="card layouts">
+    <div class="card-header"><div class="dot"></div>Layouts</div>
+    <table>
+      <tr><td><kbd>prefix</kbd> <kbd>L</kbd></td><td>Toggle even-horizontal / even-vertical</td></tr>
+      <tr><td><kbd>prefix</kbd> <kbd>C-v</kbd></td><td>Even-vertical layout</td></tr>
+      <tr><td><kbd>prefix</kbd> <kbd>Space</kbd></td><td>Cycle through preset layouts</td></tr>
+    </table>
+  </div>
+
+  <!-- Copy mode -->
+  <div class="card copy">
+    <div class="card-header"><div class="dot"></div>Copy Mode <span class="tag tag-vim">vi keys</span></div>
+    <table>
+      <tr><td><kbd>prefix</kbd> <kbd>v</kbd></td><td>Enter copy mode</td></tr>
+      <tr><td><kbd>v</kbd></td><td>Begin selection</td></tr>
+      <tr><td><kbd>y</kbd></td><td>Copy selection to clipboard (pbcopy)</td></tr>
+      <tr><td><kbd>C-h/j/k/l</kbd></td><td>Navigate panes from copy mode</td></tr>
+      <tr><td><kbd>/</kbd></td><td>Search forward</td></tr>
+      <tr><td><kbd>?</kbd></td><td>Search backward</td></tr>
+      <tr><td><kbd>q</kbd> / <kbd>Esc</kbd></td><td>Exit copy mode</td></tr>
+    </table>
+  </div>
+
+  <!-- Misc -->
+  <div class="card misc">
+    <div class="card-header"><div class="dot"></div>Config &amp; Misc</div>
+    <table>
+      <tr><td><kbd>prefix</kbd> <kbd>r</kbd></td><td>Reload config (with confirmation)</td></tr>
+      <tr><td><kbd>prefix</kbd> <kbd>a</kbd></td><td>Send prefix to nested tmux session</td></tr>
+      <tr><td><kbd>prefix</kbd> <kbd>C-a</kbd></td><td>Send literal C-a to shell</td></tr>
+      <tr><td><kbd>prefix</kbd> <kbd>:</kbd></td><td>Open command prompt</td></tr>
+      <tr><td><kbd>prefix</kbd> <kbd>?</kbd></td><td>List all key bindings</td></tr>
+      <tr><td><kbd>prefix</kbd> <kbd>t</kbd></td><td>Show clock</td></tr>
+    </table>
+  </div>
+
+  <!-- Plugins -->
+  <div class="card plugins">
+    <div class="card-header"><div class="dot"></div>Plugins (TPM)</div>
+    <table>
+      <tr><td><kbd>prefix</kbd> <kbd>I</kbd></td><td>Install new plugins</td></tr>
+      <tr><td><kbd>prefix</kbd> <kbd>U</kbd></td><td>Update plugins</td></tr>
+      <tr><td><kbd>prefix</kbd> <kbd>M-u</kbd></td><td>Uninstall unlisted plugins</td></tr>
+    </table>
+    <div class="note">
+      <strong>Active plugins:</strong>
+      tpm · tmux-sensible · tmux-battery · tmux-cpu · catppuccin (mocha) · tmux-fzf · tmux-sessionx
+    </div>
+  </div>
+
+</div>
+
+<footer>
+  <div>Theme: <span>Catppuccin Mocha</span></div>
+  <div>Base index: <span>1</span></div>
+  <div>Windows: <span>auto-renumber on delete</span></div>
+  <div>Mouse: <span>on</span></div>
+  <div>Mode keys: <span>vi</span></div>
+  <div>Status: <span>top (2 rows)</span></div>
+</footer>
+
+</body>
+</html>
