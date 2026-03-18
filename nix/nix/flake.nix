@@ -78,6 +78,7 @@
               "schpet/tap/linear"
             ];
             casks = [
+              "arc"
               "cleanshot"
               "claude"
               "cursor"
