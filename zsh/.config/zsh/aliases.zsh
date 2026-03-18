@@ -2,4 +2,4 @@ alias ls="eza --icons"
 alias ll="eza --icons -alh"
 alias tree="eza --tree"
 
-[[ ! -f $ZSH_HOME/leviosa.zsh ]] || source $ZSH_HOME/leviosa.zsh
+[[ ! -f ${XDG_CONFIG_HOME:-$HOME/.config}/zsh-abbr/leviosa-session-abbreviations ]] || zsh-defer source ${XDG_CONFIG_HOME:-$HOME/.config}/zsh-abbr/leviosa-session-abbreviations

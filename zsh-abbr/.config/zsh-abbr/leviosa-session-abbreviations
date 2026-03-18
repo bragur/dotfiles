@@ -1,0 +1,18 @@
+LEVIOSA_DIR="$PROJECT_DIR/leviosa-app"
+WT="$LEVIOSA_DIR/scripts/worktree.sh"
+
+# General
+abbr -S -f lfs="npm run start:fe"
+abbr -S -f lbs="npm run start:be"
+abbr -S -f lbsf="npm run start:be:fresh"
+abbr -S -f lseed="npm run seed"
+
+# Worktrees
+abbr -S -f wtl="$WT list"
+abbr -S -f wts="$WT snapshot"
+abbr -S -f wtd="python3 $LEVIOSA_DIR/scripts/worktree-dashboard"
+abbr -S -f wtc="$WT create"
+abbr -S -f wtcf="$WT create % --fe-only"
+abbr -S -f wtdb="$WT create % --with-db"
+abbr -S -f wtr="$WT remove"
+abbr -S -f wtgo="cd $LEVIOSA_DIR/.worktrees/%"
