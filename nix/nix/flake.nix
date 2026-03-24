@@ -49,10 +49,12 @@
             pkgs.gum
             pkgs.sesh
             pkgs.fd
+            pkgs.yazi
             pkgs.yq
             pkgs.jq
             pkgs.jqp
             pkgs.carapace
+            pkgs.chafa
             pkgs.antidote
             pkgs.mas
             pkgs.atuin
@@ -88,6 +90,7 @@
               "google-chrome"
               "1password"
               "hyperkey"
+              "macdown-3000"
               "monitorcontrol"
               "obsidian"
               "raycast"
