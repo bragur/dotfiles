@@ -1,6 +1,9 @@
 export ZSH_HOME="$HOME/.config/zsh"
 ENABLE_CORRECTION="true"
 
+# Raise file descriptor limit (macOS default of 256 is too low for Claude Code + tmux)
+ulimit -n 10240
+
 # --- User configuration ---
 [[ ! -f $ZSH_HOME/exports.zsh ]] || source $ZSH_HOME/exports.zsh
 [[ ! -f $ZSH_HOME/functions.zsh ]] || source $ZSH_HOME/functions.zsh

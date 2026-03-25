@@ -106,6 +106,7 @@
               "docker-desktop"
             ];
             masApps = {
+              "Amphetamine" = 937984704;
             };
             onActivation.cleanup = "zap";
             onActivation.autoUpdate = true;
