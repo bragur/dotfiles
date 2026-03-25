@@ -41,6 +41,7 @@
             pkgs.tmux
             pkgs.tmuxifier
             pkgs.mkalias # See comment below
+            pkgs.typescript-language-server
             pkgs.typst
             pkgs.mise
             pkgs.nixfmt-rfc-style
@@ -93,6 +94,7 @@
               "macdown-3000"
               "monitorcontrol"
               "obsidian"
+              "pearcleaner"
               "raycast"
               "slack"
               "sonos"
