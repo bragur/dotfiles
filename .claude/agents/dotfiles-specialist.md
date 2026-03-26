@@ -22,7 +22,7 @@ You are a dotfiles specialist working in a macOS (Apple Silicon) configuration r
 - **Modular config** - `.zshrc` sources files from `.config/zsh/` (exports, aliases, functions, options)
 
 **Neovim:**
-- **Location**: `nvim-distros/.config/nvim-distros/lazyvim/` (unusual path, uses `NVIM_APPNAME`)
+- **Location**: `nvim/.config/nvim/`
 - **Framework**: LazyVim with customizations in `lua/plugins/`
 - **Keymaps**: Configured for Icelandic keyboard layout - Option key bindings differ from US layout
 - **tmux integration**: Seamless pane navigation via `Ctrl+hjkl`
@@ -46,8 +46,8 @@ You are a dotfiles specialist working in a macOS (Apple Silicon) configuration r
 | Shell init | `zsh/.zshrc` → sources `zsh/.config/zsh/*.zsh` |
 | Shell functions | `zsh/.config/zsh/functions.zsh` |
 | Shell aliases | `zsh/.config/zsh/aliases.zsh` |
-| Neovim plugins | `nvim-distros/.config/nvim-distros/lazyvim/lua/plugins/` |
-| Neovim keymaps | `nvim-distros/.config/nvim-distros/lazyvim/lua/config/keymaps.lua` |
+| Neovim plugins | `nvim/.config/nvim/lua/plugins/` |
+| Neovim keymaps | `nvim/.config/nvim/lua/config/keymaps.lua` |
 | tmux config | `tmux/.tmux.conf` |
 | Abbreviations | `zsh-abbr/.config/zsh-abbr/user-abbreviations` |
 
@@ -56,7 +56,7 @@ You are a dotfiles specialist working in a macOS (Apple Silicon) configuration r
 1. **Adding packages**: Edit `nix/nix/flake.nix`, then run `sudo darwin-rebuild switch --flake '.#air'`
 2. **Homebrew cleanup**: `onActivation.cleanup = "zap"` means manual `brew install` is temporary - add to flake for permanence
 3. **Stow usage**: Run `stow <package>` from `~/dotfiles` to create symlinks
-4. **Neovim appname**: Uses `NVIM_APPNAME=nvim-distros/lazyvim` - configs go in the lazyvim subdirectory
+4. **Neovim config**: Standard `~/.config/nvim/` path via stow
 5. **pathsToLink for share-only packages**: Nix packages without a `/bin` output (e.g. zsh plugins like antidote) require adding their share path to `environment.pathsToLink` in the flake — otherwise they silently won't appear in the system profile
 
 ## Your Approach

@@ -189,7 +189,7 @@ Complimenting tmux is tmuxifier where I have a set of layouts to easily be able 
 
 I run a configuration based on [LazyVim](https://www.lazyvim.org/) with seamless navigation between Neovim windows and tmux panes. The built-in terminals in Neovim didn't fit my workflow, so I rely on tmux instead.
 
-**Note**: My [keymaps](https://github.com/bragur/dotfiles/tree/main/nvim-distros/.config/nvim-distros/lazyvim/lua/config/keymaps.lua) are optimized for an Icelandic keyboard layout. Option key bindings will need to be reconfigured for other layouts.
+**Note**: My [keymaps](https://github.com/bragur/dotfiles/tree/main/nvim/.config/nvim/lua/config/keymaps.lua) are optimized for an Icelandic keyboard layout. Option key bindings will need to be reconfigured for other layouts.
 
 ## Troubleshooting
 

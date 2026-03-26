@@ -30,7 +30,7 @@ cd ~/dotfiles/nix/nix && nix flake check
 ```bash
 # Symlink a config package (from ~/dotfiles)
 stow zsh          # zsh/.zshrc -> ~/.zshrc
-stow nvim-distros # nvim-distros/.config/nvim-distros -> ~/.config/nvim-distros
+stow nvim          # nvim/.config/nvim -> ~/.config/nvim
 
 # Remove symlinks
 stow -D zsh
@@ -48,7 +48,7 @@ mise use -g node@22  # Set global version
 ### Directory Structure
 Each root-level directory is a **stow package** that mirrors home directory structure:
 - `zsh/` - Shell config (`.zshrc` sources modular configs from `.config/zsh/`)
-- `nvim-distros/` - Neovim (LazyVim-based, in `.config/nvim-distros/lazyvim/`)
+- `nvim/` - Neovim (LazyVim-based, in `.config/nvim/`)
 - `tmux/` - Multiplexer config and scripts
 - `nix/nix/` - nix-darwin flake (not a stow package)
 - `zsh-abbr/` - 223+ command abbreviations
@@ -61,7 +61,7 @@ Each root-level directory is a **stow package** that mirrors home directory stru
 4. **Tools**: mise activates, zoxide/fzf/carapace integrate
 
 ### Neovim
-- Location: `nvim-distros/.config/nvim-distros/lazyvim/`
+- Location: `nvim/.config/nvim/`
 - Framework: LazyVim with custom plugins in `lua/plugins/`
 - Keymaps: Icelandic keyboard layout (Option key bindings differ)
 - Integration: Seamless navigation with tmux panes via `Ctrl+hjkl`
