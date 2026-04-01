@@ -68,7 +68,7 @@ Each root-level directory is a **stow package** that mirrors home directory stru
 
 ### Nix-Darwin
 - Flake location: `nix/nix/flake.nix`
-- Machine config: `air` (MacBook Air, aarch64-darwin)
+- Machine configs: `air` (MacBook Air), `main` (MacBook Pro) — both aarch64-darwin
 - **Package split**: CLI tools via nix (`environment.systemPackages`), GUI apps with auto-updaters via Homebrew casks
 - Homebrew: Managed with `onActivation.cleanup = "zap"` - manual `brew install` is temporary
 - Keep entries in `systemPackages`, `casks`, `brews`, and `taps` alphabetically sorted
@@ -78,6 +78,20 @@ Each root-level directory is a **stow package** that mirrors home directory stru
 ### Nix-darwin pathsToLink
 - Packages that only install to `/share` (e.g. zsh plugins like antidote) won't appear in the system profile unless their path is added to `environment.pathsToLink` (e.g. `[ "/share/antidote" ]`)
 - After adding a nix package, verify it's accessible: check `/run/current-system/sw/bin/<name>` or `/run/current-system/sw/share/<name>`
+
+### Fresh install / machine migration
+- Migration Assistant does NOT migrate nix — it must be reinstalled from scratch
+- Use the **Determinate Systems installer** (not the official nixos.org one):
+  ```bash
+  curl --proto '=https' --tlsv1.2 -sSf -L https://install.determinate.systems/nix | sh -s -- install
+  ```
+  The official installer has macOS issues: no flakes by default, wrong SSL cert path (`/etc/ssl/certs/ca-certificates.crt` instead of macOS `/etc/ssl/cert.pem`), flaky daemon startup
+- After install, restart terminal and bootstrap nix-darwin:
+  ```bash
+  cd ~/dotfiles/nix/nix && nix run nix-darwin -- switch --flake '.#<hostname>'
+  ```
+  (`darwin-rebuild` is not available until after first nix-darwin build)
+- The `ls` alias (`eza`) won't work until nix packages are installed — use `/bin/ls` during bootstrap
 
 ### Shell config verification
 - After any shell config change, verify in a fresh shell (`exec zsh` or new terminal) — not the current session
