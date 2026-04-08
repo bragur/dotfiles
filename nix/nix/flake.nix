@@ -94,7 +94,7 @@
               "ghostty"
               "google-chrome"
               "1password"
-              "hyperkey"
+              "karabiner-elements"
               "macdown-3000"
               "monitorcontrol"
               "obsidian"

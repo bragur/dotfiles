@@ -35,7 +35,7 @@ Located in: `flake.nix` → `homebrew.casks`
 
 **Casks** (GUI apps):
 - Arc, Cursor, Ghostty, Google Chrome, 1Password
-- Hyperkey, Obsidian, Raycast, Slack, Tailscale, VS Code
+- Karabiner Elements, Obsidian, Raycast, Slack, Tailscale, VS Code
 
 ### macOS Settings
 Located in: `flake.nix` → `system.defaults`
