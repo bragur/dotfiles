@@ -37,6 +37,9 @@
             pkgs.zoxide
             pkgs.eza
             pkgs.bat
+            pkgs.btop
+            pkgs.du-dust
+            pkgs.delta
             pkgs.neovim
             pkgs.tmux
             pkgs.tmuxifier
@@ -49,6 +52,7 @@
             pkgs.gh
             pkgs.gum
             pkgs.sesh
+            pkgs.tldr
             pkgs.fd
             pkgs.yazi
             pkgs.yq

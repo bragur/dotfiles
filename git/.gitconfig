@@ -19,9 +19,20 @@
 
 [diff]
 	algorithm = histogram
+	colorMoved = default
 
 [core]
 	editor = nvim
+	pager = delta
+
+[interactive]
+	diffFilter = delta --color-only
+
+[delta]
+	navigate = true
+	side-by-side = false
+	dark = true
+
 [credential "https://github.com"]
 	helper = 
 	helper = !/run/current-system/sw/bin/gh auth git-credential
