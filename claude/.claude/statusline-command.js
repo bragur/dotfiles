@@ -1,109 +1,155 @@
 #!/usr/bin/env node
-// Claude Code Statusline — Catppuccin Mocha theme
-// Shows: folder | git branch + changes | context bar | model
+'use strict';
 
-const { execSync } = require('child_process');
+// Claude Code statusline — user-level (Catppuccin Mocha)
+//
+// Segments (left → right), joined by dim " │ ":
+//   [⬆]         — update indicator (only if a bottega update is pending; opt-out via env)
+//   ▼ NN%       — context usage (colored by token threshold)
+//   project…    — git repo name (▸ subpath if inside a subfolder, ⎇ worktree if in a worktree)
+//   Model name
+//
+// Tuning via env:
+//   CLAUDE_STATUSLINE_NO_UPDATE — "1" to suppress the update arrow
+
+const fs = require('fs');
 const path = require('path');
 const os = require('os');
+const { execSync } = require('child_process');
 
-// Catppuccin Mocha palette (truecolor)
-const BLUE = '\x1b[38;2;137;180;250m';    // #89b4fa
-const MAUVE = '\x1b[38;2;203;166;247m';   // #cba6f7
-const GREEN = '\x1b[38;2;166;227;161m';   // #a6e3a1
-const YELLOW = '\x1b[38;2;249;226;175m';  // #f9e2af
-const PEACH = '\x1b[38;2;250;179;135m';   // #fab387
-const RED = '\x1b[38;2;243;139;168m';     // #f38ba8
-const SUBTEXT = '\x1b[38;2;166;173;200m'; // #a6adc8
-const RESET = '\x1b[0m';
+// --- Catppuccin Mocha truecolor ---
+const GREEN   = '\x1b[38;2;166;227;161m'; // #a6e3a1
+const YELLOW  = '\x1b[38;2;249;226;175m'; // #f9e2af
+const RED     = '\x1b[38;2;243;139;168m'; // #f38ba8
+const BLUE    = '\x1b[38;2;137;180;250m'; // #89b4fa
+const MAUVE   = '\x1b[38;2;203;166;247m'; // #cba6f7
+const TEAL    = '\x1b[38;2;148;226;213m'; // #94e2d5
+const DIM     = '\x1b[38;2;166;173;200m'; // #a6adc8
+const RESET   = '\x1b[0m';
 
-let input = '';
-const stdinTimeout = setTimeout(() => process.exit(0), 3000);
-process.stdin.setEncoding('utf8');
-process.stdin.on('data', chunk => input += chunk);
-process.stdin.on('end', () => {
-  clearTimeout(stdinTimeout);
+const HOME = os.homedir();
+const CONTEXT_WARN_TOKENS = 100000;
+const CONTEXT_HIGH_TOKENS = 125000;
+
+// --- Stdin reader ---
+
+function readStdin() {
+  return new Promise((resolve) => {
+    let data = '';
+    const timeout = setTimeout(() => resolve(data), 2500);
+    process.stdin.setEncoding('utf8');
+    process.stdin.on('data', (c) => { data += c; });
+    process.stdin.on('end', () => { clearTimeout(timeout); resolve(data); });
+    process.stdin.on('error', () => { clearTimeout(timeout); resolve(data); });
+  });
+}
+
+// --- Segment formatters ---
+
+function formatContext(usedPct, windowSize) {
+  if (usedPct == null || windowSize == null) return null;
+  const usedTokens = Math.round((usedPct / 100) * windowSize);
+  const display = Math.round(usedPct);
+  let color, glyph;
+  if (usedTokens < CONTEXT_WARN_TOKENS)      { color = GREEN;  glyph = '▼'; }
+  else if (usedTokens < CONTEXT_HIGH_TOKENS) { color = YELLOW; glyph = '●'; }
+  else                                       { color = RED;    glyph = '▲'; }
+  return `${color}${glyph} ${display}%${RESET}`;
+}
+
+function safeGit(args, cwd) {
   try {
-    const data = JSON.parse(input);
-    const model = data.model?.display_name || '';
-    const dir = data.workspace?.current_dir || process.cwd();
-    const remaining = data.context_window?.remaining_percentage;
+    return execSync(`git ${args}`, {
+      cwd, encoding: 'utf8', stdio: ['ignore', 'pipe', 'ignore'], timeout: 1500,
+    }).trim();
+  } catch { return null; }
+}
 
-    // Folder name (basename, ~ for home)
-    const homeDir = os.homedir();
-    let folder;
-    if (dir === homeDir) {
-      folder = '~';
-    } else if (dir.startsWith(homeDir + '/')) {
-      folder = '~/' + path.basename(dir);
-    } else {
-      folder = path.basename(dir);
-    }
+function resolveGitPaths(cwd) {
+  const gitDir = safeGit('rev-parse --git-dir', cwd);
+  if (!gitDir) return null;
+  const commonDir = safeGit('rev-parse --git-common-dir', cwd);
+  const topLevel = safeGit('rev-parse --show-toplevel', cwd);
+  if (!topLevel) return null;
 
-    // Git info
-    let gitPart = '';
-    try {
-      execSync(`git -C "${dir}" rev-parse --git-dir`, { stdio: 'pipe', timeout: 2000 });
-      let branch;
-      try {
-        branch = execSync(`git -C "${dir}" symbolic-ref --short HEAD`, {
-          encoding: 'utf8', stdio: 'pipe', timeout: 2000
-        }).trim();
-      } catch {
-        branch = execSync(`git -C "${dir}" rev-parse --short HEAD`, {
-          encoding: 'utf8', stdio: 'pipe', timeout: 2000
-        }).trim();
-      }
-      if (branch.length > 25) branch = branch.slice(0, 25) + '…';
+  const absGitDir = path.resolve(cwd, gitDir);
+  const absCommonDir = commonDir ? path.resolve(cwd, commonDir) : absGitDir;
+  const isWorktree = path.resolve(absGitDir) !== path.resolve(absCommonDir);
 
-      let statusFlags = '';
-      try {
-        const status = execSync(`git -C "${dir}" status --porcelain`, {
-          encoding: 'utf8', stdio: 'pipe', timeout: 2000
-        });
-        const lines = status.split('\n').filter(Boolean);
-        const staged = lines.filter(l => /^[MADRC]/.test(l)).length;
-        const unstaged = lines.filter(l => /^.[MADRC?]/.test(l)).length;
-        if (staged > 0) statusFlags += ` ~${staged}`;
-        if (unstaged > 0) statusFlags += ` !${unstaged}`;
-      } catch {}
+  return { gitDir: absGitDir, commonDir: absCommonDir, topLevel, isWorktree };
+}
 
-      gitPart = ` ${MAUVE} ${branch}${statusFlags}${RESET}`;
-    } catch {}
+function realpath(p) {
+  try { return fs.realpathSync(p); } catch { return p; }
+}
 
-    // Context usage (normalized for autocompact buffer)
-    // Claude Code reserves ~16.5% for autocompact, so we scale to usable range
-    let ctxPart = '';
-    if (remaining != null) {
-      const AUTO_COMPACT_BUFFER_PCT = 16.5;
-      const usableRemaining = Math.max(0,
-        ((remaining - AUTO_COMPACT_BUFFER_PCT) / (100 - AUTO_COMPACT_BUFFER_PCT)) * 100
-      );
-      const used = Math.max(0, Math.min(100, Math.round(100 - usableRemaining)));
-
-      const filled = Math.floor(used / 10);
-      const bar = '█'.repeat(filled) + '░'.repeat(10 - filled);
-
-      let color;
-      let prefix = '';
-      if (used < 50) {
-        color = GREEN;
-      } else if (used < 65) {
-        color = YELLOW;
-      } else if (used < 80) {
-        color = PEACH;
-      } else {
-        color = RED;
-        prefix = '\x1b[5m💀 ';
-      }
-      ctxPart = ` ${color}${prefix}${bar} ${used}%${RESET}`;
-    }
-
-    // Model
-    let modelPart = '';
-    if (model) modelPart = ` ${SUBTEXT}${model}${RESET}`;
-
-    process.stdout.write(`${BLUE} ${folder}${RESET}${gitPart}${ctxPart}${modelPart}`);
-  } catch {
-    // Silent fail — don't break the statusline
+function formatProject(cwd) {
+  const g = resolveGitPaths(cwd);
+  if (!g) {
+    if (cwd === HOME) return `${BLUE}~${RESET}`;
+    return `${BLUE}${path.basename(cwd)}${RESET}`;
   }
-});
+
+  let repoName, worktreeName = null;
+  if (g.isWorktree) {
+    // commonDir points to <main-repo>/.git (or .../.bare). Repo name = basename of its parent.
+    const mainRepoRoot = path.dirname(g.commonDir);
+    repoName = path.basename(mainRepoRoot);
+    worktreeName = path.basename(g.topLevel);
+  } else {
+    repoName = path.basename(g.topLevel);
+  }
+
+  let out = `${BLUE}${repoName}${RESET}`;
+  if (worktreeName) {
+    out += ` ${MAUVE}⎇ ${worktreeName}${RESET}`;
+  }
+
+  const rel = path.relative(realpath(g.topLevel), realpath(cwd));
+  if (rel && !rel.startsWith('..')) {
+    out += ` ${DIM}▸${RESET} ${TEAL}${rel}${RESET}`;
+  }
+
+  return out;
+}
+
+function formatUpdate() {
+  if (process.env.CLAUDE_STATUSLINE_NO_UPDATE === '1') return null;
+  const p = path.join(HOME, '.claude', 'cache', 'bottega-update-check.json');
+  try {
+    const raw = JSON.parse(fs.readFileSync(p, 'utf8'));
+    if (raw.update_available) return `${YELLOW}⬆${RESET}`;
+  } catch { /* ignore */ }
+  return null;
+}
+
+// --- Main ---
+
+async function main() {
+  const input = await readStdin();
+  let data;
+  try { data = JSON.parse(input); } catch { data = {}; }
+
+  const cwd = (data.workspace && data.workspace.current_dir) || data.cwd || process.cwd();
+  const model = data.model && data.model.display_name;
+  const usedPct = data.context_window && data.context_window.used_percentage;
+  const windowSize = data.context_window && data.context_window.context_window_size;
+
+  const segments = [];
+
+  const ctx = formatContext(usedPct, windowSize);
+  if (ctx) segments.push(ctx);
+
+  segments.push(formatProject(cwd));
+
+  if (model) segments.push(`${DIM}${model}${RESET}`);
+
+  const sep = ` ${DIM}│${RESET} `;
+  let line = segments.join(sep);
+  const update = formatUpdate();
+  if (update) line = `${update}${DIM}│${RESET} ${line}`;
+
+  process.stdout.write(line);
+}
+
+main().catch(() => { /* never break the statusline */ });
