@@ -71,6 +71,7 @@
             # Work
             pkgs.openssl
             pkgs.pkg-config
+            pkgs.pipx
             pkgs.shellcheck # Bottega
           ];
 
@@ -79,9 +80,11 @@
           homebrew = {
             enable = true;
             taps = [
+              "facebook/fb"
               "schpet/tap"
             ];
             brews = [
+              "facebook/fb/idb-companion"
               "schpet/tap/linear"
             ];
             casks = [
