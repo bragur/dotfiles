@@ -51,3 +51,7 @@ shell-integration-features = cursor,sudo,title
 confirm-close-surface = false
 keybind = shift+enter=text:\x1b\r
 keybind = alt+backspace=text:\x17
+
+# Per-machine overrides (e.g. custom-shader on main only).
+# Create ~/.config/ghostty/local.config to enable; the ? makes it optional.
+config-file = ?local.config

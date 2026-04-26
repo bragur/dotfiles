@@ -2,5 +2,6 @@
 karabiner/.config/karabiner/automatic_backups/
 lazyvim.bragur
 tmux/.config/tmux/*.log
+ghostty/.config/ghostty/local.config
 result
 result-*
