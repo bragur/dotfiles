@@ -46,3 +46,6 @@ export PATH="$HOME/.local/bin:$PATH"
 eval "$(zoxide init zsh)"
 
 [[ ! -f ~/.zshrc.local ]] || source ~/.zshrc.local
+
+# Warm QMD embedding model on shell startup (detached, silent)
+[ -x /Users/bragur/Developer/memento-vault/bin/memento-vault ] && /Users/bragur/Developer/memento-vault/bin/memento-vault warmup >/dev/null 2>&1

@@ -47,6 +47,9 @@ window-theme = dark
 shell-integration = detect
 shell-integration-features = cursor,sudo,title
 
+# macOS: right Option key sends Alt sequences instead of Unicode characters
+macos-option-as-alt = right
+
 # Misc
 confirm-close-surface = false
 keybind = shift+enter=text:\x1b\r

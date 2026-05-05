@@ -7,6 +7,7 @@ python = "3"
 rust = "1.91.0"
 yarn = "1"
 bun = "latest"
+"npm:@tobilu/qmd" = "latest"
 
 [settings]
 experimental = true

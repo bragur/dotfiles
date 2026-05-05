@@ -102,6 +102,7 @@
               "monitorcontrol"
               "obsidian"
               "pearcleaner"
+              "qlmarkdown"
               "raycast"
               "slack"
               "sonos"
