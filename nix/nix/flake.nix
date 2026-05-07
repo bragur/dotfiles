@@ -6,6 +6,12 @@
     nix-darwin.url = "github:LnL7/nix-darwin";
     nix-darwin.inputs.nixpkgs.follows = "nixpkgs";
     nix-homebrew.url = "github:zhaofengli-wip/nix-homebrew";
+    # Override brew-src until nix-homebrew bumps past 5.1.7 (cask depends_on bug)
+    homebrew-brew = {
+      url = "github:Homebrew/brew/5.1.10";
+      flake = false;
+    };
+    nix-homebrew.inputs.brew-src.follows = "homebrew-brew";
     # mac-app-util.url = "github:hraban/mac-app-util"; # Check this out
   };
 
@@ -38,7 +44,7 @@
             pkgs.eza
             pkgs.bat
             pkgs.btop
-            pkgs.du-dust
+            pkgs.dust
             pkgs.delta
             pkgs.neovim
             pkgs.tmux
@@ -47,7 +53,7 @@
             pkgs.typescript-language-server
             pkgs.typst
             pkgs.mise
-            pkgs.nixfmt-rfc-style
+            pkgs.nixfmt
             pkgs.ripgrep
             pkgs.gh
             pkgs.gum
@@ -114,9 +120,9 @@
               # Work
               "docker-desktop"
             ];
-            masApps = {
-              "Amphetamine" = 937984704;
-            };
+            # masApps disabled — nix-darwin#1722: brew bundle changed mas install → mas get
+            # Amphetamine (937984704) is installed via App Store directly
+            masApps = { };
             onActivation.cleanup = "zap";
             onActivation.autoUpdate = true;
             onActivation.upgrade = true;
@@ -137,7 +143,7 @@
               env = pkgs.buildEnv {
                 name = "system-applications";
                 paths = config.environment.systemPackages;
-                pathsToLink = "/Applications";
+                pathsToLink = [ "/Applications" ];
               };
             in
             pkgs.lib.mkForce ''
