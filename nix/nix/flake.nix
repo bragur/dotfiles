@@ -52,6 +52,7 @@
             pkgs.gh
             pkgs.gum
             pkgs.sesh
+            pkgs.terraform
             pkgs.tldr
             pkgs.fd
             pkgs.yazi
