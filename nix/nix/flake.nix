@@ -65,6 +65,7 @@
             pkgs.yq
             pkgs.jq
             pkgs.jqp
+            pkgs.llama-cpp
             pkgs.carapace
             pkgs.chafa
             pkgs.antidote
