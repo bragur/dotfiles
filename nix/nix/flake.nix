@@ -106,6 +106,7 @@
               "google-chrome"
               "1password"
               "karabiner-elements"
+              "linearmouse"
               "macdown-3000"
               "monitorcontrol"
               "obsidian"
