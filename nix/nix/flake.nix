@@ -71,6 +71,7 @@
             pkgs.antidote
             pkgs.mas
             pkgs.atuin
+            pkgs.awscli2
             pkgs.cmatrix
             pkgs.rsync
             # GUI apps with auto-updaters are installed via Homebrew casks instead of Nix
