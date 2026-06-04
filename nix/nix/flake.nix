@@ -66,6 +66,8 @@
             pkgs.jq
             pkgs.jqp
             pkgs.llama-cpp
+            pkgs.lld # provides ld64.lld (Mach-O linker) for Rust
+            pkgs.sccache # Rust compile cache
             pkgs.carapace
             pkgs.chafa
             pkgs.antidote
@@ -85,6 +87,12 @@
           ];
 
           environment.pathsToLink = [ "/share/antidote" ];
+
+          # Machine-wide env vars (declarative — no ~/.zshrc edit needed)
+          environment.variables = {
+            RUSTC_WRAPPER = "sccache"; # route rustc through the sccache compile cache
+            SCCACHE_CACHE_SIZE = "40G";
+          };
 
           homebrew = {
             enable = true;
