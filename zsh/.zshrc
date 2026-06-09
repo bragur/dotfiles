@@ -37,6 +37,10 @@ if [ "$TERM_PROGRAM" != "Apple_Terminal" ]; then
 	enable_poshtooltips
 fi
 
+# zsh-abbr-hint: defines functions + installs a one-shot precmd that registers
+# its line-pre-redraw hook AFTER fast-syntax-highlighting (kind:defer) has loaded.
+[[ ! -f $ZSH_HOME/zsh-abbr-hint.plugin.zsh ]] || source $ZSH_HOME/zsh-abbr-hint.plugin.zsh
+
 export CARAPACE_BRIDGES='zsh'
 zstyle ':completion:*' format $'\e[2;37mCompleting %d\e[m'
 source <(carapace _carapace)
