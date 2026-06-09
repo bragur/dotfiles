@@ -21,6 +21,8 @@
 # ---------------------------------------------------------------------------
 # Plugin-global runtime state
 # ---------------------------------------------------------------------------
+autoload -Uz add-zsh-hook
+
 typeset -g  _ZAH_RPROMPT_SAVED=""   # last-seen oh-my-posh RPROMPT (lazy capture)
 typeset -g  _ZAH_LAST_HINT=""       # last hint rendered; change-gate for reset-prompt
 typeset -gi _ZAH_HINT_ACTIVE=0      # 1 while our hint owns RPROMPT
@@ -206,18 +208,9 @@ _zah_register() {
   add-zle-hook-widget zle-line-finish  _zah_restore_rprompt # plain function hook
 
   # Self-remove — one-shot.
-  # add-zsh-hook is the canonical API; precmd_functions is the underlying array
-  # it manages. In interactive shells add-zsh-hook is always present by the time
-  # this guard passes (F-Sy-H loaded implies full zsh interactive init). Use it
-  # when available, fall back to direct array manipulation otherwise.
-  if (( $+functions[add-zsh-hook] )); then
-    add-zsh-hook -d precmd _zah_register
-  else
-    precmd_functions=( "${(@)precmd_functions:#_zah_register}" )
-  fi
+  add-zsh-hook -d precmd _zah_register
 }
 
-# Install the one-shot precmd via precmd_functions directly (avoids autoloading
-# add-zsh-hook at source time, keeping the namespace clean — only _zah_* names
-# are introduced by this file).
-precmd_functions+=( _zah_register )
+# Install the one-shot precmd. add-zsh-hook is autoloaded above so it is
+# available here at source time.
+add-zsh-hook precmd _zah_register
