@@ -67,3 +67,30 @@ zah_assert_true() {
 zah_finish() {
   (( ZAH_FAILS == 0 ))
 }
+
+# ---------------------------------------------------------------------------
+# zah_zpty_drain <ptyname> <needle>
+#   Reads from the named zpty session until <needle> appears in the accumulated
+#   output or the idle-read counter exceeds the limit. No fixed sleep calls.
+#   Sets REPLY to the accumulated output.
+#
+#   Uses an idle-counter approach: increments a counter on each failed read and
+#   resets it to 0 on each successful read. Stops when idle > ZAH_ZPTY_MAXIDLE
+#   (default 300) or when needle is found.
+# ---------------------------------------------------------------------------
+: "${ZAH_ZPTY_MAXIDLE:=300}"
+
+zah_zpty_drain() {
+  local ptyname="$1" needle="$2"
+  local total="" chunk="" idle=0
+  while (( idle < ZAH_ZPTY_MAXIDLE )); do
+    if zpty -r "$ptyname" chunk 2>/dev/null; then
+      total+="$chunk"
+      idle=0
+      [[ "$total" == *"$needle"* ]] && break
+    else
+      (( idle++ ))
+    fi
+  done
+  REPLY="$total"
+}

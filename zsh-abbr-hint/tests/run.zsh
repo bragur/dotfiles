@@ -28,7 +28,7 @@ print ""
 
 local f
 for f in "${test_files[@]}"; do
-  print "--- ${f:t} ---"
+  print -r -- "--- ${f:t} ---"
   zsh "$f"
   local rc=$?
   if (( rc != 0 )); then
