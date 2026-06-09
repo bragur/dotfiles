@@ -151,7 +151,7 @@ _zah_redraw() {
     local buf_pre="${BUFFER[1,$CURSOR]}"
     local word_start word_end
     # Find the position of the word in the buffer
-    local word_pos=$(( ${buf_pre[(i)$cmd_word]} - 1 ))
+    local word_pos=$(( ${buf_pre[(I)$cmd_word]} - 1 ))
     word_start="$word_pos"
     word_end=$(( word_start + ${#cmd_word} ))
     region_highlight+=("$word_start $word_end fg=#a6e3a1,bold")
