@@ -140,6 +140,7 @@
           };
 
           fonts.packages = [
+            pkgs.inter
             pkgs.maple-mono.NF
           ];
 
