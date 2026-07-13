@@ -2,7 +2,7 @@
 
 ## Introduction
 
-This repository contains dotfiles for various applications and services which I use in my personal daily workflow. It is catered to web development, specifically and mainly in [ReScript](https://rescript-lang.org/). While I strive to be a zero config guy in most cases I'm also enthralled with tinkering and polishing and thus my dotfiles came to life. I don't necessarily swap machines very often in my professional career but I'd still like for this configuration to be both easily manageable and quickly set up should I find myself in front of a new computer. I also run my shell on a powerful workstation via [Tailscale](https://tailscale.com/) and ssh from my MacBook Air, achieving a light, portable and powerful setup from anywhere. It's awesome!
+This repository contains dotfiles for various applications and services which I use in my personal daily workflow. It is catered to web development. While I strive to be a zero config guy in most cases I'm also enthralled with tinkering and polishing and thus my dotfiles came to life. I don't necessarily swap machines very often in my professional career but I'd still like for this configuration to be both easily manageable and quickly set up should I find myself in front of a new computer. I also run my shell on a powerful workstation via [Tailscale](https://tailscale.com/) and ssh from my MacBook Air, achieving a light, portable and powerful setup from anywhere. It's awesome!
 
 ## Setup Philosophy
 
@@ -55,6 +55,8 @@ This gives you infrastructure-as-code for reproducibility while keeping configs 
 
    Read-only health check: required commands, stow symlinks, shell startup, plugin loading.
 
+5. **Personal extras** (for me, not for you 🙂): the Claude Code layer (skills, agents, settings) lives in a separate private repo — clone it and run its `install.sh` after bootstrap. Shell history needs the atuin encryption key from the password manager (`atuin key` printed it on the old machine).
+
 See **[BOOTSTRAP.md](BOOTSTRAP.md)** for details, including setting up a second macOS account on an already-nix-managed machine and what to do if your account name isn't `bragur`.
 
 ### Updating the System
@@ -63,7 +65,7 @@ See **[BOOTSTRAP.md](BOOTSTRAP.md)** for details, including setting up a second 
 # Update everything (Nix packages, Homebrew, system settings)
 cd ~/dotfiles/nix/nix
 nix flake update
-sudo darwin-rebuild switch --flake '.#air'   # or '.#main' on Mac Mini
+sudo darwin-rebuild switch --flake '.#main'   # or '.#air' — same machine-agnostic config
 
 # Update dev tools
 mise upgrade
@@ -129,7 +131,7 @@ Configuration: `ghostty/.config/ghostty/config`
 
 I run the Z shell with antidote for plugin management. Configured plugins include:
 
-- `zsh-abbr` - Command abbreviations (223+ custom abbreviations)
+- `zsh-abbr` - Command abbreviations (250+ custom abbreviations)
 - `zsh-autosuggestions` - Fish-like autosuggestions
 - `fast-syntax-highlighting` - Syntax highlighting
 - oh-my-zsh plugins (colored-man-pages, globalias)
@@ -145,19 +147,24 @@ Using oh-my-posh for the prompt with a custom Catppuccin-themed configuration. T
 
 Configuration: `oh-my-posh/.config/oh-my-posh/config.toml`
 
+#### Machine-local config
+
+Per-machine or job-specific shell config lives **outside the repo** and is sourced if present:
+
+- `~/.config/zsh/local.zsh` — functions, exports, integrations that belong to one machine
+- `~/.config/zsh-abbr/local-abbreviations` — abbreviations for one machine (use session-scope `abbr -S -f` entries so they don't persist into the tracked file)
+
+Both are untracked and die with the machine — work config goes there, never into tracked files.
+
 #### [tmux](https://github.com/tmux/tmux/wiki)
 
 I run tmux as a multiplexer for session management and to stay terminal emulator agnostic. Key maps for pane navigation are identical to my Neovim bindings, making navigation between panes seamless.
 
-The status line uses the Catppuccin theme with battery, CPU status, and time. It's configured to be on top.
-
-#### [tmuxifier](https://github.com/jimeh/tmuxifier)
-
-Complimenting tmux is tmuxifier where I have a set of layouts to easily be able to start up my ideal environments, i.e. something like Neovim on the left and then a couple of stacked panes on the right, one with a watching compiler and my web server below that. This I can then toggle in and out, especially when moving to a laptop screen. It's useful for larger screens as well as sometimes I might add another pane between my two main sections to run tests and it's quite handy to be able to get those informational screens out of the way when my brain cells need some space.
+The status line uses the Catppuccin theme with a Claude Code usage pill, host info, and battery. It's configured to be on top. Sessions persist across restarts via tmux-resurrect/continuum.
 
 ### [Neovim](https://neovim.io/)
 
-I run a configuration based on [LazyVim](https://www.lazyvim.org/) with seamless navigation between Neovim windows and tmux panes. The built-in terminals in Neovim didn't fit my workflow, so I rely on tmux instead.
+Currently dormant — I'm not using Neovim day-to-day at the moment, but the config is kept for when I return to it. It's based on [LazyVim](https://www.lazyvim.org/) with seamless navigation between Neovim windows and tmux panes. The built-in terminals in Neovim didn't fit my workflow, so I rely on tmux instead.
 
 **Note**: My [keymaps](https://github.com/bragur/dotfiles/tree/main/nvim/.config/nvim/lua/config/keymaps.lua) are optimized for an Icelandic keyboard layout. Option key bindings will need to be reconfigured for other layouts.
 

@@ -6,12 +6,6 @@
     nix-darwin.url = "github:LnL7/nix-darwin";
     nix-darwin.inputs.nixpkgs.follows = "nixpkgs";
     nix-homebrew.url = "github:zhaofengli-wip/nix-homebrew";
-    # Override brew-src until nix-homebrew bumps past 5.1.7 (cask depends_on bug)
-    homebrew-brew = {
-      url = "github:Homebrew/brew/5.1.10";
-      flake = false;
-    };
-    nix-homebrew.inputs.brew-src.follows = "homebrew-brew";
     # mac-app-util.url = "github:hraban/mac-app-util"; # Check this out
   };
 
