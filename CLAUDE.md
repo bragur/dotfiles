@@ -11,6 +11,16 @@ Personal dotfiles for macOS (Apple Silicon) using a hybrid management approach:
 
 ## Key Commands
 
+### Bootstrap & Health Check
+```bash
+# Idempotent fresh-Mac (or second-account) setup: nix, nix-darwin, stow, mise.
+# Never re-runs the nix installer over an existing install.
+./bootstrap.sh
+
+# Read-only health check (commands, symlinks, shell startup, plugin loading)
+./doctor.sh
+```
+
 ### System Updates
 ```bash
 # Update and rebuild system (packages, Homebrew, settings)
@@ -59,6 +69,7 @@ Each root-level directory is a **stow package** that mirrors home directory stru
 2. **Plugins**: Antidote loads from `.zsh_plugins.txt`
 3. **Prompt**: oh-my-posh with Catppuccin theme
 4. **Tools**: mise activates, zoxide/fzf/carapace integrate
+5. **Machine-local layer** (untracked, per-machine/work config): `~/.config/zsh/local.zsh` and `~/.config/zsh-abbr/local-abbreviations` are sourced if present
 
 ### Neovim
 - Location: `nvim/.config/nvim/`
@@ -68,7 +79,7 @@ Each root-level directory is a **stow package** that mirrors home directory stru
 
 ### Nix-Darwin
 - Flake location: `nix/nix/flake.nix`
-- Machine configs: `air` (MacBook Air), `main` (MacBook Pro) — both aarch64-darwin
+- Flake configs: `main` and `air` are two names for the same machine-agnostic aarch64-darwin config; the macOS account name is a single `username` binding at the top of the flake
 - **Package split**: CLI tools via nix (`environment.systemPackages`), GUI apps with auto-updaters via Homebrew casks
 - Homebrew: Managed with `onActivation.cleanup = "zap"` - manual `brew install` is temporary
 - Keep entries in `systemPackages`, `casks`, `brews`, and `taps` alphabetically sorted
@@ -80,15 +91,17 @@ Each root-level directory is a **stow package** that mirrors home directory stru
 - After adding a nix package, verify it's accessible: check `/run/current-system/sw/bin/<name>` or `/run/current-system/sw/share/<name>`
 
 ### Fresh install / machine migration
+- Preferred flow: `./bootstrap.sh` (idempotent — handles all of the below and skips anything already done). See `BOOTSTRAP.md`.
 - Migration Assistant does NOT migrate nix — it must be reinstalled from scratch
 - Use the **Determinate Systems installer** (not the official nixos.org one):
   ```bash
   curl --proto '=https' --tlsv1.2 -sSf -L https://install.determinate.systems/nix | sh -s -- install
   ```
   The official installer has macOS issues: no flakes by default, wrong SSL cert path (`/etc/ssl/certs/ca-certificates.crt` instead of macOS `/etc/ssl/cert.pem`), flaky daemon startup
+- **Never re-run the nix installer on a machine that already has nix** (e.g. when setting up a second macOS account) — it can break the existing install. `bootstrap.sh` guards against this.
 - After install, restart terminal and bootstrap nix-darwin:
   ```bash
-  cd ~/dotfiles/nix/nix && nix run nix-darwin -- switch --flake '.#<hostname>'
+  cd ~/dotfiles/nix/nix && nix run nix-darwin -- switch --flake '.#main'   # or '.#air' — same config
   ```
   (`darwin-rebuild` is not available until after first nix-darwin build)
 - The `ls` alias (`eza`) won't work until nix packages are installed — use `/bin/ls` during bootstrap

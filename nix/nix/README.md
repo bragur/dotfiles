@@ -14,9 +14,10 @@ This Nix flake manages:
 
 ### Flake Configs
 
-Two machine configurations share the same module:
-- `#air` — MacBook Air
-- `#main` — Mac Mini M4 Pro
+Two configuration names point at the same machine-agnostic module — either
+works on any Apple Silicon Mac:
+- `#main`
+- `#air`
 
 ### System Packages (Nix-managed)
 Located in: `flake.nix` → `environment.systemPackages`
@@ -26,12 +27,12 @@ These are installed system-wide and available in your PATH:
 - **File tools**: fzf, zoxide, eza, bat, fd, ripgrep
 - **Dev tools**: neovim, tmux, tmuxifier, stow, mise, gh
 - **Data tools**: jq, jqp, yq, typst
-- **System**: mkalias, nixfmt-rfc-style, mas, rsync, sesh, gum, cmatrix
+- **System**: mkalias, nixfmt, mas, rsync, sesh, gum, cmatrix
 
 ### Homebrew Packages
 Located in: `flake.nix` → `homebrew.casks`
 
-**Brews**: (none — CLI tools are all via Nix)
+**Brews**: linear (schpet/tap) — everything else CLI is via Nix
 
 **Casks** (GUI apps):
 - Arc, Cursor, Ghostty, Google Chrome, 1Password
@@ -207,14 +208,17 @@ man configuration.nix
 
 ## Migration to New Machine
 
-1. Install Nix: `sh <(curl -L https://nixos.org/nix/install)`
-2. Enable flakes: `mkdir -p ~/.config/nix && echo "experimental-features = nix-command flakes" >> ~/.config/nix/nix.conf`
-3. Clone dotfiles: `git clone https://github.com/bragur/dotfiles.git ~/dotfiles`
-4. Move shell configs: `sudo mv /etc/bashrc /etc/bashrc.before-nix-darwin && sudo mv /etc/zshrc /etc/zshrc.before-nix-darwin`
-5. Bootstrap nix-darwin: `cd ~/dotfiles/nix/nix && sudo nix --extra-experimental-features "nix-command flakes" run nix-darwin -- switch --flake '.#air'` (or `'.#main'`)
-6. Symlink configs: `cd ~/dotfiles && stow zsh git zsh-abbr mise tmux oh-my-posh ghostty atuin`
-7. Post-stow: `mkdir -p ~/Pictures/Screenshots && mise install`
-8. Restart shell: `exec zsh`
+Use the bootstrap script at the repo root — it installs Nix via the
+[Determinate Systems installer](https://determinate.systems/nix-installer/)
+(never over an existing install), bootstraps nix-darwin, stows configs, and
+runs mise:
+
+```bash
+git clone https://github.com/bragur/dotfiles.git ~/dotfiles
+cd ~/dotfiles && ./bootstrap.sh
+```
+
+See **[BOOTSTRAP.md](../../BOOTSTRAP.md)** for the full flow.
 
 **Note**: The first-time bootstrap uses `nix run nix-darwin` because `darwin-rebuild` doesn't exist yet. After this initial setup, use `darwin-rebuild switch` for all future updates.
 

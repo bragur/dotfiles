@@ -19,73 +19,43 @@ This gives you infrastructure-as-code for reproducibility while keeping configs 
 
 ### Initial Setup
 
-1. **Install Nix** (system-wide — only do this once per machine, not per user):
-
-   ```sh
-   sh <(curl -L https://nixos.org/nix/install)
-   ```
-
-   > **Warning**: Nix is a global multi-user install. Do NOT re-run the installer for additional macOS users — it can encrypt the Nix Store volume and break the existing installation. Instead, add users to the `nixbld` group.
-
-2. **Enable flakes**:
-
-   ```sh
-   mkdir -p ~/.config/nix && echo "experimental-features = nix-command flakes" >> ~/.config/nix/nix.conf
-   ```
-
-3. **Clone dotfiles**:
+1. **Clone dotfiles**:
 
    ```sh
    git clone https://github.com/bragur/dotfiles.git ~/dotfiles
    ```
 
-4. **Move macOS shell configs** (nix-darwin needs to manage these):
+2. **Run the bootstrap script**:
 
    ```sh
-   sudo mv /etc/bashrc /etc/bashrc.before-nix-darwin
-   sudo mv /etc/zshrc /etc/zshrc.before-nix-darwin
+   cd ~/dotfiles && ./bootstrap.sh
    ```
 
-5. **Bootstrap nix-darwin**:
+   The script is idempotent — every step skips itself if already done. It:
+
+   - Installs Nix via the [Determinate Systems installer](https://determinate.systems/nix-installer/) (flakes enabled by default, correct macOS SSL cert path). If nix is already present it is **never** reinstalled — re-running an installer over an existing install can break the machine.
+   - Bootstraps nix-darwin with `.#main` (skipped if the machine already has a nix-darwin system, e.g. when setting up a second macOS account).
+   - Stows all config packages: `atuin claude ghostty git karabiner mise nvim oh-my-posh tmux zsh zsh-abbr zsh-abbr-hint`. Conflicting real files are backed up to `~/dotfiles-backup-<timestamp>/`.
+   - Runs `mise install` for dev tools (Node.js, etc.).
+
+3. **Manual follow-ups** (the script prints these too):
 
    ```sh
-   cd ~/dotfiles/nix/nix
-   sudo nix --extra-experimental-features "nix-command flakes" run nix-darwin -- switch --flake '.#air'   # MacBook Air
-   # or
-   sudo nix --extra-experimental-features "nix-command flakes" run nix-darwin -- switch --flake '.#main'  # Mac Mini
+   atuin login && atuin sync   # shell history sync
+   gh auth login               # GitHub CLI
+   tmux                        # TPM auto-installs; then prefix + I (Ctrl-a then Shift-i) to install plugins
+   exec zsh                    # restart shell
    ```
 
-   `#air` and `#main` are **flake configuration names** (not git branches) — pick the one matching your machine. The `--extra-experimental-features` flag is needed because `sudo` runs as root, which doesn't see your user's `~/.config/nix/nix.conf`. After this first bootstrap, the flake enables flakes system-wide so this flag is no longer needed.
-
-6. **Symlink configs with stow**:
+4. **Verify**:
 
    ```sh
-   cd ~/dotfiles
-   stow zsh           # Shell config + plugin list
-   stow git           # Git config
-   stow zsh-abbr      # Zsh abbreviations
-   stow mise          # mise dev tool config
-   stow tmux          # tmux config
-   stow oh-my-posh    # Prompt theme
-   stow ghostty       # Terminal config
-   stow atuin         # Shell history
+   ./doctor.sh
    ```
 
-7. **Post-stow setup**:
+   Read-only health check: required commands, stow symlinks, shell startup, plugin loading.
 
-   ```sh
-   mkdir -p ~/Pictures/Screenshots   # screencapture target directory
-   mise install                       # install dev tools (Node.js, etc.)
-   atuin login                        # sync shell history across machines
-   atuin sync                         # pull existing history
-   ```
-
-8. **Restart shell**:
-   ```sh
-   exec zsh
-   ```
-
-9. **tmux first launch**: TPM auto-installs itself on first run. Once inside tmux, press `prefix + I` (Ctrl-a then Shift-i) to install plugins (catppuccin theme, battery, cpu, etc.).
+See **[BOOTSTRAP.md](BOOTSTRAP.md)** for details, including setting up a second macOS account on an already-nix-managed machine and what to do if your account name isn't `bragur`.
 
 ### Updating the System
 
@@ -128,7 +98,7 @@ I've been experimenting with [Catppuccin](https://github.com/catppuccin/catppucc
 
 The system is managed declaratively using nix-darwin. This means packages, Homebrew apps, and macOS settings are all defined in `nix/nix/flake.nix`. To add a package or change settings, edit the flake and rebuild. See **[nix/nix/README.md](nix/nix/README.md)** for details.
 
-Currently configured for the `air` (MacBook Air) and `main` (Mac Mini M4 Pro) machines, sharing the same configuration module.
+The flake exposes two configuration names, `main` and `air`, that point at the **same machine-agnostic configuration** — either works on any Apple Silicon Mac.
 
 **Homebrew Usage**: Homebrew is managed by nix-darwin with `onActivation.cleanup = "zap"`. This means:
 
@@ -242,14 +212,9 @@ If the Nix Store volume is encrypted/locked and unrecoverable:
 # 1. Delete the broken volume
 sudo diskutil apfs deleteVolume disk3s7   # use your disk identifier
 
-# 2. Reinstall nix
-sh <(curl -L https://nixos.org/nix/install)
+# 2. Reinstall nix (Determinate Systems installer)
+curl --proto '=https' --tlsv1.2 -sSf -L https://install.determinate.systems/nix | sh -s -- install
 
-# 3. Restart terminal, then bootstrap nix-darwin
-cd ~/dotfiles/nix/nix
-sudo nix --extra-experimental-features "nix-command flakes" run nix-darwin -- switch --flake '.#air'
-
-# 4. Re-stow configs
-cd ~/dotfiles
-stow zsh git zsh-abbr mise tmux oh-my-posh ghostty atuin
+# 3. Restart terminal, then re-run the bootstrap (handles nix-darwin + stow)
+cd ~/dotfiles && ./bootstrap.sh
 ```
