@@ -88,12 +88,8 @@
 
           homebrew = {
             enable = true;
-            taps = [
-              "schpet/tap"
-            ];
-            brews = [
-              "schpet/tap/linear"
-            ];
+            taps = [ ];
+            brews = [ ];
             casks = [
               "arc"
               "cleanshot"

@@ -32,7 +32,7 @@ These are installed system-wide and available in your PATH:
 ### Homebrew Packages
 Located in: `flake.nix` → `homebrew.casks`
 
-**Brews**: linear (schpet/tap) — everything else CLI is via Nix
+**Brews**: (none) — all CLI tools come via Nix; no third-party taps (Homebrew 6 distrusts them by default)
 
 **Casks** (GUI apps):
 - Arc, Cursor, Ghostty, Google Chrome, 1Password
