@@ -24,6 +24,9 @@
       ...
     }:
     let
+      # macOS account that owns this system — change this if your account name differs
+      username = "bragur";
+
       configuration =
         { pkgs, config, ... }:
         {
@@ -31,7 +34,7 @@
           nixpkgs.config.allowUnfree = true;
 
           # Primary user for system-level options
-          system.primaryUser = "bragur";
+          system.primaryUser = username;
 
           # List packages installed in system profile. To search by name, run:
           # $ nix-env -qaP | grep wget
@@ -76,14 +79,9 @@
             pkgs.awscli2
             pkgs.cmatrix
             pkgs.rsync
+            pkgs.shellcheck
             # GUI apps with auto-updaters are installed via Homebrew casks instead of Nix
             # because Nix's immutable store prevents in-place updates
-
-            # Work
-            pkgs.openssl
-            pkgs.pkg-config
-            pkgs.pipx
-            pkgs.shellcheck # Bottega
           ];
 
           environment.pathsToLink = [ "/share/antidote" ];
@@ -97,11 +95,9 @@
           homebrew = {
             enable = true;
             taps = [
-              "facebook/fb"
               "schpet/tap"
             ];
             brews = [
-              "facebook/fb/idb-companion"
               "schpet/tap/linear"
             ];
             casks = [
@@ -127,9 +123,6 @@
               "spotify"
               "tailscale-app"
               "visual-studio-code"
-
-              # Work
-              "docker-desktop"
             ];
             # masApps disabled — nix-darwin#1722: brew bundle changed mas install → mas get
             # Amphetamine (937984704) is installed via App Store directly
@@ -189,9 +182,9 @@
             in
             ''
               echo "Configuring dock folders..." >&2
-              sudo -u bragur defaults write com.apple.dock persistent-others -array \
-                ${mkFolder "/Users/bragur/Pictures/Screenshots" 2} \
-                ${mkFolder "/Users/bragur/Downloads" 2} \
+              sudo -u ${username} defaults write com.apple.dock persistent-others -array \
+                ${mkFolder "/Users/${username}/Pictures/Screenshots" 2} \
+                ${mkFolder "/Users/${username}/Downloads" 2} \
                 ${mkFolder "/Applications" 1}
               killall Dock 2>/dev/null || true
             '';
@@ -236,11 +229,8 @@
           # The platform the configuration will be used on.
           nixpkgs.hostPlatform = "aarch64-darwin";
         };
-    in
-    {
-      # Build darwin flake using:
-      # $ darwin-rebuild build --flake .#air
-      darwinConfigurations."air" = nix-darwin.lib.darwinSystem {
+      # The config is machine-agnostic; every machine builds the same system.
+      darwinSystem = nix-darwin.lib.darwinSystem {
         modules = [
           configuration
           nix-homebrew.darwinModules.nix-homebrew
@@ -250,25 +240,17 @@
               # Apple Silicon Only
               enableRosetta = false;
               # User owning the Homebrew prefix
-              user = "bragur";
+              user = username;
             };
           }
         ];
       };
-
-      # Mac Mini M4 Pro — same config as air for now
-      darwinConfigurations."main" = nix-darwin.lib.darwinSystem {
-        modules = [
-          configuration
-          nix-homebrew.darwinModules.nix-homebrew
-          {
-            nix-homebrew = {
-              enable = true;
-              enableRosetta = false;
-              user = "bragur";
-            };
-          }
-        ];
-      };
+    in
+    {
+      # Build darwin flake using either name (both point at the same config):
+      # $ darwin-rebuild build --flake .#main
+      # $ darwin-rebuild build --flake .#air
+      darwinConfigurations."main" = darwinSystem;
+      darwinConfigurations."air" = darwinSystem;
     };
 }
