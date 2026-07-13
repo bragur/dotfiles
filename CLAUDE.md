@@ -81,7 +81,8 @@ Each root-level directory is a **stow package** that mirrors home directory stru
 - Flake location: `nix/nix/flake.nix`
 - Flake configs: `main` and `air` are two names for the same machine-agnostic aarch64-darwin config; the macOS account name is a single `username` binding at the top of the flake
 - **Package split**: CLI tools via nix (`environment.systemPackages`), GUI apps with auto-updaters via Homebrew casks
-- Homebrew: Managed with `onActivation.cleanup = "zap"` - manual `brew install` is temporary
+- Homebrew: Managed with `onActivation.cleanup = "zap"` - manual `brew install` is temporary. **Caveat**: Homebrew 6 deprecated `brew bundle --cleanup` (no replacement yet), so zap cleanup is currently inert until nix-darwin's homebrew module adapts — remove strays manually with `brew uninstall`/`brew untap` for now
+- Homebrew 6 distrusts third-party taps by default (`brew trust <tap>` to allow) — prefer nix packages over tapped formulae
 - Keep entries in `systemPackages`, `casks`, `brews`, and `taps` alphabetically sorted
 
 ## Gotchas

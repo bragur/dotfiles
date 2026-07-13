@@ -108,6 +108,8 @@ The flake exposes two configuration names, `main` and `air`, that point at the *
 - Running `brew install something` is **temporary** - it will be removed on the next `darwin-rebuild`
 - This keeps the system clean and ensures everything is tracked in code
 
+> **Homebrew 6 caveat**: `brew bundle --cleanup` is deprecated upstream with no replacement yet, so the zap cleanup is currently inert until nix-darwin's homebrew module adapts — remove strays manually (`brew uninstall` / `brew untap`). Homebrew 6 also distrusts third-party taps by default (`brew trust <tap>`); prefer nix packages over tapped formulae.
+
 #### [mise](https://mise.jdx.dev/)
 
 Development tools (Node.js, Python, Yarn, etc.) are managed with mise, allowing per-project version management. Global tools are configured in `~/.config/mise/config.toml`. Project-specific versions can be set with `.mise.toml` files.
