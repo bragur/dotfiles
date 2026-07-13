@@ -6,3 +6,8 @@ ghostty/.config/ghostty/local.config
 result
 result-*
 .bottega/
+
+# Machine-local shell config (protective: if stow ever folds these dirs,
+# the local files would land physically inside the repo)
+zsh/.config/zsh/local.zsh
+zsh-abbr/.config/zsh-abbr/local-abbreviations

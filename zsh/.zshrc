@@ -51,7 +51,5 @@ eval "$(zoxide init zsh)"
 
 [[ ! -f ~/.zshrc.local ]] || source ~/.zshrc.local
 
-# Warm QMD embedding model on shell startup (detached, silent)
-[ -x /Users/bragur/Developer/memento-vault/bin/memento-vault ] && /Users/bragur/Developer/memento-vault/bin/memento-vault warmup >/dev/null 2>&1
-
-[[ "$TERM_PROGRAM" == "kiro" ]] && . "$(kiro --locate-shell-integration-path zsh)"
+# Machine-local config, untracked (work/machine-specific functions, hooks, etc.)
+[[ ! -f $ZSH_HOME/local.zsh ]] || source $ZSH_HOME/local.zsh
