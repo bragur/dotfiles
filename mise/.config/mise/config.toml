@@ -2,12 +2,14 @@
 # See: https://mise.jdx.dev/configuration.html
 
 [tools]
-node = "22.14.0"
+node = "24"
 python = "3"
 rust = "1.91.0"
 yarn = "1"
 bun = "latest"
 "npm:@tobilu/qmd" = "latest"
+"npm:pnpm" = "11.1.1"
+go = "1.25"
 
 [settings]
 experimental = true
