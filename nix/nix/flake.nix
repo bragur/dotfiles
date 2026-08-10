@@ -90,6 +90,7 @@
               "ghostty"
               "google-chrome"
               "1password"
+              "jordanbaird-ice" # Ice — menu bar manager
               "karabiner-elements"
               "linearmouse"
               "macdown-3000"
