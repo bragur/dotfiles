@@ -16,7 +16,17 @@ using this repo. The heavy lifting is done by two scripts at the repo root:
    xcode-select --install
    ```
 
-2. Clone and bootstrap:
+2. Grant Terminal **Full Disk Access** (System Settings → Privacy & Security →
+   Full Disk Access → add Terminal, then quit and reopen it). On a freshly
+   imaged Mac this hasn't been granted to anything yet, and without it the
+   nix installer's encrypted `Nix Store` APFS volume can fail to mount with
+   `Error saving receipt: RecordingReceipt("/nix", ... ReadOnlyFilesystem)` —
+   the volume gets created but the mount is silently blocked, and the
+   installer reverts itself. If you hit that error, grant Full Disk Access
+   and just re-run `./bootstrap.sh`; it's idempotent and picks up where it
+   left off.
+
+3. Clone and bootstrap:
 
    ```sh
    git clone https://github.com/bragur/dotfiles.git ~/dotfiles
@@ -38,7 +48,7 @@ using this repo. The heavy lifting is done by two scripts at the repo root:
    - **mise** — installs dev tool versions (Node.js, Python) from
      `~/.config/mise/config.toml`.
 
-3. Manual follow-ups (bootstrap prints this checklist at the end):
+4. Manual follow-ups (bootstrap prints this checklist at the end):
 
    ```sh
    atuin login && atuin sync   # shell history sync across machines
@@ -47,7 +57,7 @@ using this repo. The heavy lifting is done by two scripts at the repo root:
    exec zsh                    # restart shell with everything in place
    ```
 
-4. Verify:
+5. Verify:
 
    ```sh
    ./doctor.sh
