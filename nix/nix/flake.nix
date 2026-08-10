@@ -62,9 +62,7 @@
             pkgs.yq
             pkgs.jq
             pkgs.jqp
-            pkgs.llama-cpp
             pkgs.lld # provides ld64.lld (Mach-O linker) for Rust
-            pkgs.sccache # Rust compile cache
             pkgs.carapace
             pkgs.chafa
             pkgs.antidote
@@ -80,12 +78,6 @@
 
           environment.pathsToLink = [ "/share/antidote" ];
 
-          # Machine-wide env vars (declarative — no ~/.zshrc edit needed)
-          environment.variables = {
-            RUSTC_WRAPPER = "sccache"; # route rustc through the sccache compile cache
-            SCCACHE_CACHE_SIZE = "40G";
-          };
-
           homebrew = {
             enable = true;
             taps = [ ];
@@ -94,8 +86,6 @@
               "arc"
               "cleanshot"
               "claude"
-              "cursor"
-              "dbeaver-community"
               "figma"
               "ghostty"
               "google-chrome"
@@ -200,8 +190,10 @@
             screensaver.askForPassword = true;
             screensaver.askForPasswordDelay = 60;
           };
-          # Necessary for using flakes on this system.
-          nix.settings.experimental-features = "nix-command flakes";
+          # Determinate Nix runs its own daemon and manages the Nix install itself;
+          # nix-darwin's own Nix management conflicts with it and aborts activation
+          # ("Determinate detected, aborting activation") unless disabled here.
+          nix.enable = false;
 
           # Completion is handled by .zshrc (compinit -C -u) with caching
           programs.zsh.enableCompletion = false;

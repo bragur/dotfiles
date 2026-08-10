@@ -84,6 +84,7 @@ Each root-level directory is a **stow package** that mirrors home directory stru
 - Homebrew: Managed with `onActivation.cleanup = "zap"` - manual `brew install` is temporary. **Caveat**: Homebrew 6 deprecated `brew bundle --cleanup` (no replacement yet), so zap cleanup is currently inert until nix-darwin's homebrew module adapts — remove strays manually with `brew uninstall`/`brew untap` for now
 - Homebrew 6 distrusts third-party taps by default (`brew trust <tap>` to allow) — prefer nix packages over tapped formulae
 - Keep entries in `systemPackages`, `casks`, `brews`, and `taps` alphabetically sorted
+- `nix.enable = false` is required — Determinate Nix (installed by `bootstrap.sh`) runs its own daemon and manages the Nix install itself; nix-darwin's default Nix management conflicts with it and aborts activation ("Determinate detected, aborting activation") otherwise. This only disables nix-darwin's management of the underlying Nix installation — nix-darwin itself (packages, Homebrew, macOS defaults) is unaffected.
 
 ## Gotchas
 
