@@ -3,3 +3,4 @@ nerdfont: true
 # The tmux window format is styled by hand in ~/.tmux.conf so the status icon
 # renders inside the catppuccin pill instead of after it.
 status_format: false
+worktree_dir: ".worktrees"
