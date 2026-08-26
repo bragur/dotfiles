@@ -2,3 +2,4 @@
 **/.claude/agent-memory
 .workmux.yaml
 **/.github/hooks/workmux-status
+**/tasks/todo.md
