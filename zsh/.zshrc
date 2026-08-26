@@ -11,6 +11,9 @@ ulimit -n 10240
 [[ ! -f $ZSH_HOME/antidote.zsh ]] || source $ZSH_HOME/antidote.zsh
 [[ ! -f $ZSH_HOME/aliases.zsh ]] || source $ZSH_HOME/aliases.zsh
 
+# Docker Desktop CLI completions (must be in fpath before compinit)
+[[ ! -d $HOME/.docker/completions ]] || fpath=($HOME/.docker/completions $fpath)
+
 # autoload -Uz promptinit && promptinit
 # Cache compinit for faster startup (rebuilds once per day)
 # Skip security checks (-u) for speed
