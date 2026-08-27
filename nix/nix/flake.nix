@@ -72,6 +72,7 @@
             pkgs.cmatrix
             pkgs.rsync
             pkgs.shellcheck
+            pkgs.watchman
             # GUI apps with auto-updaters are installed via Homebrew casks instead of Nix
             # because Nix's immutable store prevents in-place updates
           ];
@@ -83,6 +84,7 @@
             taps = [ ];
             brews = [ ];
             casks = [
+              "android-studio"
               "arc"
               "cleanshot"
               "claude"
@@ -104,6 +106,7 @@
               "spotify"
               "tailscale-app"
               "visual-studio-code"
+              "zulu@17" # JDK 17 for React Native Android builds
             ];
             # masApps disabled — nix-darwin#1722: brew bundle changed mas install → mas get
             # Amphetamine (937984704) is installed via App Store directly
