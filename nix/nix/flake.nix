@@ -229,7 +229,9 @@
               user = username;
             };
           }
-        ];
+        ]
+        # Personal add-ons; excluded automatically for any other account.
+        ++ nixpkgs.lib.optional (username == "bragur") ./addons/audio-routing.nix;
       };
     in
     {

@@ -57,7 +57,51 @@ This gives you infrastructure-as-code for reproducibility while keeping configs 
 
 5. **Personal extras** (for me, not for you 🙂): the Claude Code layer (skills, agents, settings) lives in a separate private repo — clone it and run its `install.sh` after bootstrap. Shell history needs the atuin encryption key from the password manager (`atuin key` printed it on the old machine).
 
+6. **Personal add-ons** (also just for me): `./install-addons.sh` — see [Personal add-ons](#personal-add-ons) below.
+
 See **[BOOTSTRAP.md](BOOTSTRAP.md)** for details, including setting up a second macOS account on an already-nix-managed machine and what to do if your account name isn't `bragur`.
+
+### Personal add-ons
+
+Some configs are tied to one person's hardware and licensed apps, so they are
+deliberately **not** part of `./bootstrap.sh`. Everyone else gets a clean core setup.
+
+```sh
+./install-addons.sh
+```
+
+This stows the add-on packages and reports any manual steps still outstanding.
+It is idempotent — re-run it any time to check state.
+
+| Add-on | Packages | Needs |
+| --- | --- | --- |
+| Audio Hijack auto-switching | `hammerspoon`, `audiohijack` | Hammerspoon, Audio Hijack, Loopback |
+
+**Audio Hijack auto-switching** starts the `Æon` Audio Hijack session whenever
+`Æon` (a Loopback device feeding an iFi xDSD DAC) becomes the default output
+device, and stops it on any other device — so the session runs for the DAC but
+not for AirPods. Audio Hijack has no device-connect trigger of its own, so
+Hammerspoon watches the default output device and runs the `.ahcommand` scripts
+in `audiohijack/.config/audio-hijack/` via `open -b`.
+
+Two manual steps no script can do (macOS exposes neither as a writable
+preference, so `./install-addons.sh` can only report on them):
+
+- **Audio Hijack → Settings → Advanced → Scripting**: check *Allow execution of
+  external scripts*. Without it the `.ahcommand` files are ignored and nothing
+  starts or stops.
+- **Hammerspoon → Preferences**: check *Launch Hammerspoon at login*. Without it
+  the watcher does not come back after a reboot and switching silently stops
+  working.
+
+Transitions are logged to `~/.hammerspoon/aeon.log` (gitignored) — `tail -f` it
+while switching devices to confirm it works.
+
+The `hammerspoon` cask is **not** in the shared cask list. It lives in
+`nix/nix/addons/audio-routing.nix`, which `flake.nix` imports only when its
+`username` binding matches — so changing `username` for your own account
+excludes the add-on automatically. Note that nix flakes only see **git-tracked**
+files, so an add-on module must be committed before a rebuild will pick it up.
 
 ### Updating the System
 

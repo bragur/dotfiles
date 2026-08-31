@@ -1,0 +1,2 @@
+const session = app.sessionWithName("Æon")
+if (session) session.start()

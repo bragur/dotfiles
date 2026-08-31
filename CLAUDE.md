@@ -84,6 +84,7 @@ Each root-level directory is a **stow package** that mirrors home directory stru
 - Homebrew: Managed with `onActivation.cleanup = "zap"` - manual `brew install` is temporary. **Caveat**: Homebrew 6 deprecated `brew bundle --cleanup` (no replacement yet), so zap cleanup is currently inert until nix-darwin's homebrew module adapts — remove strays manually with `brew uninstall`/`brew untap` for now
 - Homebrew 6 distrusts third-party taps by default (`brew trust <tap>` to allow) — prefer nix packages over tapped formulae
 - Keep entries in `systemPackages`, `casks`, `brews`, and `taps` alphabetically sorted
+- **Personal add-ons**: configs tied to one person's hardware/licensed apps stay out of `bootstrap.sh` and out of the shared `casks` list. The nix half lives in `nix/nix/addons/*.nix`, imported from `flake.nix`'s `modules` list via `lib.optional (username == "bragur")`, so changing `username` excludes it. The stow half is installed by `./install-addons.sh`. Current add-ons: `audio-routing.nix` (Hammerspoon + Audio Hijack device switching)
 - `nix.enable = false` is required — Determinate Nix (installed by `bootstrap.sh`) runs its own daemon and manages the Nix install itself; nix-darwin's default Nix management conflicts with it and aborts activation ("Determinate detected, aborting activation") otherwise. This only disables nix-darwin's management of the underlying Nix installation — nix-darwin itself (packages, Homebrew, macOS defaults) is unaffected.
 
 ## Gotchas
@@ -91,6 +92,10 @@ Each root-level directory is a **stow package** that mirrors home directory stru
 ### Nix-darwin pathsToLink
 - Packages that only install to `/share` (e.g. zsh plugins like antidote) won't appear in the system profile unless their path is added to `environment.pathsToLink` (e.g. `[ "/share/antidote" ]`)
 - After adding a nix package, verify it's accessible: check `/run/current-system/sw/bin/<name>` or `/run/current-system/sw/share/<name>`
+
+### Nix flakes only see git-tracked files
+- A flake's store copy contains only **git-tracked** files. `builtins.pathExists ./foo.nix` is `false` for an untracked *or* gitignored `foo.nix`, so gating a module on a gitignored marker file silently never activates
+- Practical effect: a new file under `nix/nix/` must be `git add`-ed before `nix flake check` or `darwin-rebuild` can see it, even with the change already saved on disk
 
 ### Fresh install / machine migration
 - Preferred flow: `./bootstrap.sh` (idempotent — handles all of the below and skips anything already done). See `BOOTSTRAP.md`.
