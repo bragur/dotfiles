@@ -3,8 +3,9 @@
 # install-addons.sh — opt-in personal add-ons, kept out of ./bootstrap.sh.
 #
 # These configs reference hardware and app setups specific to one person
-# (a Loopback device named "Æon", an iFi xDSD, AirPods), so they are not part
-# of the core dotfiles every account gets.
+# (a Loopback device named "Æon", an iFi xDSD, AirPods) or personal workflow
+# (Claude Code attention tracker), so they are not part of the core dotfiles
+# every account gets.
 #
 # Idempotent: re-running only re-stows and re-reports.
 #
@@ -53,6 +54,7 @@ else
 fi
 
 todo "Hammerspoon -> Preferences: check 'Launch Hammerspoon at login'"
+todo "System Settings -> Notifications -> Hammerspoon: allow notifications (Claude Code attention tracker)"
 
 printf '\n'
 ok "add-ons stowed. Verify by selecting 'Æon' as the output device, then:"

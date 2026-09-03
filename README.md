@@ -76,6 +76,7 @@ It is idempotent — re-run it any time to check state.
 | Add-on | Packages | Needs |
 | --- | --- | --- |
 | Audio Hijack auto-switching | `hammerspoon`, `audiohijack` | Hammerspoon, Audio Hijack, Loopback |
+| Claude Code attention tracker | `hammerspoon`, `claude` | Hammerspoon, tmux, Ghostty |
 
 **Audio Hijack auto-switching** starts the `Æon` Audio Hijack session whenever
 `Æon` (a Loopback device feeding an iFi xDSD DAC) becomes the default output
@@ -96,6 +97,18 @@ preference, so `./install-addons.sh` can only report on them):
 
 Transitions are logged to `~/.hammerspoon/aeon.log` (gitignored) — `tail -f` it
 while switching devices to confirm it works.
+
+**Claude Code attention tracker** pings you when a Claude Code session running
+in tmux needs input or finishes a turn, but only if you are looking elsewhere
+(another app, or another tmux window). Clicking the notification focuses
+Ghostty and jumps to the exact tmux pane. A menu bar item counts sessions
+waiting on you (`?`) or finished (`✓`); pick one to jump to it. Claude Code
+hooks in `~/.claude/settings.json` call `claude/.claude/claude-notify.sh` on
+`Notification`, `Stop` and `UserPromptSubmit`, which opens a `hammerspoon://claude`
+URL handled by `hammerspoon/.hammerspoon/claude.lua`. Claude Code's own desktop
+notifications are turned off (`preferredNotifChannel: notifications_disabled`)
+so they don't double up. One manual step: allow notifications for Hammerspoon in
+**System Settings → Notifications**. Events are logged to `~/.hammerspoon/claude.log`.
 
 The `hammerspoon` cask is **not** in the shared cask list. It lives in
 `nix/nix/addons/audio-routing.nix`, which `flake.nix` imports only when its
