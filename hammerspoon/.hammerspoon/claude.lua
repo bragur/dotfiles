@@ -104,8 +104,9 @@ local function track(params)
   local pane, state = params.pane, params.state
   if not pane or not STATES[state] then return end
   local existing = entries[pane]
-  -- idle_prompt fires a minute after every turn; only the first signal for a pane matters.
-  if existing and params.event == "idle_prompt" then return end
+  -- idle_prompt fires a minute after every turn and Stop fires again for each follow-up
+  -- recap; until the user answers, only the first signal per state matters.
+  if existing and (params.event == "idle_prompt" or existing.state == state) then return end
   if existing and existing.notification then existing.notification:withdraw() end
 
   local entry = {
