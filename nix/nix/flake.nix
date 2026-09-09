@@ -33,47 +33,47 @@
           # List packages installed in system profile. To search by name, run:
           # $ nix-env -qaP | grep wget
           environment.systemPackages = [
-            pkgs.zsh
-            pkgs.oh-my-posh
-            pkgs.stow
-            pkgs.fzf
-            pkgs.zoxide
-            pkgs.eza
+            pkgs._1password-cli
+            pkgs.antidote
+            pkgs.atuin
+            pkgs.awscli2
             pkgs.bat
             pkgs.btop
-            pkgs.dust
+            pkgs.carapace
+            pkgs.chafa
+            pkgs.cmatrix
             pkgs.delta
-            pkgs.neovim
-            pkgs.tmux
-            pkgs.tmuxifier
-            pkgs.mkalias # See comment below
-            pkgs.typescript-language-server
-            pkgs.typst
-            pkgs.mise
-            pkgs.nixfmt
-            pkgs.ripgrep
+            pkgs.dust
+            pkgs.eza
+            pkgs.fd
+            pkgs.fzf
             pkgs.gh
             pkgs.gum
-            pkgs.sesh
-            pkgs.terraform
-            pkgs.tldr
-            pkgs.fd
-            pkgs.yazi
-            pkgs.yq
             pkgs.jq
             pkgs.jqp
             pkgs.lld # provides ld64.lld (Mach-O linker) for Rust
-            pkgs.carapace
-            pkgs.chafa
-            pkgs.antidote
             pkgs.mas
-            pkgs.atuin
-            pkgs.awscli2
-            pkgs.cmatrix
+            pkgs.mise
+            pkgs.mkalias # See comment below
+            pkgs.neovim
+            pkgs.nixfmt
+            pkgs.oh-my-posh
+            pkgs.ripgrep
             pkgs.rsync
+            pkgs.sesh
             pkgs.shellcheck
+            pkgs.stow
+            pkgs.terraform
+            pkgs.tldr
+            pkgs.tmux
+            pkgs.tmuxifier
+            pkgs.typescript-language-server
+            pkgs.typst
             pkgs.watchman
-            pkgs._1password-cli
+            pkgs.yazi
+            pkgs.yq
+            pkgs.zoxide
+            pkgs.zsh
             # GUI apps with auto-updaters are installed via Homebrew casks instead of Nix
             # because Nix's immutable store prevents in-place updates
           ];
@@ -85,14 +85,14 @@
             taps = [ ];
             brews = [ ];
             casks = [
+              "1password"
               "android-studio"
               "arc"
-              "cleanshot"
               "claude"
+              "cleanshot"
               "figma"
               "ghostty"
               "google-chrome"
-              "1password"
               "jordanbaird-ice" # Ice — menu bar manager
               "karabiner-elements"
               "linearmouse"
