@@ -73,6 +73,7 @@
             pkgs.rsync
             pkgs.shellcheck
             pkgs.watchman
+            pkgs._1password-cli
             # GUI apps with auto-updaters are installed via Homebrew casks instead of Nix
             # because Nix's immutable store prevents in-place updates
           ];
