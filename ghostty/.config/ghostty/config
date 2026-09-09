@@ -42,7 +42,7 @@ palette = 15=#a6adc8
 window-padding-x = 8
 window-padding-y = 8
 window-theme = dark
-background-opacity = 0.98
+background-opacity = 0.92
 background-blur-radius = 5
 
 # Performance
