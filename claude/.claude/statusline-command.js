@@ -5,7 +5,7 @@
 //
 // Segments (left → right), joined by dim " │ ":
 //   [⬆]         — update indicator (only if a bottega update is pending; opt-out via env)
-//   ▼ NN%       — context usage (colored by token threshold)
+//   ▼ 130K/1M   — context tokens used / window size (colored by token threshold)
 //   project…    — git repo name (▸ subpath if inside a subfolder, ⎇ worktree if in a worktree)
 //   Model name
 //
@@ -29,7 +29,7 @@ const RESET   = '\x1b[0m';
 
 const HOME = os.homedir();
 const CONTEXT_WARN_TOKENS = 100000;
-const CONTEXT_HIGH_TOKENS = 125000;
+const CONTEXT_HIGH_TOKENS = 130000;
 
 // --- Stdin reader ---
 
@@ -46,15 +46,29 @@ function readStdin() {
 
 // --- Segment formatters ---
 
-function formatContext(usedPct, windowSize) {
-  if (usedPct == null || windowSize == null) return null;
-  const usedTokens = Math.round((usedPct / 100) * windowSize);
-  const display = Math.round(usedPct);
+function formatTokens(n) {
+  if (n >= 1000000) return `${+(n / 1000000).toFixed(1)}M`;
+  if (n >= 1000) return `${Math.round(n / 1000)}K`;
+  return `${n}`;
+}
+
+function contextTokensUsed(ctx) {
+  const u = ctx.current_usage;
+  if (u) return (u.input_tokens || 0) + (u.cache_creation_input_tokens || 0) + (u.cache_read_input_tokens || 0);
+  if (ctx.used_percentage == null) return null;
+  return Math.round((ctx.used_percentage / 100) * ctx.context_window_size);
+}
+
+function formatContext(ctx) {
+  if (!ctx || ctx.context_window_size == null) return null;
+  const usedTokens = contextTokensUsed(ctx);
+  if (usedTokens == null) return null;
+  const windowSize = ctx.context_window_size;
   let color, glyph;
   if (usedTokens < CONTEXT_WARN_TOKENS)      { color = GREEN;  glyph = '▼'; }
   else if (usedTokens < CONTEXT_HIGH_TOKENS) { color = YELLOW; glyph = '●'; }
   else                                       { color = RED;    glyph = '▲'; }
-  return `${color}${glyph} ${display}%${RESET}`;
+  return `${color}${glyph} ${formatTokens(usedTokens)}/${formatTokens(windowSize)}${RESET}`;
 }
 
 function safeGit(args, cwd) {
@@ -132,12 +146,10 @@ async function main() {
 
   const cwd = (data.workspace && data.workspace.current_dir) || data.cwd || process.cwd();
   const model = data.model && data.model.display_name;
-  const usedPct = data.context_window && data.context_window.used_percentage;
-  const windowSize = data.context_window && data.context_window.context_window_size;
 
   const segments = [];
 
-  const ctx = formatContext(usedPct, windowSize);
+  const ctx = formatContext(data.context_window);
   if (ctx) segments.push(ctx);
 
   segments.push(formatProject(cwd));
