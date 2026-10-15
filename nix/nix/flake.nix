@@ -35,13 +35,15 @@
           environment.systemPackages = [
             pkgs._1password-cli
             pkgs.antidote
-            pkgs.atuin
+            # e2e_capture pty test times out in the darwin build sandbox (atuin 18.23.0)
+            (pkgs.atuin.overrideAttrs { doCheck = false; })
             pkgs.awscli2
             pkgs.bat
             pkgs.btop
             pkgs.carapace
             pkgs.chafa
             pkgs.cmatrix
+            pkgs.datadog-pup
             pkgs.delta
             pkgs.dust
             pkgs.eza
