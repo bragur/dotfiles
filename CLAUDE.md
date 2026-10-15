@@ -24,10 +24,10 @@ Personal dotfiles for macOS (Apple Silicon) using a hybrid management approach:
 ### System Updates
 ```bash
 # Update and rebuild system (packages, Homebrew, settings)
-cd ~/dotfiles/nix/nix && nix flake update && sudo darwin-rebuild switch --flake '.#air'
+cd ~/dotfiles/nix/nix && nix flake update && sudo darwin-rebuild switch --flake '.#main'
 
 # Dry run to see what will change
-sudo darwin-rebuild build --flake ~/dotfiles/nix/nix/.#air
+darwin-rebuild build --flake ~/dotfiles/nix/nix#main
 
 # Rollback to previous generation
 sudo darwin-rebuild --rollback
@@ -79,7 +79,7 @@ Each root-level directory is a **stow package** that mirrors home directory stru
 
 ### Nix-Darwin
 - Flake location: `nix/nix/flake.nix`
-- Flake configs: `main` and `air` are two names for the same machine-agnostic aarch64-darwin config; the macOS account name is a single `username` binding at the top of the flake
+- Flake config: `main` is a machine-agnostic aarch64-darwin config; the macOS account name is a single `username` binding at the top of the flake
 - **Package split**: CLI tools via nix (`environment.systemPackages`), GUI apps with auto-updaters via Homebrew casks
 - Homebrew: Managed with `onActivation.cleanup = "zap"` - manual `brew install` is temporary. **Caveat**: Homebrew 6 deprecated `brew bundle --cleanup` (no replacement yet), so zap cleanup is currently inert until nix-darwin's homebrew module adapts — remove strays manually with `brew uninstall`/`brew untap` for now
 - Homebrew 6 distrusts third-party taps by default (`brew trust <tap>` to allow) — prefer nix packages over tapped formulae
@@ -108,7 +108,7 @@ Each root-level directory is a **stow package** that mirrors home directory stru
 - **Never re-run the nix installer on a machine that already has nix** (e.g. when setting up a second macOS account) — it can break the existing install. `bootstrap.sh` guards against this.
 - After install, restart terminal and bootstrap nix-darwin:
   ```bash
-  cd ~/dotfiles/nix/nix && nix run nix-darwin -- switch --flake '.#main'   # or '.#air' — same config
+  cd ~/dotfiles/nix/nix && nix run nix-darwin -- switch --flake '.#main'
   ```
   (`darwin-rebuild` is not available until after first nix-darwin build)
 - The `ls` alias (`eza`) won't work until nix packages are installed — use `/bin/ls` during bootstrap

@@ -238,10 +238,6 @@
       };
     in
     {
-      # Build darwin flake using either name (both point at the same config):
-      # $ darwin-rebuild build --flake .#main
-      # $ darwin-rebuild build --flake .#air
       darwinConfigurations."main" = darwinSystem;
-      darwinConfigurations."air" = darwinSystem;
     };
 }

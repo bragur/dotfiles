@@ -91,8 +91,8 @@ edit that line first.
   Claude Code statusline, which will render blank) won't work until
   `mise install` has run and the shell has been restarted.
 - **atuin** starts with an empty local history until `atuin login && atuin sync`.
-- **Flake config names**: `.#main` and `.#air` point at the same
-  machine-agnostic configuration — either works on any Apple Silicon Mac.
+- **Flake config name**: `.#main` is a machine-agnostic configuration that
+  works on any Apple Silicon Mac.
 - **Homebrew cleanup**: nix-darwin manages Homebrew with
   `onActivation.cleanup = "zap"` — anything installed manually with
   `brew install` is removed on the next `darwin-rebuild switch`. Add it to
