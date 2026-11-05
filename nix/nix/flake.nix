@@ -72,6 +72,7 @@
             pkgs.typescript-language-server
             pkgs.typst
             pkgs.watchman
+            pkgs.xcbeautify
             pkgs.yazi
             pkgs.yq
             pkgs.zoxide
@@ -107,7 +108,10 @@
               "slack"
               "sonos"
               "spotify"
-              "tailscale-app"
+              {
+                name = "tailscale-app";
+                greedy = true;
+              }
               "visual-studio-code"
               "zulu@17" # JDK 17 for React Native Android builds
             ];
